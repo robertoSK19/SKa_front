@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+        <h2 class="text-center ">EQUIPOS DE COMPUTO</h2>
+    </div>
+</div>
+
+<hr>
+
+<br>
+
+<div class="row">
+    <div class="col-sm-9 ">
+
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            [routerLink]="[ '/AgregarEquipo' ]">AGREGAR EQUIPO </button>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-sm-3">
+        <label>Buscar:</label>
+        <input type="text" class=" form-control form-control-sm">
+    </div>
+
+</div>
+
+<br>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">ID</th>
+                <th class="sticky-top" scope="col">Nombre del Equipo</th>
+                <th class="sticky-top" scope="col">Marca</th>
+                <th class="sticky-top" scope="col">Modelo</th>
+                <th class="sticky-top" scope="col">No. Serie</th>
+                <th class="sticky-top" scope="col">Estatus</th>
+                <th class="sticky-top" scope="col">Ver</th>
+                <th class="sticky-top" scope="col">Modificar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let equipo of equipos">
+                <td>{{equipo.id_dequipo}}</td>
+                <td>{{equipo.mequipo.nombre_equipo}}</td>
+                <td>{{equipo.mequipo.marca}}</td>
+                <td>{{equipo.mequipo.modelo}}</td>
+                <td>{{equipo.mequipo.numero_serie}}</td>
+                <td>{{equipo.estatusRecurso.nombre_estatus}}</td>
+                <td><i class='fas fa-eye' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo,'mostrar')" style='font-size:20px;color:purple'></i>
+                </td>
+                <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'></i>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>
+<router-outlet></router-outlet>

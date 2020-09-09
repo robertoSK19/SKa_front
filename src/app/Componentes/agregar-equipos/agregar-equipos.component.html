@@ -1,0 +1,161 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/IndexEquipo' ]"
+            style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+
+        <h2 class="modal-title text-center">Agregar Equipos de Computo </h2>
+    </div>
+</div>
+
+<br>
+
+<div class="card">
+
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+
+
+            <div class="row">
+                <div class="col-sm">
+
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Nombe del Equipo:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.nombre_equipo">
+                </div>
+
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Cuenta Usuario:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.cuenta_usuario">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Contraseña Usuario:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.cuenta_usuario_contrasena">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Marca:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.marca">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Número de Serie:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.numero_serie">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Número de Serie CMD:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.numero_serie_cmd">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Procesador:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.procesador">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        RAM:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.ram">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Disco Duro:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.disco_duro">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Modelo:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.modelo">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Modelo CMD:</h6>
+                    <input type="text" class=" form-control form-control-sm"  [value]="equipo.modelo_equipo_cmd">
+                </div>
+                <div class="col-sm">
+
+                    <div class="dropdown">
+                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                            Tipo de Computadora:</h6>
+                        <button type="button" class="btn btn-block btn-sm btn-info dropdown-toggle"
+                            data-toggle="dropdown"  [value]="equipo.tipo_computadora">
+                            Seleccione una Opcion: </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">Laptop</a>
+                            <a class="dropdown-item">Escritorio</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                         Fecha de Fabricación:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.fecha_fabricacion">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                         Nombre del Sistema Operativo:
+                    </h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.nombre_sistema_operativo">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                         Tipo del Sistema Operativo :
+                    </h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.tipo_sistema_operativo">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
+                         Dirección MAC:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.direccion_mac">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6>Email GNP:</h6>
+                    <input type="text" class=" form-control form-control-sm" [value]="equipo.email_gnp">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm-10">
+
+                </div>
+                <div class="col-sm-2 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
+                </div>
+            </div>
+
+        </blockquote>
+    </div>
+</div>
+<br>

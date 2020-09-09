@@ -1,0 +1,29 @@
+<br>
+<nav class="navbar navbar-expand-sm sticky-top container">
+
+
+    <a class="navbar-brand" [routerLink]="[ '/Principal' ]">
+        <img width="150" alt="Kabec Logo" src="assets/img/logo.png" />
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarNav" >
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" [routerLink]="[ '/IndexResponsiva' ]" role="button" >Responsivas</a>
+          </li>
+          <li class="nav-item">
+            <a role="button"  class="nav-link" [routerLink]="[ '/IndexAccesorio' ]" >Accesorios</a>
+          </li>
+          <li class="nav-item">
+            <a role="button"  class="nav-link" [routerLink]="[ '/IndexEquipo' ]" sytle="color: black">Equipos</a>
+          </li>
+          <button mat-button  [matMenuTriggerFor]="menu" (click)="activaMenu()"> Menu </button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>Item 1</button>
+  <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
+</mat-menu>
+        </ul>
+    </div>
+</nav>
+<br>
+<router-outlet></router-outlet>

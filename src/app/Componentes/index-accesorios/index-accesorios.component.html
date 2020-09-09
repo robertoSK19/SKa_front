@@ -1,0 +1,74 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+
+        <h2 class="text-center ">ACCESORIOS DE COMPUTO</h2>
+    </div>
+</div>
+
+<hr>
+
+<br>
+
+<div class="row">
+    <div class="col-sm-9 ">
+
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            [routerLink]="[ '/AgregarAccesorio' ]">AGREGAR ACESORIO </button>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-sm-3">
+        <label>Buscar:</label>
+        <input type="text" class=" form-control form-control-sm">
+    </div>
+
+</div>
+
+<br>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">ID</th>
+                <th class="sticky-top" scope="col">Nombre del Accesorio</th>
+                <th class="sticky-top" scope="col">Marca</th>
+                <th class="sticky-top" scope="col">Modelo</th>
+                <th class="sticky-top" scope="col">No. Serie</th>
+                <th class="sticky-top" scope="col">Estatus</th>
+                <th class="sticky-top" scope="col">Ver</th>
+                <th class="sticky-top" scope="col">Modificar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let equipo of equipos">
+                <td>{{equipo.id}}</td>
+                <td>{{equipo.title}}</td>
+                <td>{{equipo.completed}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class='fas fa-eye' [routerLink]="[ '/AgregarAccesorio' ]"
+                        style='font-size:20px;color:purple'></i>
+                </td>
+                <td><i class='fas fa-edit' [routerLink]="[ '/AgregarAccesorio' ]"
+                        style='font-size:20px;color:purple'></i>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>

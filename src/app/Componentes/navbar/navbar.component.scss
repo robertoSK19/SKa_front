@@ -1,0 +1,27 @@
+/* cambiar el color de fondo a la barra */
+nav.navbar {
+    background-color:whitesmoke;
+    
+}
+a {
+    color:black
+}
+button {
+    border: whitesmoke; background-color: whitesmoke;
+}
+button:disabled{
+    color:black
+}
+button:active {
+    border: whitesmoke; background-color: whitesmoke;
+}
+button:hover {
+    border: whitesmoke; background-color: whitesmoke;
+}
+a:active {
+    color:black
+}
+
+a:visited {
+    color:black
+}
