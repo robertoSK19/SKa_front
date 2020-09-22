@@ -1,5 +1,4 @@
-<br>
-<nav class="navbar navbar-expand-sm sticky-top container">
+<nav class="navbar navbar-expand-sm  container">
 
 
     <a class="navbar-brand" [routerLink]="[ '/Principal' ]">
@@ -17,9 +16,8 @@
           <li class="nav-item">
             <a role="button"  class="nav-link" [routerLink]="[ '/IndexEquipo' ]" sytle="color: black">Equipos</a>
           </li>
-          <button mat-button  [matMenuTriggerFor]="menu" (click)="activaMenu()"> Menu </button>
+          <button mat-button  [matMenuTriggerFor]="menu" (click)="activaMenu()"> Menú </button>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>Item 1</button>
   <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
 </mat-menu>
         </ul>

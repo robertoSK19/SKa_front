@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from '../../Servicios/servicios.service';
 import { Md5 } from 'md5-typescript';
 import { Router} from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { ToastrService } from 'ngx-toastr';
 
 export interface  RolesUser {
   rol: string;
@@ -43,6 +44,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     protected servicioConUser: ServiciosService,
     private router: Router,
+    private toastr: ToastrService
 
   ) { }
  /*  loginForm = new FormGroup({
@@ -59,11 +61,25 @@ export class LoginComponent implements OnInit {
   ifRol: boolean = false;
 
   onSubmit() {
-    console.log( 'soy el submit' );
-    console.log(this.loginForm.controls.correoUser.value);
-    console.log(this.loginForm.controls.contraseña.value);
+    // console.log( 'soy el submit' );
+    // console.log(this.loginForm.controls.correoUser.value);
+    // console.log(this.loginForm.controls.contraseña.value);
     const auxPass = Md5.init(this.loginForm.controls.contraseña.value);
-    this.consultaUser(this.loginForm.controls.correoUser.value, auxPass);
+    if (this.loginForm.controls.correoUser.value === '' && this.loginForm.controls.contraseña.value === '') {
+      this.mensajeDatosVacios();
+      this.loginForm.controls.correoUser.reset('');
+      this.loginForm.controls.contraseña.reset('');
+    } else if (this.loginForm.controls.correoUser.value !== '' && this.loginForm.controls.contraseña.value === '') {
+      this.mensajeDatosVacios();
+      this.loginForm.controls.correoUser.reset('');
+      this.loginForm.controls.contraseña.reset('');
+    } else if (this.loginForm.controls.correoUser.value === '' && this.loginForm.controls.contraseña.value !== '') {
+      this.mensajeDatosVacios();
+      this.loginForm.controls.correoUser.reset('');
+      this.loginForm.controls.contraseña.reset('');
+    } else if (this.loginForm.controls.correoUser.value !== '' && this.loginForm.controls.contraseña.value !== '') {
+      this.consultaUser(this.loginForm.controls.correoUser.value, auxPass);
+    }
   }
 
   consultaUser(correo: string, contraseña: string) {
@@ -85,25 +101,58 @@ export class LoginComponent implements OnInit {
           console.log('codigo 200', response.body);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
           this.ifRol = false;
+          this.mensaje204();
+          this.loginForm.controls.correoUser.reset('');
+          this.loginForm.controls.contraseña.reset('');
         } else if (response.status === 204) {
           console.log('busqueda sin resultados 204');
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
           this.ifRol = false;
+          this.mensaje204();
+          this.loginForm.controls.correoUser.reset('');
+          this.loginForm.controls.contraseña.reset('');
         }
       },
       error => {
+        console.log(error)
         if (error.status === 500) {
           console.log('codigo 500', error.body);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
           this.ifRol = false;
+          this.mensaje500();
         }
         if (error.status === 504) {
           console.log('codigo 504', error.body);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
           this.ifRol = false;
+          this.mensaje504();
+        }
+        if (error.status === 0) {
+          console.log('codigo 0', error.body);
+          usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
+          this.ifRol = false;
+          this.mensaje0();
         }
       }
     );
+  }
+  mensaje200() {
+    this.toastr.success('Datos Correctos', 'Acceso Concedido');
+  }
+  mensaje204() {
+    this.toastr.error('Datos incorrectos', 'Acceso Denegado');
+  }
+  mensaje500() {
+    this.toastr.error('Intentar más tarde', 'Error del Servidor ');
+  }
+  mensaje504() {
+    this.toastr.error('Intentar más tarde', 'Tiempo de espera agotado');
+  }
+  mensaje0() {
+    this.toastr.error('Error de conexión con el Servidor', 'Error de Conexión');
+  }
+  mensajeDatosVacios() {
+    this.toastr.warning('Ingrese correo y contraseña', 'Faltan datos');
   }
 
 }

@@ -1,3 +1,6 @@
+input[type=checkbox] {
+    transform: scale(1.5);
+}
 .my-custom-scrollbar {
     position: relative;
     height: 300px;
@@ -5,11 +8,4 @@
 }
 .table-wrapper-scroll-y {
     display: block;
-}
-.linea {
-    border: 3px solid #510C74;
-    border-radius: 3px;
-}
-input:invalid {
-    color: red;
 }

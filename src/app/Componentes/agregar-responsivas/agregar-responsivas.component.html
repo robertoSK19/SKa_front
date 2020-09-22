@@ -1,0 +1,90 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/IndexResponsiva' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+        <h2 class="text-center ">GENERAR RESPONSIVA</h2>
+    </div>
+</div>
+
+<hr>
+
+<!-- <br> -->
+
+<div class="row" style="margin-top: 30px; margin-left: 20px;">
+    <!-- <div class="col-sm-8 ">
+
+    </div> -->
+    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+        Tipo de Responsiva:</h6>
+    <div class="col-sm-4 " style="margin-top: -2%;">
+        <mat-form-field class="col-sm-7" >
+            <mat-label>Seleccionar formato</mat-label>
+            <mat-select  style='font-size:14px' [formControl]="tipoResponsiva">
+                <mat-option *ngFor="let tipo of tiposResponsivas" [value]="tipo.nombre" >
+                    {{tipo.nombre}}
+                </mat-option>
+            </mat-select>
+         </mat-form-field>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-sm-3">
+        <label>Buscar:</label>
+        <input type="text" class=" form-control form-control-sm">
+    </div>
+
+</div>
+
+<br>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">ID</th>
+                <th class="sticky-top" scope="col">Nombre del Equipo</th>
+                <th class="sticky-top" scope="col">Marca</th>
+                <th class="sticky-top" scope="col">Modelo</th>
+                <th class="sticky-top" scope="col">No. Serie</th>
+                <th class="sticky-top" scope="col">Estatus</th>
+                <th class="sticky-top" scope="col">Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let equipo of equipos">
+                <td>{{equipo.id_dequipo}}</td>
+                <td>{{equipo.mequipo.nombre_equipo}}</td>
+                <td>{{equipo.mequipo.marca}}</td>
+                <td>{{equipo.mequipo.modelo}}</td>
+                <td>{{equipo.mequipo.numero_serie}}</td>
+                <td>{{equipo.estatusRecurso.nombre_estatus}}</td>
+                <td><input id="male" type="radio" value="male" name="gender" 
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? soyCheck(equipo.id_dequipo) : null"
+                    >
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-9 ">
+
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            (click)="llenarResponsiva()">Llenar Formulario</button>
+    </div>
+</div>
+<router-outlet></router-outlet>

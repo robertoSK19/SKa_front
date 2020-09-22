@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<br>
+<!-- <br> -->
 
 <div class="card">
 
@@ -92,11 +92,25 @@
                         Modelo CMD:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="modelo_cmd" >
                 </div>
-                <div class="col-sm">
+<!--                 <div class="col-sm">
                     <div class="dropdown">
                         <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
                             Tipo de Computadora:</h6>
                         <input type="text" class=" form-control form-control-sm" formControlName="tipo_equipo">
+                    </div>
+
+                </div> -->
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                            Tipo de Computadora:</h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select  formControlName="tipo_equipo" style='font-size:14px'>
+                                <mat-option *ngFor="let tipo of tiposEquipos" [value]="tipo.nombre" >
+                                    {{tipo.nombre}}
+                                </mat-option>
+                            </mat-select>
+                         </mat-form-field>
                     </div>
 
                 </div>
@@ -134,7 +148,7 @@
             <div class="row">
                 <div class="col-sm-3">
                     <h6>Email GNP:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="correo" >
+                    <input type="text" class=" form-control form-control-sm" formControlName="correo" [value]="equipo.email_gnp">
                 </div>
             </div>
 
@@ -143,14 +157,19 @@
             <div class="row">
                 <div class="col-sm-8">
                 </div>
-                <div class="col-sm-2 ">
+                <div class="col-sm-2 "[hidden]="ifMostrar === false && ifEditar === true">
                     <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
                 </div>
-                <div class="col-sm-2 ">
+                <div class="col-sm-2 " [hidden]="ifMostrar === false && ifEditar === true">
                     <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
                 </div>
+                <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
+                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')">Editar</button>
+                </div>
+                <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
+                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('aceptar')">Aceptar</button>
+                </div>
             </div>
-
             </form>
         </blockquote>
     </div>

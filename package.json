@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.2.14",
+    "@angular/animations": "^8.2.14",
     "@angular/cdk": "~8.2.3",
     "@angular/common": "~8.2.14",
     "@angular/compiler": "~8.2.14",
@@ -22,8 +22,12 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@types/jquery": "^3.5.1",
+    "material-ui": "^0.20.2",
     "md5-typescript": "^1.0.5",
     "ngx-cookie-service": "^10.0.1",
+    "ngx-toastr": "^11.3.3",
+    "pdfmake": "^0.1.68",
+    "pdfmake-wrapper": "^2.0.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.13.0",
     "zone.js": "~0.9.1"

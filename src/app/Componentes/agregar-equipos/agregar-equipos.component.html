@@ -11,40 +11,40 @@
 
     <div class="col-sm-8 ">
 
-        <h2 class="modal-title text-center">Agregar Equipos de Computo </h2>
+        <h2 class="modal-title text-center">Agregar Equipo de Computo </h2>
     </div>
 </div>
 
-<br>
+<!-- <br> -->
 
 <div class="card">
 
     <div class="card-body">
         <blockquote class="blockquote mb-0">
-
+            <form [formGroup]="datosEquipoForm">
 
             <div class="row">
                 <div class="col-sm">
 
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Nombe del Equipo:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.nombre_equipo">
+                    <input type="text" class=" form-control form-control-sm" formControlName="nombre_equipo" >
                 </div>
 
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Cuenta Usuario:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.cuenta_usuario">
+                    <input type="text" class=" form-control form-control-sm" formControlName="cuenta">
                 </div>
                 <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
                         Contraseña Usuario:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.cuenta_usuario_contrasena">
+                    <input type="text" class=" form-control form-control-sm" formControlName="cuenta_pass">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Marca:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.marca">
+                    <input type="text" class=" form-control form-control-sm" formControlName="marca">
                 </div>
             </div>
 
@@ -54,22 +54,28 @@
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Número de Serie:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.numero_serie">
+                    <input type="text" class=" form-control form-control-sm" formControlName="numero_serie">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Número de Serie CMD:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.numero_serie_cmd">
+                    <input type="text" class=" form-control form-control-sm" formControlName="serie_cmd">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Procesador:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.procesador">
+                    <input type="text" class=" form-control form-control-sm" formControlName="procesador">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         RAM:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.ram">
+                    <input type="text" id="ram" class=" form-control form-control-sm" formControlName="ram" placeholder="Ejemplo: 8" pattern="[0-9]{1,2}">
+                    <mat-error *ngIf="ifNumero" style='font-size:10px'>
+                        Campo Numerico 
+                    </mat-error>
+                    <mat-error *ngIf="ifLongitud" style='font-size:10px'>
+                        Máximo dos dígitos
+                    </mat-error>
                 </div>
             </div>
 
@@ -79,32 +85,38 @@
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Disco Duro:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.disco_duro">
+                    <input type="text" class=" form-control form-control-sm" formControlName="disco_duro" placeholder="Ejemplo: 500 GB">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Modelo:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.modelo">
+                    <input type="text" class=" form-control form-control-sm" formControlName="modelo">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Modelo CMD:</h6>
-                    <input type="text" class=" form-control form-control-sm"  [value]="equipo.modelo_equipo_cmd">
+                    <input type="text" class=" form-control form-control-sm" formControlName="modelo_cmd">
                 </div>
-                <div class="col-sm">
-
-                    <div class="dropdown">
+                <div class="col-sm" style='font-size:10px'>
+                    
+                    <!-- <div class="dropdown">
                         <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
                             Tipo de Computadora:</h6>
-                        <button type="button" class="btn btn-block btn-sm btn-info dropdown-toggle"
-                            data-toggle="dropdown"  [value]="equipo.tipo_computadora">
-                            Seleccione una Opcion: </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item">Laptop</a>
-                            <a class="dropdown-item">Escritorio</a>
-                        </div>
-                    </div>
+                        <select name="marcaauto" class="btn btn-block btn-sm btn-info dropdown-toggle" *ngFor="let tipo of tiposEquipos" formControlName="tipo_equipo">
+                            <option value="">Elige una opción</option>
+                            <option>LAPTOP</option>
 
+                        </select>
+                    </div> -->
+                    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                        Tipo de Computadora:</h6>
+                    <mat-form-field class="col-sm">
+                        <mat-select  formControlName="tipo_equipo" style='font-size:14px' (selectionChange)="tipoComputadora($event.value)" >
+                            <mat-option *ngFor="let tipo of tiposEquipos" [value]="tipo.nombre" >
+                                {{tipo.nombre}}
+                            </mat-option>
+                        </mat-select>
+                     </mat-form-field>
                 </div>
             </div>
 
@@ -112,26 +124,30 @@
 
             <div class="row">
                 <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                    <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
                          Fecha de Fabricación:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.fecha_fabricacion">
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_fabrica">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                          Nombre del Sistema Operativo:
                     </h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.nombre_sistema_operativo">
+                    <input type="text" class=" form-control form-control-sm" formControlName="nombre_SO">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                          Tipo del Sistema Operativo :
                     </h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.tipo_sistema_operativo">
+                    <input type="text" class=" form-control form-control-sm" formControlName="tipo_SO">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
                          Dirección MAC:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.direccion_mac">
+                    <input type="text" class=" form-control form-control-sm" formControlName="mac">
                 </div>
             </div>
 
@@ -140,21 +156,70 @@
             <div class="row">
                 <div class="col-sm-3">
                     <h6>Email GNP:</h6>
-                    <input type="text" class=" form-control form-control-sm" [value]="equipo.email_gnp">
+                    <input type="text" class=" form-control form-control-sm" formControlName="correo">
                 </div>
             </div>
-
+        </form>
+        <div  [hidden]="ifLaptop">
             <br>
+            <hr class="linea">
+            <h5 class="modal-title text-center">Datos del Eliminador de Corriente</h5>
+            <br>
+            <form [formGroup]="datosAccesorioForm">
+                <div class="row">
+                    <div class="col-sm">
 
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Marca:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="marcaA" >
+                    </div>
+
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Modelo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="modeloA">
+                    </div>
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Producto:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="productoA">
+                    </div>
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Hecho en:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="hechoEnA">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Número de Serie:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="numeroSerieA" >
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <br>
             <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-8">
 
+                </div>
+                <div class="col-sm-2 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
                 </div>
                 <div class="col-sm-2 ">
                     <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
                 </div>
             </div>
-
+            
         </blockquote>
     </div>
 </div>

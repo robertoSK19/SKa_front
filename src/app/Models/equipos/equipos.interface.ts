@@ -10,7 +10,7 @@ export interface Equipos {
     ram: number;
     disco_duro: string;
     cuenta_usuario: string;
-    cuenta_usuario_contrasena: string;
+    cuenta_usuario_contraseña: string;
     tipo_computadora: string;
     fecha_fabricacion: string;
     nombre_sistema_operativo: string;

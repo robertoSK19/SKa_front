@@ -1,0 +1,84 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+        <h2 class="text-center ">RESPONSIVAS</h2>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-sm-9 ">
+
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            [routerLink]="[ '/AgregarResponsiva' ]">GENERAR RESPONSIVA </button>
+    </div>
+</div>
+<div class="row">
+
+    <!-- <div class="col-sm-3">
+        <label>Buscar:</label>
+        <input type="text" class=" form-control form-control-sm">
+    </div> -->
+
+</div>
+
+<br>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">ID</th>
+                <th class="sticky-top" scope="col">Persona Responsable</th>
+                <th class="sticky-top" scope="col">Equipo</th>
+                <th class="sticky-top" scope="col">Sistema Operativo</th>
+                <th class="sticky-top" scope="col">Marca</th>
+                <th class="sticky-top" scope="col">Numero de Serie</th>
+                <th class="sticky-top" scope="col">Estatus</th><!-- duda en que si deba de ir esta -->
+                <th class="sticky-top" scope="col">Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let responsiva of responsivas">
+                <td>{{responsiva.id_asignacion}}</td>
+                <td>{{responsiva.nombre_consultor}}</td>
+                <td>{{responsiva.dequipo.mequipo.tipo_computadora}}</td>
+                <td>{{responsiva.dequipo.mequipo.nombre_sistema_operativo}}</td>
+                <td>{{responsiva.dequipo.mequipo.marca}}</td>
+                <td>{{responsiva.dequipo.mequipo.numero_serie}}</td>
+                <td>{{responsiva.estatusrecurso.nombre_estatus}}</td>
+                <td><input id="male" type="radio" value="male" name="gender" 
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? seleccionarResponsiva(responsiva.id_asignacion,responsiva.dequipo.id_dequipo) : null"
+                    [disabled]="responsiva.estatusrecurso.id_estatus===6">
+                </td>
+                <!-- <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'></i>
+                </td> -->
+            </tr>
+
+
+        </tbody>
+    </table>
+    
+</div>
+<br>
+<div class="row">
+    <div class="col-sm ">
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-success btn-block" (click)="cancelarResponsiva()">Cancelar Responsiva</button>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

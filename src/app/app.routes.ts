@@ -8,7 +8,10 @@ import {IndexAccesoriosComponent} from './Componentes/index-accesorios/index-acc
 import {AgregarAccesoriosComponent} from './Componentes/agregar-accesorios/agregar-accesorios.component';
 import { LoginComponent } from './Componentes/login/login.component';
 import { EditarEquiposComponent } from './Componentes/editar-equipos/editar-equipos.component';
-
+import { EditarAccesoriosComponent } from './Componentes/editar-accesorios/editar-accesorios.component';
+import { IndexResponsivasComponent } from './Componentes/index-responsivas/index-responsivas.component';
+import { AgregarResponsivasComponent } from './Componentes/agregar-responsivas/agregar-responsivas.component';
+import { FormularioKabecComponent } from './Componentes/formulario-kabec/formulario-kabec.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -20,7 +23,10 @@ export const APP_ROUTES: Routes = [
 { path: 'AgregarAccesorio', component: AgregarAccesoriosComponent},
 { path: 'Login',  component: LoginComponent },
 { path: 'EditarEquipo',  component: EditarEquiposComponent },
-
+{ path: 'EditarAccesorio',  component: EditarAccesoriosComponent },
+{ path: 'IndexResponsiva',  component: IndexResponsivasComponent },
+{ path: 'AgregarResponsiva', component: AgregarResponsivasComponent},
+{ path: 'FormularioKabec', component: FormularioKabecComponent},
 
 
 { path: '**', pathMatch: 'full', redirectTo: ' Principal '}

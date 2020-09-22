@@ -6,6 +6,7 @@ import { DatosEquipo, EquipoAE } from '../index-equipos/index-equipos.component'
 import { DataService } from '../list/data.service';
 import { Equipos } from '../../Models/equipos/equipos.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 let datosUser: RolesUser = {
   rol: '',
@@ -18,7 +19,6 @@ let datosEquipo: DatosEquipo = {
   operacion: ''
 };
 
-
 @Component({
   selector: 'app-editar-equipos',
   templateUrl: './editar-equipos.component.html',
@@ -27,6 +27,11 @@ let datosEquipo: DatosEquipo = {
 export class EditarEquiposComponent implements OnInit {
 
   datosEquipoForm: FormGroup;
+
+  tiposEquipos: any[] = [
+    { nombre: 'LAPTOP'},
+    { nombre: 'ESCRITORIO'}
+  ];
 
   public equipo: Equipos = {
     id_equipo: '',
@@ -40,7 +45,7 @@ export class EditarEquiposComponent implements OnInit {
     ram: 0,
     disco_duro: '',
     cuenta_usuario: '',
-    cuenta_usuario_contrasena: '',
+    cuenta_usuario_contraseña: '',
     tipo_computadora: '',
     fecha_fabricacion: '',
     nombre_sistema_operativo: '',
@@ -61,7 +66,7 @@ export class EditarEquiposComponent implements OnInit {
     ram: 0,
     disco_duro: '',
     cuenta_usuario: '',
-    cuenta_usuario_contrasena: '',
+    cuenta_usuario_contraseña: '',
     tipo_computadora: '',
     fecha_fabricacion: '',
     nombre_sistema_operativo: '',
@@ -69,11 +74,16 @@ export class EditarEquiposComponent implements OnInit {
     direccion_mac: '',
     email_gnp: ''
   };
+
+  ifMostrar;
+  ifEditar;
+
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,
     private dataSvc: DataService,
     private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) { }
   ngOnInit() {
 
@@ -120,34 +130,79 @@ export class EditarEquiposComponent implements OnInit {
     // datosEquipo = EquipoAE;
     if (datosEquipo.operacion === 'editar') {
       console.log('soy editar');
+      this.ifMostrar = true;
+      this.ifEditar = false;
       this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
         response => {
-          this.equipo = response.body;
-          this.equipo.cuenta_usuario_contrasena = response.body.cuenta_usuario_contraseña;
-          this.datosEquipoForm.controls.nombre_equipo.setValue(this.equipo.nombre_equipo);
-          this.datosEquipoForm.controls.marca.setValue(this.equipo.marca);
-          this.datosEquipoForm.controls.modelo.setValue(this.equipo.modelo);
-          this.datosEquipoForm.controls.modelo_cmd.setValue(this.equipo.modelo_equipo_cmd);
-          this.datosEquipoForm.controls.numero_serie.setValue(this.equipo.numero_serie);
-          this.datosEquipoForm.controls.serie_cmd.setValue(this.equipo.numero_serie_cmd);
-          this.datosEquipoForm.controls.procesador.setValue(this.equipo.procesador);
-          this.datosEquipoForm.controls.ram.setValue(this.equipo.ram);
-          this.datosEquipoForm.controls.disco_duro.setValue(this.equipo.disco_duro);
-          this.datosEquipoForm.controls.cuenta.setValue(this.equipo.cuenta_usuario);
-          this.datosEquipoForm.controls.cuenta_pass.setValue(this.equipo.cuenta_usuario_contrasena);
-          this.datosEquipoForm.controls.tipo_equipo.setValue(this.equipo.tipo_computadora);
-          this.datosEquipoForm.controls.fecha_fabrica.setValue(this.equipo.fecha_fabricacion);
-          this.datosEquipoForm.controls.nombre_SO.setValue(this.equipo.nombre_sistema_operativo);
-          this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
-          this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
-          this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+          if (response.status === 200) {
+            this.equipo = response.body;
+            this.datosEquipoForm.controls.nombre_equipo.setValue(this.equipo.nombre_equipo);
+            this.datosEquipoForm.controls.marca.setValue(this.equipo.marca);
+            this.datosEquipoForm.controls.modelo.setValue(this.equipo.modelo);
+            this.datosEquipoForm.controls.modelo_cmd.setValue(this.equipo.modelo_equipo_cmd);
+            this.datosEquipoForm.controls.numero_serie.setValue(this.equipo.numero_serie);
+            this.datosEquipoForm.controls.serie_cmd.setValue(this.equipo.numero_serie_cmd);
+            this.datosEquipoForm.controls.procesador.setValue(this.equipo.procesador);
+            this.datosEquipoForm.controls.ram.setValue(this.equipo.ram);
+            this.datosEquipoForm.controls.disco_duro.setValue(this.equipo.disco_duro);
+            this.datosEquipoForm.controls.cuenta.setValue(this.equipo.cuenta_usuario);
+            this.datosEquipoForm.controls.cuenta_pass.setValue(this.equipo.cuenta_usuario_contraseña);
+            this.datosEquipoForm.controls.tipo_equipo.setValue(this.equipo.tipo_computadora);
+            this.datosEquipoForm.controls.fecha_fabrica.setValue(this.equipo.fecha_fabricacion);
+            this.datosEquipoForm.controls.nombre_SO.setValue(this.equipo.nombre_sistema_operativo);
+            this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
+            this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
+            this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+          } else if (response.status === 204) {
+            console.log( 'Equipo no encontrado');
+            this.deshabilitaForm();
+          }
         },
         error => {
           console.log(error);
+          if (error.status === 500) {
+            console.log('Error del Servidor');
+          }
         }
       );
-    } else if (datosEquipo.idEquipo === 'mostrar') {
+    } else if (datosEquipo.operacion === 'mostrar') {
       console.log('soy mostrar');
+      this.ifMostrar = false;
+      this.ifEditar = true;
+      this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
+        response => {
+          if (response.status === 200) {
+            this.equipo = response.body;
+            this.datosEquipoForm.controls.nombre_equipo.setValue(this.equipo.nombre_equipo);
+            this.datosEquipoForm.controls.marca.setValue(this.equipo.marca);
+            this.datosEquipoForm.controls.modelo.setValue(this.equipo.modelo);
+            this.datosEquipoForm.controls.modelo_cmd.setValue(this.equipo.modelo_equipo_cmd);
+            this.datosEquipoForm.controls.numero_serie.setValue(this.equipo.numero_serie);
+            this.datosEquipoForm.controls.serie_cmd.setValue(this.equipo.numero_serie_cmd);
+            this.datosEquipoForm.controls.procesador.setValue(this.equipo.procesador);
+            this.datosEquipoForm.controls.ram.setValue(this.equipo.ram);
+            this.datosEquipoForm.controls.disco_duro.setValue(this.equipo.disco_duro);
+            this.datosEquipoForm.controls.cuenta.setValue(this.equipo.cuenta_usuario);
+            this.datosEquipoForm.controls.cuenta_pass.setValue(this.equipo.cuenta_usuario_contraseña);
+            this.datosEquipoForm.controls.tipo_equipo.setValue(this.equipo.tipo_computadora);
+            this.datosEquipoForm.controls.fecha_fabrica.setValue(this.equipo.fecha_fabricacion);
+            this.datosEquipoForm.controls.nombre_SO.setValue(this.equipo.nombre_sistema_operativo);
+            this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
+            this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
+            this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+            this.deshabilitaForm();
+          } else if (response.status === 204) {
+            console.log( 'Equipo no encontrado');
+            this.deshabilitaForm();
+          }
+        },
+        error => {
+          console.log(error);
+          if (error.status === 500) {
+            console.log('Error del Servidor');
+          }
+        }
+      );
     }
 
   }
@@ -204,7 +259,7 @@ export class EditarEquiposComponent implements OnInit {
           ram: ramE,
           disco_duro: disco,
           cuenta_usuario: cuenta,
-          cuenta_usuario_contrasena: cuentaPass,
+          cuenta_usuario_contraseña: cuentaPass,
           tipo_computadora: tipoEquipo,
           fecha_fabricacion: fecha,
           nombre_sistema_operativo: SO,
@@ -218,14 +273,18 @@ export class EditarEquiposComponent implements OnInit {
             console.log(response.status);
             if (response.status === 200) {
               console.log('Actualizacion Correcta');
+              this.mensaje200Actulizacion();
+              setTimeout( () => {this.router.navigate(['IndexEquipo']); }, 3000 );
             }
           },
           error => {
             console.log('Error en la actualizacion', error);
+            this.mensaje500();
           }
         );
     } else {
       console.log('Datos imcompletos');
+      this.mensajeDatosVacios();
     }
 
   }
@@ -233,7 +292,7 @@ export class EditarEquiposComponent implements OnInit {
     this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
       response => {
         this.equipo = response.body;
-        this.equipo.cuenta_usuario_contrasena = response.body.cuenta_usuario_contraseña;
+        // this.equipo.cuenta_usuario_contrasena = response.body.cuenta_usuario_contraseña;
         this.datosEquipoForm.controls.nombre_equipo.setValue(this.equipo.nombre_equipo);
         this.datosEquipoForm.controls.marca.setValue(this.equipo.marca);
         this.datosEquipoForm.controls.modelo.setValue(this.equipo.modelo);
@@ -244,19 +303,30 @@ export class EditarEquiposComponent implements OnInit {
         this.datosEquipoForm.controls.ram.setValue(this.equipo.ram);
         this.datosEquipoForm.controls.disco_duro.setValue(this.equipo.disco_duro);
         this.datosEquipoForm.controls.cuenta.setValue(this.equipo.cuenta_usuario);
-        this.datosEquipoForm.controls.cuenta_pass.setValue(this.equipo.cuenta_usuario_contrasena);
+        this.datosEquipoForm.controls.cuenta_pass.setValue(this.equipo.cuenta_usuario_contraseña);
         this.datosEquipoForm.controls.tipo_equipo.setValue(this.equipo.tipo_computadora);
         this.datosEquipoForm.controls.fecha_fabrica.setValue(this.equipo.fecha_fabricacion);
         this.datosEquipoForm.controls.nombre_SO.setValue(this.equipo.nombre_sistema_operativo);
         this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
         this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
         this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+        this.mensajeCancelar();
+        this.router.navigate(['IndexEquipo']);
       },
       error => {
         console.log(error);
       }
     );
     console.log('cancelar');
+  }
+  opcionesVistaVer(opcion: string) {
+    if (opcion === 'editar') {
+      this.ifMostrar = true;
+      this.ifEditar = false;
+      this.habilitaForm();
+    } else if (opcion === 'aceptar') {
+      this.router.navigate(['IndexEquipo']);
+    }
   }
 
   formatofecha(fecha: string): string {
@@ -268,5 +338,57 @@ export class EditarEquiposComponent implements OnInit {
     anio = fecha.slice(0, 4);
     return dia + '/' + mes + '/' + anio;
   }
-
+  deshabilitaForm() {
+    this.datosEquipoForm.controls.nombre_equipo.disable();
+    this.datosEquipoForm.controls.marca.disable();
+    this.datosEquipoForm.controls.modelo.disable();
+    this.datosEquipoForm.controls.modelo_cmd.disable();
+    this.datosEquipoForm.controls.numero_serie.disable();
+    this.datosEquipoForm.controls.serie_cmd.disable();
+    this.datosEquipoForm.controls.procesador.disable();
+    this.datosEquipoForm.controls.ram.disable();
+    this.datosEquipoForm.controls.disco_duro.disable();
+    this.datosEquipoForm.controls.cuenta.disable();
+    this.datosEquipoForm.controls.cuenta_pass.disable();
+    this.datosEquipoForm.controls.tipo_equipo.disable();
+    this.datosEquipoForm.controls.fecha_fabrica.disable();
+    this.datosEquipoForm.controls.nombre_SO.disable();
+    this.datosEquipoForm.controls.tipo_SO.disable();
+    this.datosEquipoForm.controls.mac.disable();
+    this.datosEquipoForm.controls.correo.disable();
+  }
+  habilitaForm() {
+    this.datosEquipoForm.controls.nombre_equipo.enable();
+    this.datosEquipoForm.controls.marca.enable();
+    this.datosEquipoForm.controls.modelo.enable();
+    this.datosEquipoForm.controls.modelo_cmd.enable();
+    this.datosEquipoForm.controls.numero_serie.enable();
+    this.datosEquipoForm.controls.serie_cmd.enable();
+    this.datosEquipoForm.controls.procesador.enable();
+    this.datosEquipoForm.controls.ram.enable();
+    this.datosEquipoForm.controls.disco_duro.enable();
+    this.datosEquipoForm.controls.cuenta.enable();
+    this.datosEquipoForm.controls.cuenta_pass.enable();
+    this.datosEquipoForm.controls.tipo_equipo.enable();
+    this.datosEquipoForm.controls.fecha_fabrica.enable();
+    this.datosEquipoForm.controls.nombre_SO.enable();
+    this.datosEquipoForm.controls.tipo_SO.enable();
+    this.datosEquipoForm.controls.mac.enable();
+    this.datosEquipoForm.controls.correo.enable();
+  }
+  mensaje200Actulizacion() {
+    this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');
+  }
+  mensaje204Actualizacion() {
+    this.toastr.error('No se actualizaron los datos', 'Error en el registro');
+  }
+  mensaje500() {
+    this.toastr.error('Intentar más tarde', 'Error del Servidor ');
+  }
+  mensajeDatosVacios() {
+    this.toastr.warning('Llene los campos con (*)', 'Faltan datos');
+  }
+  mensajeCancelar() {
+    this.toastr.warning('Se cancelo la edición');
+  }
 }

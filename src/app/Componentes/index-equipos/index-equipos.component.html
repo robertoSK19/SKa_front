@@ -15,7 +15,7 @@
 
 <hr>
 
-<br>
+<!-- <br> -->
 
 <div class="row">
     <div class="col-sm-9 ">
@@ -30,15 +30,16 @@
 
     <div class="col-sm-3">
         <label>Buscar:</label>
-        <input type="text" class=" form-control form-control-sm">
+        <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtrarNoSerie($event)">
     </div>
 
 </div>
 
 <br>
+<mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
 <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-    <table class="table ">
+    <table class="table " [hidden]="ifResultados">
         <thead class="thead-dark">
             <tr>
                 <th class="sticky-top" scope="col">ID</th>
