@@ -2,20 +2,24 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { Router } from '@angular/router';
-import { EquipoResp, DatosEquipoResponsiva} from '../agregar-responsivas/agregar-responsivas.component';
+import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp} from '../agregar-responsivas/agregar-responsivas.component';
 import { DataService } from '../list/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Accesorios } from '../../Models/accesorios/accesorios.interface';
 import { DatePipe } from '@angular/common';
 import { Asignacion } from '../../Models/asignacion/asignacion.interface';
 import { DEquipos } from '../../Models/equipos/dequipos.interface';
-import { CrearPDFComponent } from '../crear-pdf/crear-pdf.component';
+import { CrearPDFComponent } from '../formatos_pdf/pdf kabec/crear-pdf.component';
 import { ToastrService } from 'ngx-toastr';
+import { Aaccesorio } from 'src/app/Models/accesorios/aaccesorio.interface';
 
 const idEestatusAsignada = '1';
 const idEstatusNoAsignada = '2';
 let datosResponsiva: DatosEquipoResponsiva = {
    idEquipo : '',
+};
+let datosResponsivaAccesorio: DatosAccesorioResponsiva = {
+  idAcceosrio: '',
 };
 
 let datosAsignacion: Asignacion = {
@@ -28,9 +32,14 @@ let datosAsignacion: Asignacion = {
   letra: '',
   usuario: ''
 };
-
+let datosAaccesorio: Aaccesorio = {
+  id_aaccesorio: '',
+  id_asignacion: '',
+  id_accesorio: ''
+};
 let datosDEquipoG: any[];
 let datosDEquipoG2: DEquipos;
+let datosAccesorioG: Accesorios;
 let accesorioEquipo: any;
 
 let datosDEquipo: DEquipos = {
@@ -52,11 +61,14 @@ export class FormularioKabecComponent implements OnInit {
   public uno = CrearPDFComponent;
 
   datosRespForm: FormGroup;
+  datosRespAccForm: FormGroup;
   mostrarAccesorios = false;
   ifAccesorios: boolean;
   accesorios: any[];
   selection = new SelectionModel<Accesorios>(true, []);
   datosDEquipo: any[];
+  ifAccesorio = true;
+  datosAccesorios: any[];
   constructor(
     private formBuilder: FormBuilder,
     protected servicioConUser: ServiciosService,
@@ -75,12 +87,18 @@ export class FormularioKabecComponent implements OnInit {
       discoDS: ['', Validators.required],
       opcionAccesorio: ['', Validators.required],
     });
-    this.cargaIdEquipo(datosResponsiva.idEquipo);
-    this.getAllAccesorios();
+    this.datosRespAccForm = this.formBuilder.group({
+      id_accesorio: ['', Validators.required],
+      responsable: ['', Validators.required],
+    });
+    // this.cargaIdEquipo(datosResponsiva.idEquipo);
+    this.validarRecurso();
+    // this.getAllAccesorios();
   }
 
   usuarioLogeado() {
     datosResponsiva = EquipoResp;
+    datosResponsivaAccesorio = AccesorioResp;
     const token = this.servicioConUser.getToken();
     if ( token.length !== 0 && datosResponsiva.idEquipo !== '') {
       console.log('acceso correcto');
@@ -94,6 +112,7 @@ export class FormularioKabecComponent implements OnInit {
   cargaIdEquipo(id?: string) {
     datosResponsiva = EquipoResp;
     this.datosRespForm.controls.id_equipo.setValue(datosResponsiva.idEquipo);
+    this.datosRespForm.controls.id_equipo.disable();
     this.ServiceConsulta.getDEquipo(datosResponsiva.idEquipo).subscribe(
       response => {
         if (response.status === 200) {
@@ -163,7 +182,7 @@ export class FormularioKabecComponent implements OnInit {
           id_dequipo: equipo,
           nombre_consultor: nombre,
           costo: Number(costoNum) ,
-          letra: costoEquipo,
+          letra: this.uno.prototype.costoLetra(costoEquipo),
           fecha_asignacion: fecha,
           id_estatus: 0,
           usuario: '',
@@ -180,7 +199,7 @@ export class FormularioKabecComponent implements OnInit {
             this.datosDEquipo = response.body;
             datosDEquipoG = response.body;
             if (accion === 'vista') {
-              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo);
+              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco);
             }
           },
           error => {
@@ -200,13 +219,18 @@ export class FormularioKabecComponent implements OnInit {
                       responseA => {
                         if (responseA.status === 200) {
                           console.log('asignacion correcta');
-                          this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo);
+                          this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco);
+                          this.mensajeResponsivaGenerada();
+                          setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
+                        } else {
+                          this.mensajeErrorResponsiva();
                         }
                       },
                       errorA => {
                         if (errorA.status === 500) {
                           console.log('Error en el Servicio');
                           // en caso de que no se cree la asginacion
+                          this.mensajeErrorResponsiva();
                           this.ServiceConsulta.updateDEquipo(Number(idEstatusNoAsignada), datosDEquipoG2).subscribe();
                         }
                       }
@@ -216,6 +240,9 @@ export class FormularioKabecComponent implements OnInit {
                 errorDE => {
                   if (errorDE.status === 500) {
                     console.log('Error en el Servicio');
+                    this.mensaje500();
+                  } else {
+                    this.mensajeErrorResponsiva();
                   }
                 }
               );
@@ -224,6 +251,9 @@ export class FormularioKabecComponent implements OnInit {
               console.log(error);
               if (error.status === 500) {
                 console.log('Error en el Servicio');
+                this.mensaje500();
+              } else {
+                this.mensajeErrorResponsiva();
               }
             }
           );
@@ -233,6 +263,8 @@ export class FormularioKabecComponent implements OnInit {
   }
 
   cancelar() {
+    this.mensajeCancelar();
+    setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
 
   }
 
@@ -268,6 +300,80 @@ export class FormularioKabecComponent implements OnInit {
   soyCheck(valor?: string) {
     console.log(valor);
   }
+  validarRecurso() {
+    datosResponsiva = EquipoResp;
+    datosResponsivaAccesorio = AccesorioResp;
+    if (datosResponsivaAccesorio.idAcceosrio !== '') {
+      this.ifAccesorio = false;
+      this.cargaAccesorio();
+    }
+    if (datosResponsiva.idEquipo !== '') {
+      this.ifAccesorio = true;
+      this.cargaIdEquipo();
+      this.getAllAccesorios();
+    }
+  }
+  cargaAccesorio() {
+    this.datosRespAccForm.controls.id_accesorio.setValue(datosResponsivaAccesorio.idAcceosrio);
+    this.datosRespAccForm.controls.id_accesorio.disable();
+    this.ServiceConsulta.getAccesorio(datosResponsivaAccesorio.idAcceosrio).subscribe(
+      response => {
+        if (response.status === 200) {
+          this.datosAccesorios = response.body;
+          datosAccesorioG = response.body;
+          console.log(this.datosAccesorios);
+        } else if (response.status === 204 ) {
+          console.log('Accesorio no encontrado');
+        }
+      },
+      error => {
+        if (error.status === 500) {
+          console.log('Error 500');
+          this.mensaje500();
+        }
+      }
+    );
+  }
+  generarResponsivaAccesorio(opcion: string) {
+    const date = new Date();
+    const responsableAcc = this.datosRespAccForm.controls.responsable.value;
+    const accesorio = this.datosRespAccForm.controls.id_accesorio.value;
+    const costoAcc = datosAccesorioG.costo;
+    const fecha = this.datepipe.transform(date, 'yyyy-MM-dd');
+    if ( responsableAcc === '' ) {
+      this.mensajeDatosVacios();
+    } else {
+      datosAsignacion = {
+        id_asignacion: '',
+        id_dequipo: accesorio,
+        nombre_consultor: responsableAcc,
+        costo: costoAcc,
+        letra: costoAcc.toString(),
+        fecha_asignacion: fecha,
+        id_estatus: 0,
+        usuario: '',
+      };
+      datosAaccesorio = {
+        id_aaccesorio: '',
+        id_accesorio: accesorio,
+        id_asignacion: '',
+      };
+      this.ServiceConsulta.updateAccesorio(datosAccesorioG, Number(idEestatusAsignada)).subscribe(
+        response => {
+          if (response.status === 200 ) {
+          }
+        },
+        error => {
+
+        }
+      );
+/*       if (opcion === 'vista') {
+
+      } else if (opcion === 'crear') {
+
+      } */
+  }
+  }
   mensaje200() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');
   }
@@ -281,15 +387,21 @@ export class FormularioKabecComponent implements OnInit {
     this.toastr.error('Datos de consulta incorrectos', 'Error en el servicio');
   }
   mensajeDatosVacios() {
-    this.toastr.warning('Llene los campos con (*)', 'Faltan datos');
+    this.toastr.warning('Llene los campos que tienen un (*)', 'Faltan datos');
   }
   mensajeCancelar() {
-    this.toastr.warning('Se cancelo la edición');
+    this.toastr.warning('Se canceló el formulario');
   }
   mensajeErrorVistaPrevia() {
     this.toastr.warning('Se presento un error para mostrar el archivo PDF', 'Error en Vista Previa');
   }
   mensajeErrorObtencionDatos() {
     this.toastr.warning('Se presento un error para obtener los datos del equipo', 'Error en los datos');
+  }
+  mensajeResponsivaGenerada() {
+    this.toastr.success('Se descargará el archivo', 'Responsiva Generada');
+  }
+  mensajeErrorResponsiva() {
+    this.toastr.error('La responsiva no pudo generarse', 'Fallo Generacion');
   }
 }

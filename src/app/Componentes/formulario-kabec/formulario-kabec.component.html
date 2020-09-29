@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card" [hidden]="!ifAccesorio">
 
     <div class="card-body">
         <blockquote class="blockquote mb-0">
@@ -121,3 +121,48 @@
         </blockquote>
     </div>
 </div>
+
+<div class="card" [hidden]="ifAccesorio">
+
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <form [formGroup]="datosRespAccForm">
+
+            <div class="row">
+                <div class="col-sm">
+
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Id Accesorio:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="id_accesorio" >
+                </div>
+
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Responsable del Equipo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="responsable">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-3">
+
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesorio("vista")'>Vista Previa</button>
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesoio("crear")'>Generar</button>
+                </div>
+            </div>
+            </form>
+        </blockquote>
+    </div>
+</div>
+

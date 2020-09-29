@@ -42,9 +42,12 @@
                     <input type="text" class=" form-control form-control-sm" formControlName="modelo">
                 </div>
                 <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                    <!-- <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Producto:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="producto">
+                    <input type="text" class=" form-control form-control-sm" formControlName="producto"> -->
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Costo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="costo">
                 </div>
             </div>
 
@@ -61,7 +64,22 @@
                         Número de Serie:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="serie">
                 </div>
-                <div class="col-sm">
+                <div class="col-sm" style='font-size:10px'>
+<!--                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Costo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="costo"> -->
+                    <div class="dropdown">
+                    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                        Estatus Accesorio:</h6>
+                        <!-- <input type="text" class=" form-control form-control-sm" formControlName="estatus" value="Estatus."> -->
+                    <mat-form-field class="col-sm" >
+                        <mat-select  style='font-size:14px;;' formControlName="estatus" (selectionChange)="cambioEstatus($event.value)" >
+                            <mat-option *ngFor="let estado of Estatus" [value]="estado.id_estatus" >
+                                {{estado.nombre_estatus}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 </div>
                 <div class="col-sm">
                 </div>
@@ -95,7 +113,7 @@
                     <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
                 </div>
                 <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
-                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')">Editar</button>
+                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')" [disabled]="ifAsignado">Editar</button>
                 </div>
                 <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
                     <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('aceptar')">Aceptar</button>

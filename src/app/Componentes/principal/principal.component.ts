@@ -6,7 +6,7 @@ import { ServiciosService } from '../../Servicios/servicios.service';
 let datosUser: RolesUser = {
   rol: '',
   nombre: '',
-  id_user: '',
+  id: 0,
 };
 
 

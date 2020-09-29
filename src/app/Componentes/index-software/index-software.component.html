@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+        <h2 class="text-center ">SOFTWARES</h2>
+    </div>
+</div>
+
+<hr>
+
+<!-- <br> -->
+
+<div class="row">
+</div>
+<div class="row">
+</div>
+
+<br>
+<mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table " [hidden]="ifResultados">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">Tipo de Software</th>
+                <th class="sticky-top" scope="col">Nombre Software</th>
+                <th class="sticky-top" scope="col">ID de Equipo</th>
+                <th class="sticky-top" scope="col">Número de Serie</th>
+                <th class="sticky-top" scope="col">Fecha de Vigencia</th>
+                <th class="sticky-top" scope="col">Modificar</th>
+                <th class="sticky-top" scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let software of softwares">
+                <td>{{software.id_software_tipo.nombre_software_tipo}}</td>
+                <td>{{software.nombre_software}}</td>
+                <td>{{software.id_dequipo.id_dequipo}}</td>
+                <td>{{software.no_serie}}</td>
+                <td>{{software.fecha_licencia}}</td>
+                <td><i class='fas fa-edit' [routerLink]="[ '/EditarSoftware' ]" (click)="editarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>
+                </td>
+                <td><i class='fas fa-trash-alt' (click)="eliminarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>
+<router-outlet></router-outlet>

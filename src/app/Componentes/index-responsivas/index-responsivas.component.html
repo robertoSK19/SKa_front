@@ -34,9 +34,10 @@
 </div>
 
 <br>
+<mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
 <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-    <table class="table ">
+    <table class="table " [hidden]="ifResultados">
         <thead class="thead-dark">
             <tr>
                 <th class="sticky-top" scope="col">ID</th>

@@ -11,7 +11,7 @@ const estatusId = 2;
 let datosUser: RolesUser = {
   rol: '',
   nombre: '',
-  id_user: '',
+  id: 0,
 };
 
 
@@ -33,6 +33,7 @@ export class AgregarAccesoriosComponent implements OnInit {
     hecho_en: '',
     serie: '',
     id_estatus: 0,
+    costo: 0,
   };
 
   constructor(
@@ -49,9 +50,10 @@ export class AgregarAccesoriosComponent implements OnInit {
       nombre_accesorio: ['', Validators.required],
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
-      producto: ['', Validators.required],
+      //producto: ['', Validators.required],
       hecho_en: ['', Validators.required],
-      serie: ['', Validators.required]
+      serie: ['', Validators.required],
+      costo: ['', Validators.required]
     });
 
   }
@@ -70,21 +72,24 @@ export class AgregarAccesoriosComponent implements OnInit {
     const nombreForm = this.datosAccesorioForm.controls.nombre_accesorio.value;
     const marcaForm = this.datosAccesorioForm.controls.marca.value;
     const modeloForm = this.datosAccesorioForm.controls.modelo.value;
-    const productoForm = this.datosAccesorioForm.controls.producto.value;
+    //const productoForm = this.datosAccesorioForm.controls.producto.value;
     const hechoEnForm = this.datosAccesorioForm.controls.hecho_en.value;
     const serieForm = this.datosAccesorioForm.controls.serie.value;
+    const costoForm = this.datosAccesorioForm.controls.costo.value;
 
-    if (nombreForm !== '' && marcaForm !== '' && modeloForm !== '' && productoForm !== '' && hechoEnForm !== '' && serieForm !== '') {
+    if (nombreForm !== '' && marcaForm !== '' && modeloForm !== '' /* && productoForm !== ''*/ && hechoEnForm !== '' &&
+    serieForm !== '' && costoForm !== '') {
       console.log('Datos completos');
       this.accesorio = {
         id_accesorio: '',
-        nombre_accesorio: nombreForm,
+        nombre_accesorio: '',
         marca: marcaForm,
         modelo: modeloForm,
-        producto: productoForm,
+        producto: nombreForm,
         hecho_en: hechoEnForm,
         serie: serieForm,
-        id_estatus: estatusId
+        id_estatus: estatusId,
+        costo: costoForm,
       };
       console.log(this.accesorio);
       this.servicioAccesorio.crearAccesorio(this.accesorio, estatusId).subscribe(
@@ -131,6 +136,6 @@ export class AgregarAccesoriosComponent implements OnInit {
     this.toastr.error('Intentar más tarde', 'Error del Servidor ');
   }
   mensajeDatosVacios() {
-    this.toastr.warning('Llene los campos con (*)', 'Faltan datos');
+    this.toastr.warning('Llene los campos que tienen un (*)', 'Faltan datos');
   }
 }

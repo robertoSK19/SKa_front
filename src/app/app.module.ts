@@ -33,11 +33,19 @@ import { MatSelectModule } from '@angular/material';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormularioKabecComponent } from './Componentes/formulario-kabec/formulario-kabec.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { CrearPDFComponent } from './Componentes/crear-pdf/crear-pdf.component';
+import { CrearPDFComponent } from './Componentes/formatos_pdf/pdf kabec/crear-pdf.component';
 import { PdfMakeWrapper } from 'pdfmake-wrapper';
 import pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
 import { ToastrModule } from 'ngx-toastr'; // notificaciones
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { IndexUsuariosComponent } from './Componentes/index-usuarios/index-usuarios.component';
+import { AgregarUsuariosComponent } from './Componentes/agregar-usuarios/agregar-usuarios.component';
+import { EditarUsuariosComponent } from './Componentes/editar-usuarios/editar-usuarios.component';
+import { IndexSoftwareComponent } from './Componentes/index-software/index-software.component';
+import { EditarSoftwareComponent } from './Componentes/editar-software/editar-software.component';
+import { FormularioSuraComponent } from './Componentes/formulario-sura/formulario-sura.component';
+import { CrearPDFSuraComponent } from './Componentes/formatos_pdf/crear-pdfsura/crear-pdfsura.component';
+
 
 // Set the fonts to use
 PdfMakeWrapper.setFonts(pdfFonts);
@@ -58,6 +66,13 @@ PdfMakeWrapper.setFonts(pdfFonts);
     AgregarResponsivasComponent,
     FormularioKabecComponent,
     CrearPDFComponent,
+    IndexUsuariosComponent,
+    AgregarUsuariosComponent,
+    EditarUsuariosComponent,
+    IndexSoftwareComponent,
+    EditarSoftwareComponent,
+    FormularioSuraComponent,
+    CrearPDFSuraComponent,
   ],
   entryComponents: [],
   imports: [

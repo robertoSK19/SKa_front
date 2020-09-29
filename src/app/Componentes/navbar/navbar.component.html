@@ -17,9 +17,12 @@
             <a role="button"  class="nav-link" [routerLink]="[ '/IndexEquipo' ]" sytle="color: black">Equipos</a>
           </li>
           <button mat-button  [matMenuTriggerFor]="menu" (click)="activaMenu()"> Menú </button>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
-</mat-menu>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="[ '/IndexUsuario' ]" [hidden]="ifNoAdmin">Administrar Usuarios</button>
+            <button mat-menu-item [routerLink]="[ '/IndexSoftware' ]" [hidden]="ifNoAdmin">Administrar Software</button>
+            <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
+          </mat-menu>
+
         </ul>
     </div>
 </nav>

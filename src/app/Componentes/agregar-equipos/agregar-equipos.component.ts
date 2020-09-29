@@ -17,7 +17,7 @@ const idEstatusAsignado = 1;
 let datosUser: RolesUser = {
   rol: '',
   nombre: '',
-  id_user: '',
+  id: 0,
 };
 
 let datosEquipo: DatosEquipo = {
@@ -177,7 +177,7 @@ export class AgregarEquiposComponent implements OnInit {
     const correo = this.datosEquipoForm.controls.correo.value;
     const regExp    = new RegExp( /[0-9]{1}[0-9]{1}/ );
     console.log(this.datepipe.transform(date, 'yyyy-MM-dd'));
-    if (fecha > this.datepipe.transform(date, 'yyyy-MM-dd')){
+    if (fecha > this.datepipe.transform(date, 'yyyy-MM-dd')) {
       console.log('fecha errornea');
       this.ifFechaCorrecta = false;
       this.fechaIncorrecta();
@@ -185,9 +185,8 @@ export class AgregarEquiposComponent implements OnInit {
       this.ifFechaCorrecta = true;
     }
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
-      && (ramE !== '' && ramE !== 0 )&& disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
+      && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
       && fecha !== '' && SO !== '' && vSO !== '' && mac !== '' && this.ifFechaCorrecta === true) {
-        console.log(ramE.length)
         if (regExp.test(ramE) === false) {
           this.ifNumero = true;
         } else if (regExp.test(ramE) === true && ramE.length >= 3) {
@@ -196,8 +195,8 @@ export class AgregarEquiposComponent implements OnInit {
           this.ifLongitud = false;
           this.ifNumero = false;
 
-        console.log('Datos correctos');
-        this.equipo = {
+          console.log('Datos correctos');
+          this.equipo = {
           id_equipo: this.equipo.id_equipo,
           nombre_equipo: nombre,
           marca: marcaE,
@@ -217,7 +216,7 @@ export class AgregarEquiposComponent implements OnInit {
           direccion_mac: mac,
           email_gnp: correo
         };
-        if ( this.ifLaptop === false ) {
+          if ( this.ifLaptop === false ) {
           const marcaAc = this.datosAccesorioForm.controls.marcaA.value;
           const modeloAc = this.datosAccesorioForm.controls.modeloA.value;
           const productoAc = this.datosAccesorioForm.controls.productoA.value;
@@ -233,13 +232,14 @@ export class AgregarEquiposComponent implements OnInit {
               hecho_en: hechoEnAc,
               serie: numeroSerieAc,
               id_estatus: 0,
-              id_equipo: 0
+              id_equipo: 0,
+              costo: 0
             };
           } else {
             this.mensajeDatosVaciosAccesorio();
           }
         }
-        this.dataSvc.crearEquipo(this.equipo).subscribe(
+          this.dataSvc.crearEquipo(this.equipo).subscribe(
           response => {
             console.log(response.status);
             if (response.status === 200) {
@@ -250,7 +250,7 @@ export class AgregarEquiposComponent implements OnInit {
                 disco_duro_solido: '0',
                 fecha_actualizacion_estatus: date,
                 id_equipo: 0,
-                id_estatus: 0
+                id_estatus: 0,
               };
               if ( this.ifLaptop === false ) {
                 this.Eliminador.id_equipo = response.body.id_equipo;
@@ -335,10 +335,10 @@ export class AgregarEquiposComponent implements OnInit {
     this.toastr.error('Intentar más tarde', 'Error del Servidor ');
   }
   mensajeDatosVacios() {
-    this.toastr.warning('Llene los campos con (*)', 'Datos incompletos');
+    this.toastr.warning('Llene los campos que tienen un (*)', 'Datos incompletos');
   }
   mensajeDatosVaciosAccesorio() {
-    this.toastr.warning('Llene los campos con (*)', 'Datos incompletos del Eliminador');
+    this.toastr.warning('Llene los campos que tienen un (*)', 'Datos incompletos del Eliminador');
   }
   fechaIncorrecta() {
     this.toastr.error('La fecha no debe ser un dia \n mayor a la  fecha actual', 'Error en la fecha de fabricación');

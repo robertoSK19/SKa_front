@@ -1,0 +1,96 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/IndexUsuario' ]"
+            style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+
+        <h2 class="modal-title text-center">Agregar Nuevo Usuario</h2>
+    </div>
+</div>
+
+<!-- <br> -->
+
+<div class="card">
+
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <form [formGroup]="datosUsuario">
+
+            <div class="row">
+                <div class="col-sm">
+
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Nombre:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="nombre" >
+                </div>
+
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Apellido Paterno:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="apellidoP">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Apellido Materno:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="apellidoM">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Correo Electrónico:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="correo">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Contraseña:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="contraseña">
+                </div>
+                <div class="col-sm" style='font-size:10px'>
+                    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                        Rol del Usuario:</h6>
+                    <mat-form-field class="col-sm">
+                        <mat-select  formControlName="rol" style='font-size:14px' (selectionChange)="tipoRol($event.value)" >
+                            <mat-option *ngFor="let rol of roles" [value]="rol.rol" >
+                                {{rol.rol}}
+                            </mat-option>
+                        </mat-select>
+                     </mat-form-field>
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+
+            <br>
+
+        </form>
+        
+        <br>
+            <div class="row">
+                <div class="col-sm-8">
+
+                </div>
+                <div class="col-sm-2 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+                </div>
+                <div class="col-sm-2 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
+                </div>
+            </div>
+            
+        </blockquote>
+    </div>
+</div>
+<br>

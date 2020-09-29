@@ -21,6 +21,8 @@ export class IndexResponsivasComponent implements OnInit {
   idDEquipo = '';
   datosDEquipo: DEquipos;
   datosAsignacion: Asignacion;
+  ifProgreso = false;
+  ifResultados = true;
 
   constructor(
     private router: Router,
@@ -51,7 +53,11 @@ export class IndexResponsivasComponent implements OnInit {
         console.log(response);
         if (response.status === 200) {
           this.responsivas = response.body;
+          this.ifResultados = false;
+          this.ifProgreso = true;
         } else {
+          this.ifResultados = false;
+          this.ifProgreso = true;
           console.log('Error del servicio');
         }
       },
@@ -59,8 +65,12 @@ export class IndexResponsivasComponent implements OnInit {
         console.log(error);
         if (error.status === 500) {
           console.log('Error del Servidor');
+          this.ifResultados = false;
+          this.ifProgreso = true;
         } else {
           console.log('otro error');
+          this.ifResultados = false;
+          this.ifProgreso = true;
         }
       }
     );
@@ -76,7 +86,7 @@ export class IndexResponsivasComponent implements OnInit {
     );
     this.servicioResponsivas.getAsignacion(Number(this.idResponsiva)).subscribe(
       responseAsig => {
-        this.datosAsignacion= responseAsig.body;
+        this.datosAsignacion = responseAsig.body;
       }
     );
   }
@@ -139,7 +149,7 @@ export class IndexResponsivasComponent implements OnInit {
     this.toastr.error('Intentar más tarde', 'Error del Servidor ');
   }
   mensaje200() {
-    this.toastr.success('Se cancelo la responsiva', 'Cancelación Correcta');
+    this.toastr.success('Se canceló la responsiva', 'Cancelación Correcta');
   }
   mensajeDatosIncompletos() {
     this.toastr.error('Debe de seleccionar una responsiva', 'Error en la cancelación');

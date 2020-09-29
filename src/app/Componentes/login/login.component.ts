@@ -9,13 +9,13 @@ import { ToastrService } from 'ngx-toastr';
 export interface  RolesUser {
   rol: string;
   nombre: string;
-  id_user: string;
+  id: number;
 }
 
 export let usuarioRol: RolesUser = {
   rol: '',
   nombre: '',
-  id_user: ''
+  id: 0
 };
 
 export let token: string;
@@ -90,23 +90,25 @@ export class LoginComponent implements OnInit {
           console.log('codigo 200', response.body);
           respuestaUser = response.body;
           console.log(respuestaUser);
-          usuarioRol = {rol : respuestaUser["rol"], nombre: respuestaUser["nombre"], id_user: respuestaUser["id"]};
-          this.servicioConUser.setToken('miToken');
+          usuarioRol = {rol : respuestaUser["rol"], nombre: respuestaUser["nombre"], id: respuestaUser["id"]};
+          const cookie64 = window.btoa(unescape(encodeURIComponent( JSON.stringify(usuarioRol) )));
+          this.servicioConUser.setToken(cookie64);
+          console.log(cookie64);
           // console.log(this.servicioConUser.getToken());
-          token = this.servicioConUser.getToken();
+          // token = this.servicioConUser.getToken();
           this.router.navigate(['Principal']);
-          this.NavBar.prototype.otraFuncion('si');
+          // this.NavBar.prototype.otraFuncion('si');
           this.ifRol = true;
         } else if (response.status === 202) {
           console.log('codigo 200', response.body);
-          usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
+          usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.mensaje204();
           this.loginForm.controls.correoUser.reset('');
           this.loginForm.controls.contraseña.reset('');
         } else if (response.status === 204) {
           console.log('busqueda sin resultados 204');
-          usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
+          usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.mensaje204();
           this.loginForm.controls.correoUser.reset('');
@@ -117,19 +119,19 @@ export class LoginComponent implements OnInit {
         console.log(error)
         if (error.status === 500) {
           console.log('codigo 500', error.body);
-          usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
+          usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.mensaje500();
         }
         if (error.status === 504) {
           console.log('codigo 504', error.body);
-          usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
+          usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.mensaje504();
         }
         if (error.status === 0) {
           console.log('codigo 0', error.body);
-          usuarioRol = {rol: 'N/A', nombre: 'N/A', id_user: 'N/A'};
+          usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.mensaje0();
         }

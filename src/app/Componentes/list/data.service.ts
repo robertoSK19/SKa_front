@@ -16,6 +16,8 @@ private urlAPIEq = 'http://localhost:8088/equipos';
 private urlAPIAc = 'http://localhost:8088/accesorios';
 private urlAPIRes = 'http://localhost:8088/responsiva';
 private urlAPIAsig = 'http://localhost:8088/asignacion';
+private urlAPISoft = 'http://localhost:8088/software';
+private urlAPIEstatus = 'http://localhost:8088/estatus';
 
   constructor(private http: HttpClient,
     ) { }
@@ -94,6 +96,14 @@ private urlAPIAsig = 'http://localhost:8088/asignacion';
   }
   getAsignacion(idAsignacion: number): Observable <any> {
     const url = this.urlAPIAsig + '/get/' + idAsignacion;
+    return this.http.get(url, {observe: 'response'});
+  }
+  getAllSoftware(): Observable <any> {
+    const url = this.urlAPISoft + '/get';
+    return this.http.get(url, {observe: 'response'});
+  }
+  getAllEstatus(): Observable <any> {
+    const url = this.urlAPIEstatus + '/get';
     return this.http.get(url, {observe: 'response'});
   }
 }

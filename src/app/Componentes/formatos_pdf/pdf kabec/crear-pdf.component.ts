@@ -17,16 +17,23 @@ export class CrearPDFComponent implements OnInit {
   ngOnInit() {
   }
 
-  async generarPDF(opcion: string, accesorioEquipo: any, diaSemana: string, datos?: any, nombre ?: string, costo?: string, ) {
+  async generarPDF(opcion: string, accesorioEquipo: any, diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string) {
     const datosMap = datos;
     const responsable = nombre;
     const costoEquipo = costo;
     const datosAccesorioEquipo = accesorioEquipo;
     const pdf = new PdfMakeWrapper();
     const fecha = this.obtenerFecha(diaSemana);
+    let discoDuroT = '';
     let valorLetra = this.costoLetra(costo);
     valorLetra = valorLetra.toUpperCase().trim();
+    const discoSolido = SSD;
 
+    if (discoSolido.toString() !== '0') {
+      discoDuroT = datosMap.mequipo.disco_duro + ' + ' + discoSolido + ' SSD';
+    } else if (discoSolido.toString() === '0') {
+      discoDuroT = datosMap.mequipo.disco_duro;
+    }
     pdf.add(await new Img('../assets/img/logoPDF.png').build(),  // logo
     );
     // Fecha
@@ -77,7 +84,7 @@ export class CrearPDFComponent implements OnInit {
             [new Cell( new Txt('Sistema Operativo:').fontSize(9).end ).end,
             new Cell( new Txt(datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end ).end],
             [new Cell( new Txt('Disco Duro:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.disco_duro).fontSize(9).end ).end],
+            new Cell( new Txt(discoDuroT).fontSize(9).end ).end],
             [new Cell( new Txt('Memoria RAM:').fontSize(9).end ).end,
             new Cell( new Txt(datosMap.mequipo.ram).fontSize(9).end ).end],
             [new Cell( new Txt('Office:').fontSize(9).end ).end,
@@ -198,7 +205,7 @@ export class CrearPDFComponent implements OnInit {
     if (opcion === 'vista') {
       pdf.create().open();
     } else if (opcion === 'crear') {
-      pdf.create().download('responsiva no' + datosMap.mequipo.id_equipo + '.pdf');
+      pdf.create().download(datosMap.mequipo.id_equipo + responsable.replace(' ', '') + '.pdf');
     }
   }
 
@@ -267,33 +274,27 @@ export class CrearPDFComponent implements OnInit {
   }
 
   costoLetra(valor: string): string {
-    console.log(valor)
     let numero = 0;
     let res = '';
     let cadena = '';
     let N = 1;
     const parts = valor.split(',');
-    console.log(parts)
     const l = parts.length;
     for (let i = (l - 1); i >= 0; i--) {
       numero = Number(parts[i]);
-      console.log(N, numero)
       res = this.cientos(N, numero);
       cadena = res + cadena;
-      console.log(N);
       N += 1;
     }
     return cadena;
   }
 
   cientos( NB: number, valor: number) {
-    console.log(NB, valor)
     let mod = 0;
     let div = 0;
     mod = valor % 100;
     div = valor / 100;
     let aux1 = '';
-    console.log(Math.floor(div), mod)
     switch (Math.floor(div)) {
       case 0:
         aux1 = ''; break;
@@ -307,7 +308,7 @@ export class CrearPDFComponent implements OnInit {
       case 2:
         aux1 = 'dosientos'; break;
       case 3:
-        aux1 = 'tresientos'; break;
+        aux1 = 'trescientos'; break;
       case 4:
         aux1 = 'cuatrocientos'; break;
       case 5:
@@ -356,12 +357,11 @@ export class CrearPDFComponent implements OnInit {
         break;
       case 8: compl = 'mil trillones'; break;
     }
-  }console.log(compl)
+  }
     return aux1 + ' ' + res2 + ' ' + compl;
   }
 
   decenas(N1: number, nivel: number) {
-    console.log(N1, nivel);
     const base = N1;
     let aux1;
     let aux2;
@@ -392,7 +392,6 @@ export class CrearPDFComponent implements OnInit {
         case 9:
           aux1 = 'noventa'; break;
       }
-      console.log('segundo');
       switch (mod) {
         case 0:
           aux2 = '';
@@ -416,7 +415,6 @@ export class CrearPDFComponent implements OnInit {
         case 9:
           aux2 = 'nueve'; break;
       }
-      console.log(aux1, aux2)
        aux3 = aux1 + ' y ' + aux2;
     } else {
       switch (aux4) {
@@ -467,7 +465,6 @@ export class CrearPDFComponent implements OnInit {
           aux3 = 'diecinueve'; break;
       }
     }
-    console.log(aux3)
     return aux3;
   }
 
@@ -475,6 +472,5 @@ export class CrearPDFComponent implements OnInit {
     this.datepipe.transform(new Date(), 'EEEE');
     console.log(this.datepipe.transform(new Date(), 'EEEE'));
     this.diaSemana = this.datepipe.transform(new Date(), 'EEEE');
-    console.log(this.diaSemana);
   }
 }

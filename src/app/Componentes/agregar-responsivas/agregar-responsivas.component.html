@@ -18,12 +18,21 @@
 <!-- <br> -->
 
 <div class="row" style="margin-top: 30px; margin-left: 20px;">
-    <!-- <div class="col-sm-8 ">
-
-    </div> -->
+    <div class="col-sm-3">
+        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+            Tipo de Recurso:</h6>
+            <mat-form-field class="col-sm-7" >
+                <mat-label>Seleccionar Recurso</mat-label>
+                <mat-select  style='font-size:14px' [formControl]="tipoRecurso" (selectionChange)="tipoRecursoSelect($event.value)">
+                    <mat-option *ngFor="let recurso of tiposRecursoTI" [value]="recurso.nombre" >
+                        {{recurso.nombre}}
+                    </mat-option>
+                </mat-select>
+             </mat-form-field>
+        </div>
+    <div class="col-sm-3">
     <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
         Tipo de Responsiva:</h6>
-    <div class="col-sm-4 " style="margin-top: -2%;">
         <mat-form-field class="col-sm-7" >
             <mat-label>Seleccionar formato</mat-label>
             <mat-select  style='font-size:14px' [formControl]="tipoResponsiva">
@@ -44,9 +53,10 @@
 </div>
 
 <br>
-<div class="table-wrapper-scroll-y my-custom-scrollbar">
+<mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
+<div class="table-wrapper-scroll-y my-custom-scrollbar" [hidden]="!ifAccesorio">
 
-    <table class="table ">
+    <table class="table " [hidden]="ifResultados">
         <thead class="thead-dark">
             <tr>
                 <th class="sticky-top" scope="col">ID</th>
@@ -77,14 +87,61 @@
         </tbody>
     </table>
 </div>
-<br>
-<div class="row">
+<br [hidden]="!ifAccesorio">
+
+<div class="row" [hidden]="!ifAccesorio" >
     <div class="col-sm-9 ">
 
     </div>
     <div class="col-sm-3 ">
         <button type="button" class="btn btn-outline-primary btn-sm btn-block "
             (click)="llenarResponsiva()">Llenar Formulario</button>
+    </div>
+</div>
+
+<div [hidden]="ifAccesorio">
+<mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table " [hidden]="ifResultados">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">ID</th>
+                <th class="sticky-top" scope="col">Nombre del Accesorio</th>
+                <th class="sticky-top" scope="col">Marca</th>
+                <th class="sticky-top" scope="col">Modelo</th>
+                <th class="sticky-top" scope="col">No. Serie</th>
+                <th class="sticky-top" scope="col">Estatus</th>
+                <th class="sticky-top" scope="col">Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let accesorio of accesorios">
+                <td>{{accesorio.id_accesorio}}</td>
+                <td>{{accesorio.nombre_accesorio}}</td>
+                <td>{{accesorio.marca}}</td>
+                <td>{{accesorio.modelo}}</td>
+                <td>{{accesorio.serie}}</td>
+                <td>{{accesorio.id_Estatus.nombre_estatus}}</td>
+                <td><input id="male" type="radio" value="male" name="gender" 
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? accesorioCheck(accesorio.id_accesorio) : null"
+                    >
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>
+<br [hidden]="ifAccesorio">
+<div class="row" [hidden]="ifAccesorio">
+    <div class="col-sm-9 ">
+
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            (click)="llenarResponsivaAccesorio()">Llenar Formulario</button>
     </div>
 </div>
 <router-outlet></router-outlet>

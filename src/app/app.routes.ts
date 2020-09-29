@@ -12,6 +12,12 @@ import { EditarAccesoriosComponent } from './Componentes/editar-accesorios/edita
 import { IndexResponsivasComponent } from './Componentes/index-responsivas/index-responsivas.component';
 import { AgregarResponsivasComponent } from './Componentes/agregar-responsivas/agregar-responsivas.component';
 import { FormularioKabecComponent } from './Componentes/formulario-kabec/formulario-kabec.component';
+import { IndexUsuariosComponent } from './Componentes/index-usuarios/index-usuarios.component';
+import { AgregarUsuariosComponent } from './Componentes/agregar-usuarios/agregar-usuarios.component';
+import { EditarUsuariosComponent } from './Componentes/editar-usuarios/editar-usuarios.component';
+import { IndexSoftwareComponent } from './Componentes/index-software/index-software.component';
+import { EditarSoftwareComponent } from './Componentes/editar-software/editar-software.component';
+import { FormularioSuraComponent } from './Componentes/formulario-sura/formulario-sura.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -27,6 +33,12 @@ export const APP_ROUTES: Routes = [
 { path: 'IndexResponsiva',  component: IndexResponsivasComponent },
 { path: 'AgregarResponsiva', component: AgregarResponsivasComponent},
 { path: 'FormularioKabec', component: FormularioKabecComponent},
+{ path: 'IndexUsuario', component: IndexUsuariosComponent},
+{ path: 'AgregarUsuario', component: AgregarUsuariosComponent},
+{ path: 'EditarUsuario', component: EditarUsuariosComponent},
+{ path: 'IndexSoftware', component: IndexSoftwareComponent},
+{ path: 'EditarSoftware', component: EditarSoftwareComponent},
+{ path: 'FormularioSURA', component: FormularioSuraComponent},
 
 
 { path: '**', pathMatch: 'full', redirectTo: ' Principal '}

@@ -62,7 +62,8 @@
                 <td>{{equipo.estatusRecurso.nombre_estatus}}</td>
                 <td><i class='fas fa-eye' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo,'mostrar')" style='font-size:20px;color:purple'></i>
                 </td>
-                <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'></i>
+                <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'
+                    [hidden]="equipo.estatusRecurso.id_estatus===idAsignado"></i>
                 </td>
             </tr>
 

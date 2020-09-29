@@ -1,0 +1,123 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/AgregarResponsiva' ]"
+            style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+
+        <h2 class="modal-title text-center">RESPONSIVA SURA </h2>
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <form [formGroup]="datosRespForm">
+
+            <div class="row">
+                <div class="col-sm">
+
+                    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                        Id de Equipo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="id_equipo" >
+                </div>
+
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Responsable del Equipo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="responsable">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Costo de Equipo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="costo" placeholder="Ejemplo:1,000,000">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                        Disco Duro Solido :</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="discoDS">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                        Comentarios:</h6>
+                    <input type="textArea" class=" form-control form-control-sm" formControlName="comentarios" style="width: 100%; height: 100%;">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                        Agregar Accesorio: 
+                        <input type="checkbox" class="row-sm" style="width: 50px;" formControlName="opcionAccesorio" (change)="seleccinarAccesorios()" >
+                    </h6>
+                </div>
+            </div>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" style='font-size:13px' [hidden]="!mostrarAccesorios">
+
+                <table class="table ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="sticky-top" scope="col">ID</th>
+                            <th class="sticky-top" scope="col">Nombre del Accesorio</th>
+                            <th class="sticky-top" scope="col">Marca</th>
+                            <th class="sticky-top" scope="col">Modelo</th>
+                            <th class="sticky-top" scope="col">No. Serie</th>
+                            <th class="sticky-top" scope="col">Estatus</th>
+                            <th class="sticky-top" scope="col">Seleccionar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let accesorio of accesorios">
+                            <td>{{accesorio.id_accesorio}}</td>
+                            <td>{{accesorio.nombre_accesorio}}</td>
+                            <td>{{accesorio.marca}}</td>
+                            <td>{{accesorio.modelo}}</td>
+                            <td>{{accesorio.serie}}</td>
+                            <td>{{accesorio.id_Estatus.nombre_estatus}}</td>
+                            <td><input id="male" type="checkbox" value="male" name="gender"
+                                (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(accesorio) : null"
+                                [checked]="selection.isSelected(accesorio)"
+                                >
+                            </td>
+                        </tr>
+            
+            
+                    </tbody>
+                </table>
+            </div>
+
+
+            <br>
+
+            <div class="row">
+                <div class="col-sm-3">
+
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsiva("vista")'>Vista Previa</button>
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsiva("crear")'>Generar</button>
+                </div>
+            </div>
+            </form>
+        </blockquote>
+    </div>
+</div>

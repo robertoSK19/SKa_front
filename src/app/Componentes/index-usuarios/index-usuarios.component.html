@@ -1,0 +1,65 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+        <h2 class="text-center ">USUARIOS</h2>
+    </div>
+</div>
+
+<hr>
+
+<!-- <br> -->
+
+<div class="row">
+    <div class="col-sm-9 ">
+
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            [routerLink]="[ '/AgregarUsuario' ]">AGREGAR USUARIO</button>
+    </div>
+</div>
+<div class="row">
+</div>
+
+<br>
+<mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table " [hidden]="ifResultados">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">Nombre</th>
+                <th class="sticky-top" scope="col">Apellido Paterno</th>
+                <th class="sticky-top" scope="col">Apellido Materno</th>
+                <th class="sticky-top" scope="col">Correo</th>
+                <th class="sticky-top" scope="col">Rol</th>
+                <th class="sticky-top" scope="col">Modificar</th>
+                <th class="sticky-top" scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let usuario of usuarios">
+                <td>{{usuario.nombres}}</td>
+                <td>{{usuario.apellido_p}}</td>
+                <td>{{usuario.apellido_m}}</td>
+                <td>{{usuario.correo}}</td>
+                <td>{{usuario.rol.rol}}</td>
+                <td><i class='fas fa-edit' [routerLink]="[ '/EditarUsuario' ]" (click)="editarUsuario(usuario.id_usuario)" style='font-size:20px;color:purple'></i>
+                </td>
+                <td><i class='fas fa-trash-alt' (click)="eliminarUsuario(usuario.id_usuario)" style='font-size:20px;color:purple'></i>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>
+<router-outlet></router-outlet>

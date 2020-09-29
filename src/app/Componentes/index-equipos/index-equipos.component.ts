@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
 let datosUser: RolesUser = {
   rol: '',
   nombre: '',
-  id_user: '',
+  id: 0,
 };
 
 export interface DatosEquipo {
@@ -39,6 +39,7 @@ export class IndexEquiposComponent implements OnInit {
   filterEquipos = '';
   busqueda = new FormControl('');
   valor = '';
+  idAsignado = 1;
   constructor(
     private dataSvc: DataService,
     private router: Router,

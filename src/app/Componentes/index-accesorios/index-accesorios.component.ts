@@ -17,7 +17,7 @@ export let AccesorioAA: DatosAccesorio = {
 let datosUser: RolesUser = {
   rol: '',
   nombre: '',
-  id_user: '',
+  id: 0,
 };
 @Component({
   selector: 'app-index-accesorios',
@@ -31,6 +31,7 @@ export class IndexAccesoriosComponent implements OnInit {
   ifResultados = true;
   accesoriosback: any[];
   valor = '';
+  idAsignado = 1;
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,

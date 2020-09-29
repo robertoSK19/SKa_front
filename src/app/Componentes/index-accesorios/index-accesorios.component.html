@@ -55,8 +55,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let accesorio of accesorios">
-                <td>{{accesorio.id_accesorio}}</td>
                 <td>{{accesorio.nombre_accesorio}}</td>
+                <td>{{accesorio.producto}}</td>
                 <td>{{accesorio.marca}}</td>
                 <td>{{accesorio.modelo}}</td>
                 <td>{{accesorio.serie}}</td>
@@ -65,7 +65,8 @@
                         style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'mostrar')"></i>
                 </td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarAccesorio' ]"
-                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'editar')"></i>
+                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'editar')"
+                        [hidden]="accesorio.id_Estatus.id_estatus===idAsignado"></i>
                 </td>
             </tr>
 

@@ -38,7 +38,7 @@
                     <input type="text" class=" form-control form-control-sm" formControlName="cuenta">
                 </div>
                 <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
                         Contraseña Usuario:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="cuenta_pass" >
                 </div>
@@ -122,7 +122,12 @@
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                          Fecha de Fabricación:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="fecha_fabrica">
+                    <!-- <input type="text" class=" form-control form-control-sm" formControlName="fecha_fabrica"> -->
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_fabrica">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -146,9 +151,29 @@
             <br>
 
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                            Estatus del Equipo:</h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select  formControlName="estatus" style='font-size:14px'>
+                                <mat-option *ngFor="let tipo of Estatus" [value]="tipo.id_estatus" >
+                                    {{tipo.nombre_estatus}}
+                                </mat-option>
+                            </mat-select>
+                         </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="col-sm">
                     <h6>Email GNP:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="correo" [value]="equipo.email_gnp">
+                </div>
+                <div class="col-sm">
+                    
+                    
+                </div>
+                <div class="col-sm">
                 </div>
             </div>
 
@@ -164,7 +189,8 @@
                     <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
                 </div>
                 <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
-                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')">Editar</button>
+                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')"
+                    [disabled]="ifAsignado">Editar</button>
                 </div>
                 <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
                     <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('aceptar')">Aceptar</button>
