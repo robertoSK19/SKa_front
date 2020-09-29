@@ -29,6 +29,8 @@ export class AgregarResponsivasComponent implements OnInit {
   equipos: any[];
   tipoResponsiva: FormControl;
   idEquipoResponsiva = '';
+  ifProgreso = false;
+  ifResultados = true;
 
   tiposResponsivas: any[] = [
     {nombre: 'Kabec'},
@@ -73,6 +75,8 @@ export class AgregarResponsivasComponent implements OnInit {
         this.equipos = response.body;
         const equiposDisp =  this.equipos.filter(item => item.estatusRecurso.id_estatus === 2);
         this.equipos = equiposDisp;
+        this.ifProgreso = true;
+        this.ifResultados = false;
         } else if (response.status === 204) {
           this.mensaje204();
         }
@@ -80,6 +84,8 @@ export class AgregarResponsivasComponent implements OnInit {
       error => {
         if (error.status === 500) {
         console.log(error);
+        this.ifProgreso = true;
+        this.ifResultados = false;
         this.mensaje500();
         }
       }

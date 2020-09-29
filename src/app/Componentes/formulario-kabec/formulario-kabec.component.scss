@@ -9,3 +9,12 @@ input[type=checkbox] {
 .table-wrapper-scroll-y {
     display: block;
 }
+.mat-spinner::ng-deep circle {
+    stroke: #678812;
+}
+.centrar {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: 100px;
+}
