@@ -80,22 +80,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let accesorio of accesorios">
-                            <td>{{accesorio.id_accesorio}}</td>
-                            <td>{{accesorio.nombre_accesorio}}</td>
-                            <td>{{accesorio.marca}}</td>
-                            <td>{{accesorio.modelo}}</td>
-                            <td>{{accesorio.serie}}</td>
-                            <td>{{accesorio.id_Estatus.nombre_estatus}}</td>
+                        <tr *ngFor="let accesorio of accesorios" >
+                            <td id = "id_accesorio">{{accesorio.id_accesorio}}</td>
+                            <td id = "nombre_accesorio">{{accesorio.nombre_accesorio}}</td>
+                            <td id = "marca">{{accesorio.marca}}</td>
+                            <td id = "modelo">{{accesorio.modelo}}</td>
+                            <td id = "serie">{{accesorio.serie}}</td>
+                            <td id = "estatusId">{{accesorio.id_Estatus.nombre_estatus}}</td>
                             <td><input id="male" type="checkbox" value="male" name="gender"
                                 (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(accesorio) : null"
+                                (change)="$event  ? accesoriosCheck(accesorio.id_accesorio, accesorio.nombre_accesorio,
+                                accesorio.marca,accesorio.modelo, accesorio.serie, accesorio.id_Estatus.nombre_estatus) : null"
                                 [checked]="selection.isSelected(accesorio)"
+                                formControlName="checkValor"
                                 >
                             </td>
                         </tr>
-            
-            
                     </tbody>
                 </table>
             </div>

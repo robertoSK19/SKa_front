@@ -1,6 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PdfMakeWrapper, Txt, Img, Cell, Table} from 'pdfmake-wrapper';
+import { PdfMakeWrapper, Txt, Img, Cell, Table } from 'pdfmake-wrapper';
+import { accesor, checkAccesorios } from  '../../formulario-kabec/formulario-kabec.component';
+
 
 @Component({
   selector: 'app-crear-pdf',
@@ -11,7 +13,7 @@ export class CrearPDFComponent implements OnInit {
 
   diaSemana: string;
   constructor(
-    public datepipe: DatePipe= new DatePipe('en-US'),
+    public datepipe: DatePipe = new DatePipe('en-US'),
   ) { }
 
   ngOnInit() {
@@ -28,6 +30,33 @@ export class CrearPDFComponent implements OnInit {
     let valorLetra = this.costoLetra(costo);
     valorLetra = valorLetra.toUpperCase().trim();
     const discoSolido = SSD;
+    console.log(datosAccesorioEquipo);
+
+    function validarOtros(array) {
+      if (array.length > 0 && checkAccesorios === true) {
+        datosAccesorioEquipo.map(function (obj) {
+          pdf.add(
+            [
+              new Table([// lista de caracteristicas del eliminador
+                [new Cell(new Txt(obj.accNom).fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
+                new Table([
+                  [new Cell(new Txt('Marca:').fontSize(9).end).end,
+                  new Cell(new Txt(obj.accMarca).fontSize(9).end).end],
+                  [new Cell(new Txt('Serie:').fontSize(9).end).end,
+                  new Cell(new Txt(obj.accSerie).fontSize(9).end).end],
+                  [new Cell(new Txt('Modelo:').fontSize(9).end).end,
+                  new Cell(new Txt(obj.accModelo).fontSize(9).end).end],
+                ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).end,
+                new Cell(new Txt(obj.accId).fontSize(9).alignment('center').relativePosition(0, 15).end).end
+                ],
+              ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end
+            ]
+          )
+        })
+      } else {
+        console.log("No hay accesorios");
+      }
+    }
 
     if (discoSolido.toString() !== '0') {
       discoDuroT = datosMap.mequipo.disco_duro + ' + ' + discoSolido + ' SSD';
@@ -39,167 +68,172 @@ export class CrearPDFComponent implements OnInit {
     // Fecha
     pdf.add(
       [
-        new Table ([
-            [ new Cell(new Txt('Cuidad de México a').fontSize(9).alignment('right').end).end,
-              new Cell(new Txt(fecha).fontSize(9).alignment('right').end).end
-            ],
-          ]
-        ).widths(['65%', '35%' ]).layout('noBorders').end,
         new Table([
-          [ new Cell( new Txt('fila').end ).color('white').end],
-          [ new Cell( new Txt('fila').end ).color('white').end]
+          [new Cell(new Txt('Cuidad de México a').fontSize(9).alignment('right').end).end,
+          new Cell(new Txt(fecha).fontSize(9).alignment('right').end).end
+          ],
+        ]
+        ).widths(['65%', '35%']).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').end).color('white').end],
+          [new Cell(new Txt('fila').end).color('white').end]
         ]).layout('noBorders').end
-    ]);
+      ]);
     // leyenda 1
     pdf.add(
       [
-        new Table ([
-          [ new Cell( new Txt('Se hace entrega de los bienes con id').fontSize(9).end ).end,
+        new Table([
+          [new Cell(new Txt('Se hace entrega de los bienes con id').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.id_equipo).fontSize(9).alignment('right').end).end,
           ],
-        ]).widths([ '35%', '10%' ]).layout('noBorders').end,
+        ]).widths(['35%', '10%']).layout('noBorders').end,
         new Table([
-          [ new Cell( new Txt('fila').end ).color('white').end],
-      ]).layout('noBorders').end
+          [new Cell(new Txt('fila').end).color('white').end],
+        ]).layout('noBorders').end
       ]
     );
     // Tabla con los datos del equipo
     pdf.add(
-      [new Table ([ // encabezado de la tabla
-        [ new Cell( new Txt('Bien').fontSize(9).alignment('center').color('withe').end ).fillColor('#6D9EEB').end,
-          new Cell( new Txt('Características').fontSize(9).alignment('center').color('withe').end ).fillColor('#6D9EEB').end,
-          new Cell(new Txt('ID').fontSize(9).alignment('center').color('withe').end).fillColor('#6D9EEB').end,
+      [new Table([ // encabezado de la tabla
+        [new Cell(new Txt('Bien').fontSize(9).alignment('center').color('withe').end).fillColor('#6D9EEB').end,
+        new Cell(new Txt('Características').fontSize(9).alignment('center').color('withe').end).fillColor('#6D9EEB').end,
+        new Cell(new Txt('ID').fontSize(9).alignment('center').color('withe').end).fillColor('#6D9EEB').end,
         ],
       ]
-      ).widths([ '20%', '45%', '35%' ]).end,
-        new Table([// lista de caracterictica del equipo
-          [ new Cell( new Txt(datosMap.mequipo.tipo_computadora).fontSize(9).alignment('center').bold().relativePosition(0, 75).end ).end,
-          new Table([
-            [new Cell( new Txt('Marca:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.marca).fontSize(9).end ).end],
-            [ new Cell( new Txt('Modelo:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.modelo).fontSize(9).end ).end],
-            [new Cell( new Txt('Procesador:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.procesador).fontSize(9).end ).end],
-            [new Cell( new Txt('Sistema Operativo:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end ).end],
-            [new Cell( new Txt('Disco Duro:').fontSize(9).end ).end,
-            new Cell( new Txt(discoDuroT).fontSize(9).end ).end],
-            [new Cell( new Txt('Memoria RAM:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.ram).fontSize(9).end ).end],
-            [new Cell( new Txt('Office:').fontSize(9).end ).end,
-            new Cell( new Txt('').fontSize(9).end ).end],
-            [new Cell( new Txt('No. Serie:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.numero_serie).fontSize(9).end ).end],
-            [new Cell( new Txt('Tipo de Sistema:').fontSize(9).end ).end,
-            new Cell( new Txt(datosMap.mequipo.tipo_sistema_operativo).fontSize(9).end ).end],
-        ]).margin([-5, -3, -5, -3] ).widths([ '25%', '75%' ]).end,
-        new Cell( new Txt(datosMap.mequipo.id_equipo).fontSize(9).alignment('center').relativePosition(0, 75).end ).end
-      ],
-      ]).widths([ '20%', '45%', '35%' ]).margin([0, -1, 0, 0]).end,
-      new Table([// lista de caracteristicas del eliminador
-        [ new Cell( new Txt(datosAccesorioEquipo.nombre_accesorio).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
+      ).widths(['20%', '45%', '35%']).end,
+      new Table([// lista de caracterictica del equipo
+        [new Cell(new Txt(datosMap.mequipo.tipo_computadora).fontSize(9).alignment('center').bold().relativePosition(0, 75).end).end,
         new Table([
-          [new Cell( new Txt('Marca:').fontSize(9).end ).end,
-          new Cell( new Txt(datosAccesorioEquipo.marca).fontSize(9).end ).end],
-          [ new Cell( new Txt('Serie:').fontSize(9).end ).end,
-          new Cell( new Txt(datosAccesorioEquipo.serie).fontSize(9).end ).end],
-          [new Cell( new Txt('Modelo:').fontSize(9).end ).end,
-          new Cell( new Txt(datosAccesorioEquipo.modelo).fontSize(9).end ).end],
-      ]).margin([-5, -3, -5, -3] ).widths([ '25%', '75%' ]).end,
-      new Cell( new Txt(datosAccesorioEquipo.id_equipo).fontSize(9).alignment('center').relativePosition(0, 15).end ).end
-    ],
-    ]).widths([ '20%', '45%', '35%' ]).margin([0, -1, 0 , 0]).end,
-    new Table([// lista de caracteristicas para accesorios extras
-      [ new Cell( new Txt('Otros').fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
-      new Table([
-        [new Cell( new Txt('0').fontSize(9).end ).end,
-        new Cell( new Txt('').fontSize(9).end ).end],
-        [ new Cell( new Txt('').fontSize(9).end ).end,
-        new Cell( new Txt('0').fontSize(9).end ).end],
-        [new Cell( new Txt('').fontSize(9).end ).end,
-        new Cell( new Txt('0').fontSize(9).end ).end],
-    ]).margin([-5 , -3, -5, -3] ).widths([ '25%', '75%' ]).color('white').end,
-    new Cell( new Txt('').fontSize(9).alignment('center').relativePosition(0, 15).end ).end
-      ],
-    ]).widths([ '20%', '45%', '35%' ]).margin([0, -1 , 0 , 0]).end,
+          [new Cell(new Txt('Marca:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.marca).fontSize(9).end).end],
+          [new Cell(new Txt('Modelo:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.modelo).fontSize(9).end).end],
+          [new Cell(new Txt('Procesador:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.procesador).fontSize(9).end).end],
+          [new Cell(new Txt('Sistema Operativo:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end).end],
+          [new Cell(new Txt('Disco Duro:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.disco_duro).fontSize(9).end).end],
+          [new Cell(new Txt('Memoria RAM:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.ram).fontSize(9).end).end],
+          [new Cell(new Txt('Office:').fontSize(9).end).end,
+          new Cell(new Txt('').fontSize(9).end).end],
+          [new Cell(new Txt('No. Serie:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.numero_serie).fontSize(9).end).end],
+          [new Cell(new Txt('Tipo de Sistema:').fontSize(9).end).end,
+          new Cell(new Txt(datosMap.mequipo.tipo_sistema_operativo).fontSize(9).end).end],
+        ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).end,
+        new Cell(new Txt(datosMap.mequipo.id_equipo).fontSize(9).alignment('center').relativePosition(0, 75).end).end
+        ],
+      ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
+      new Table([// lista de caracteristicas del eliminador
+        [new Cell(new Txt("Eliminador").fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
+        new Table([
+          [new Cell(new Txt('Marca:').fontSize(9).end).end,
+          new Cell(new Txt("Dell").fontSize(9).end).end],
+          [new Cell(new Txt('Serie:').fontSize(9).end).end,
+          new Cell(new Txt("LS-09123").fontSize(9).end).end],
+          [new Cell(new Txt('Modelo:').fontSize(9).end).end,
+          new Cell(new Txt("LPS90").fontSize(9).end).end],
+        ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).end,
+        new Cell(new Txt("1").fontSize(9).alignment('center').relativePosition(0, 15).end).end
+        ],
+      ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
     ]
+    );
+    validarOtros(accesor);
+    pdf.add( 
+      [
+      new Table([// lista de caracteristicas para accesorios extras
+        [new Cell(new Txt('Otros').fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
+        new Table([
+          [new Cell(new Txt('0').fontSize(9).end).end,
+          new Cell(new Txt('').fontSize(9).end).end],
+          [new Cell(new Txt('').fontSize(9).end).end,
+          new Cell(new Txt('0').fontSize(9).end).end],
+          [new Cell(new Txt('').fontSize(9).end).end,
+          new Cell(new Txt('0').fontSize(9).end).end],
+        ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).color('white').end,
+        new Cell(new Txt('').fontSize(9).alignment('center').relativePosition(0, 15).end).end
+        ],
+      ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
+      ]
     );
     // seccion de leyendas
     pdf.add(
       [
         new Table([
-          [ new Cell( new Txt('fila').fontSize(9).end ).color('white').end]
+          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
         ]).layout('noBorders').end,
-        new Table ([
-            [ new Cell(new Txt('El costo por desperfectos y/o composturas que presente este equipo, '
+        new Table([
+          [new Cell(new Txt('El costo por desperfectos y/o composturas que presente este equipo, '
             + 'corren por la cuenta del responsable del equipo.').fontSize(9).end).end
-            ]
           ]
+        ]
         ).layout('noBorders').end,
         new Table([
-          [ new Cell( new Txt('fila').fontSize(9).end ).color('white').end]
+          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
         ]).layout('noBorders').end,
-        new Table ([
-          [ new Cell(new Txt('Está estrictamente prohibido pegarle calcomanías y tocar la pantalla, '
-          + 'es importante limpiar el equipo con un paño que no la raye.').fontSize(9).end).end
+        new Table([
+          [new Cell(new Txt('Está estrictamente prohibido pegarle calcomanías y tocar la pantalla, '
+            + 'es importante limpiar el equipo con un paño que no la raye.').fontSize(9).end).end
           ]
         ]
-      ).layout('noBorders').end,
-      new Table([
-        [ new Cell( new Txt('fila').fontSize(9).end ).color('white').end]
-      ]).layout('noBorders').end,
-      new Table ([
-        [ new Cell(new Txt('Éste es única y exclusivamente para cubrir las necesidades de trabajo '
-        + 'requerido por los proyectos a los que el responsable sea asignado. No se permiten instalar '
-        + 'Juegos, actualizaciones de Software, Música y Software sin licencia, si incurre en estos '
-        + 'puntos tendrá una penalización económica.').fontSize(9).end).end
+        ).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+        ]).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('Éste es única y exclusivamente para cubrir las necesidades de trabajo '
+            + 'requerido por los proyectos a los que el responsable sea asignado. No se permiten instalar '
+            + 'Juegos, actualizaciones de Software, Música y Software sin licencia, si incurre en estos '
+            + 'puntos tendrá una penalización económica.').fontSize(9).end).end
+          ]
         ]
-      ]
-    ).layout('noBorders').end,
-    new Table([
-      [ new Cell( new Txt('fila').fontSize(9).end ).color('white').end]
-    ]).layout('noBorders').end,
-    new Table([
-      [ new Cell( new Txt('fila').fontSize(9).end ).color('white').end]
-    ]).layout('noBorders').end,
-    new Table([
-      [ new Cell( new Txt('fila').fontSize(9).end ).color('white').end]
-    ]).layout('noBorders').end,
-    ]);
+        ).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+        ]).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+        ]).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+        ]).layout('noBorders').end,
+      ]);
     // nombre y firma del responsable
     pdf.add(
       [
-        new Table ([
-          [ new Cell( new Txt('Responsable del Equipo').fontSize(9).alignment('center').end ).end,
-          ],
-        ]).widths([ '65%']).layout('noBorders').end,
         new Table([
-          [ new Cell( new Txt('fila').end ).color('white').end],
+          [new Cell(new Txt('Responsable del Equipo').fontSize(9).alignment('center').end).end,
+          ],
+        ]).widths(['65%']).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').end).color('white').end],
         ]).layout('noBorders').end,
       ]
     );
     // Leyenda del costo e imagen de datos de la empresa
     pdf.add(
       [
-        new Table ([
-          [ new Cell( new Txt('').fontSize(9).end ).end,
+        new Table([
+          [new Cell(new Txt('').fontSize(9).end).end,
           new Cell(new Txt('__________________________________________________').fontSize(9).alignment('center').end).end,
           ],
-        ]).widths([ '10%', '55%' ]).layout('noBorders').end,
+        ]).widths(['10%', '55%']).layout('noBorders').end,
         new Table([
-          [ new Cell( new Txt('').fontSize(9).end ).end,
-            new Cell( new Txt('C.' + responsable).end ).fontSize(9).alignment('center').end],
-      ]).widths([ '10%', '55%' ]).layout('noBorders').end,
-      new Table([
-        [ new Cell( new Txt('fila').end ).color('white').end],
-      ]).layout('noBorders').end,
-      new Table([
-        [ new Cell( new Txt('NOTA: EN CASO DE PÉRDIDA, ROBO Y/O INSTALACIÓN DE SOFTWARE SIN LICENCIA, '
-        + 'DEL EQUIPO EL FIRMANTE TENDRÁ QUE PAGAR LA CANTIDAD DE : $' + costoEquipo + ' ' + valorLetra
-        + ' PESOS 00/100 M.N.)').fontSize(9).bold().end ).end],
-      ]).layout('noBorders').end,
-      await new Img('../assets/img/pie responsiva.png').build()
+          [new Cell(new Txt('').fontSize(9).end).end,
+          new Cell(new Txt('C.' + responsable).end).fontSize(9).alignment('center').end],
+        ]).widths(['10%', '55%']).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('fila').end).color('white').end],
+        ]).layout('noBorders').end,
+        new Table([
+          [new Cell(new Txt('NOTA: EN CASO DE PÉRDIDA, ROBO Y/O INSTALACIÓN DE SOFTWARE SIN LICENCIA, '
+            + 'DEL EQUIPO EL FIRMANTE TENDRÁ QUE PAGAR LA CANTIDAD DE : $' + costoEquipo + ' ' + valorLetra
+            + ' PESOS 00/100 M.N.)').fontSize(9).bold().end).end],
+        ]).layout('noBorders').end,
+        await new Img('../assets/img/pie responsiva.png').build()
       ]
     );
     if (opcion === 'vista') {
@@ -369,7 +403,7 @@ export class CrearPDFComponent implements OnInit {
     aux1 = '';
     aux2 = '';
     let mod = 0;
-    let  div = 0;
+    let div = 0;
     mod = N1 % 10;
     div = N1 / 10;
     const aux4 = base.toString();

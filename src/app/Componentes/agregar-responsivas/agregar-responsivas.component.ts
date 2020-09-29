@@ -95,8 +95,8 @@ export class AgregarResponsivasComponent implements OnInit {
         this.equipos = response.body;
         const equiposDisp =  this.equipos.filter(item => item.estatusRecurso.id_estatus === 2);
         this.equipos = equiposDisp;
-        this.ifResultados = false;
         this.ifProgreso = true;
+        this.ifResultados = false;
         } else if (response.status === 204) {
           this.ifResultados = false;
           this.ifProgreso = true;
@@ -105,13 +105,10 @@ export class AgregarResponsivasComponent implements OnInit {
       },
       error => {
         if (error.status === 500) {
-          console.log(error);
-          this.ifResultados = false;
-          this.ifProgreso = true;
-          this.mensaje500();
-        } else {
-          this.ifResultados = false;
-          this.ifProgreso = true;
+        console.log(error);
+        this.ifProgreso = true;
+        this.ifResultados = false;
+        this.mensaje500();
         }
       }
     );
