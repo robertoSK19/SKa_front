@@ -45,6 +45,7 @@ import { IndexSoftwareComponent } from './Componentes/index-software/index-softw
 import { EditarSoftwareComponent } from './Componentes/editar-software/editar-software.component';
 import { FormularioSuraComponent } from './Componentes/formulario-sura/formulario-sura.component';
 import { CrearPDFSuraComponent } from './Componentes/formatos_pdf/crear-pdfsura/crear-pdfsura.component';
+import { DialogElementsExampleDialog } from './Componentes/dialog-elements-example-dialog/dialog-elements-example-dialog.component';
 
 
 // Set the fonts to use
@@ -73,8 +74,9 @@ PdfMakeWrapper.setFonts(pdfFonts);
     EditarSoftwareComponent,
     FormularioSuraComponent,
     CrearPDFSuraComponent,
+    DialogElementsExampleDialog,
   ],
-  entryComponents: [],
+  entryComponents: [DialogElementsExampleDialog],
   imports: [
     BrowserModule,
     AppRoutingModule,

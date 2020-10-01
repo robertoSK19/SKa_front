@@ -6,6 +6,8 @@ import { usuarioRol, RolesUser } from '../login/login.component';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import { DialogElementsExampleDialog } from '../dialog-elements-example-dialog/dialog-elements-example-dialog.component';
 
 let datosUser: RolesUser = {
   rol: '',
@@ -44,7 +46,8 @@ export class IndexEquiposComponent implements OnInit {
     private dataSvc: DataService,
     private router: Router,
     protected servicioConUser: ServiciosService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
     ) { }
 
   ngOnInit() {
@@ -66,6 +69,11 @@ export class IndexEquiposComponent implements OnInit {
         this.mensaje500();
       }
     );
+  }
+
+
+  openDialog () {
+    this.dialog.open(DialogElementsExampleDialog);
   }
 
   usuarioLogeado() {
