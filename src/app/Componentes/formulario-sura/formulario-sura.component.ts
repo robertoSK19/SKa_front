@@ -20,7 +20,7 @@ let datosResponsiva: DatosEquipoResponsiva = {
    idEquipo : '',
 };
 let datosResponsivaAccesorio: DatosAccesorioResponsiva = {
-  idAcceosrio: '',
+  idAcceosrio: [],
 };
 
 let datosAsignacion: Asignacion = {
@@ -306,7 +306,7 @@ export class FormularioSuraComponent implements OnInit {
   validarRecurso() {
     datosResponsiva = EquipoResp;
     datosResponsivaAccesorio = AccesorioResp;
-    if (datosResponsivaAccesorio.idAcceosrio !== '') {
+    if (datosResponsivaAccesorio.idAcceosrio !== []) {
       this.ifAccesorio = false;
       this.cargaAccesorio();
     }

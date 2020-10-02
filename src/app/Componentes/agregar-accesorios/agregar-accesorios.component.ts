@@ -34,6 +34,7 @@ export class AgregarAccesoriosComponent implements OnInit {
     serie: '',
     id_estatus: 0,
     costo: 0,
+    descripcion: ''
   };
 
   constructor(
@@ -53,7 +54,8 @@ export class AgregarAccesoriosComponent implements OnInit {
       //producto: ['', Validators.required],
       hecho_en: ['', Validators.required],
       serie: ['', Validators.required],
-      costo: ['', Validators.required]
+      costo: ['', Validators.required],
+      descripcion: ['', Validators.required]
     });
 
   }
@@ -72,13 +74,14 @@ export class AgregarAccesoriosComponent implements OnInit {
     const nombreForm = this.datosAccesorioForm.controls.nombre_accesorio.value;
     const marcaForm = this.datosAccesorioForm.controls.marca.value;
     const modeloForm = this.datosAccesorioForm.controls.modelo.value;
-    //const productoForm = this.datosAccesorioForm.controls.producto.value;
+    // const productoForm = this.datosAccesorioForm.controls.producto.value;
     const hechoEnForm = this.datosAccesorioForm.controls.hecho_en.value;
     const serieForm = this.datosAccesorioForm.controls.serie.value;
     const costoForm = this.datosAccesorioForm.controls.costo.value;
+    const descripcionForm = this.datosAccesorioForm.controls.descripcion.value;
 
     if (nombreForm !== '' && marcaForm !== '' && modeloForm !== '' /* && productoForm !== ''*/ && hechoEnForm !== '' &&
-    serieForm !== '' && costoForm !== '') {
+    costoForm !== '') {
       console.log('Datos completos');
       this.accesorio = {
         id_accesorio: '',
@@ -90,6 +93,7 @@ export class AgregarAccesoriosComponent implements OnInit {
         serie: serieForm,
         id_estatus: estatusId,
         costo: costoForm,
+        descripcion: descripcionForm
       };
       console.log(this.accesorio);
       this.servicioAccesorio.crearAccesorio(this.accesorio, estatusId).subscribe(
@@ -118,13 +122,15 @@ export class AgregarAccesoriosComponent implements OnInit {
   }
 
   cancelar() {
+    this.router.navigate(['IndexAccesorio']);
     this.datosAccesorioForm.controls.nombre_accesorio.reset();
     this.datosAccesorioForm.controls.marca.reset();
     this.datosAccesorioForm.controls.modelo.reset();
-    this.datosAccesorioForm.controls.producto.reset();
+    //this.datosAccesorioForm.controls.producto.reset();
     this.datosAccesorioForm.controls.hecho_en.reset();
     this.datosAccesorioForm.controls.serie.reset();
-    this.router.navigate(['IndexAccesorio']);
+    this.datosAccesorioForm.controls.costo.reset();
+    this.datosAccesorioForm.controls.descripcion.reset();
   }
   mensaje200Nuevo() {
     this.toastr.success('Se registro el nuevo accesorio', 'Registro Correcto');

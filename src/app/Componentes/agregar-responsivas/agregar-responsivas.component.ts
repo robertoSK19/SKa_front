@@ -5,18 +5,22 @@ import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
+import { Equipos } from 'src/app/Models/equipos/equipos.interface';
+import { DEquipos } from 'src/app/Models/equipos/dequipos.interface';
 
 export interface DatosEquipoResponsiva {
   idEquipo: string;
 }
 export interface DatosAccesorioResponsiva {
-  idAcceosrio: string;
+  idAcceosrio: any[];
 }
 export let EquipoResp: DatosEquipoResponsiva = {
   idEquipo: '',
 };
 export let AccesorioResp: DatosAccesorioResponsiva = {
-  idAcceosrio: '',
+  idAcceosrio: [],
 };
 
 export interface DialogData {
@@ -57,6 +61,8 @@ export class AgregarResponsivasComponent implements OnInit {
   ];
 
   tiposResponsivas: any[];
+  selection = new SelectionModel<Accesorios>(true, []);
+  selectionEquipos = new SelectionModel<DEquipos>(true, []);
   constructor(
     private dataSvc: DataService,
     private router: Router,
@@ -118,7 +124,7 @@ export class AgregarResponsivasComponent implements OnInit {
     this.idEquipoResponsiva = idEquipo;
   }
   llenarResponsiva() {
-    AccesorioResp = {idAcceosrio: ''};
+    AccesorioResp = {idAcceosrio: []};
     console.log(this.tipoResponsiva.value, this.idEquipoResponsiva);
     if (this.tipoResponsiva.value === '' && this.idEquipoResponsiva === '') {
       console.log('No se selecciono tipo de responsiva o un equipo');
@@ -156,12 +162,16 @@ export class AgregarResponsivasComponent implements OnInit {
       this.tiposResponsivas = this.tiposResponsivasEqu;
       this.listaEquiposDisponibles();
       this.ifAccesorio = true;
+      this.selection.clear();
     } else if (tipo === this.tiposRecursoTI[1].nombre) {
       this.tiposResponsivas = this.tiposResponsivasAce;
       this.ifAccesorio = false;
       this.getAllAccesorios();
+      this.selectionEquipos.clear();
+      
     }
   }
+
 
   getAllAccesorios() {
     this.dataSvc.getAllAccesorios().subscribe(
@@ -193,9 +203,31 @@ export class AgregarResponsivasComponent implements OnInit {
   }
   accesorioCheck(idAccesorio: string) {
     this.idAccesorioResponsiva = idAccesorio;
+    console.log(idAccesorio)
   }
   llenarResponsivaAccesorio() {
-    EquipoResp = {idEquipo: ''};
+    let idAccesorios: any[];
+    idAccesorios = [];
+    let aux: any[];
+    aux=[];
+    if (this.selection.selected.length === 0) {
+      console.log('no selecciono un dispositivo');
+      idAccesorios = [];
+    } else {
+      console.log('selecciono al menos uno');
+      for (const accesorio of this.accesorios) {
+        if (this.selection.isSelected(accesorio)) {
+          console.log(accesorio.id_accesorio);
+          idAccesorios.push(accesorio)
+          
+
+        }
+      }
+    }
+    //aux = idAccesorios.filter(item => {item.id_accesorio !== item.id_accesorio})
+
+    console.log(idAccesorios);
+    /* EquipoResp = {idEquipo: ''};
     console.log(this.tipoResponsiva.value, this.idAccesorioResponsiva);
     if (this.tipoResponsiva.value === '' && this.idAccesorioResponsiva === '') {
       console.log('No se selecciono tipo de responsiva o un equipo');
@@ -216,7 +248,7 @@ export class AgregarResponsivasComponent implements OnInit {
           this.mensajeDatosVacios4();
         }
       }
-    }
+    } */
   }
   datosKabec() {
   }

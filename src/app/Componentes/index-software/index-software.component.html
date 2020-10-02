@@ -29,9 +29,7 @@
     <table class="table " [hidden]="ifResultados">
         <thead class="thead-dark">
             <tr>
-                <th class="sticky-top" scope="col">Tipo de Software</th>
                 <th class="sticky-top" scope="col">Nombre Software</th>
-                <th class="sticky-top" scope="col">ID de Equipo</th>
                 <th class="sticky-top" scope="col">Número de Serie</th>
                 <th class="sticky-top" scope="col">Fecha de Vigencia</th>
                 <th class="sticky-top" scope="col">Modificar</th>
@@ -40,9 +38,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let software of softwares">
-                <td>{{software.id_software_tipo.nombre_software_tipo}}</td>
                 <td>{{software.nombre_software}}</td>
-                <td>{{software.id_dequipo.id_dequipo}}</td>
                 <td>{{software.no_serie}}</td>
                 <td>{{software.fecha_licencia}}</td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarSoftware' ]" (click)="editarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>

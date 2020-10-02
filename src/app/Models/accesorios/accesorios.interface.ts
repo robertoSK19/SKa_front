@@ -9,4 +9,5 @@ export interface Accesorios {
     costo: number;
     id_estatus: number;
     id_equipo?: number;
+    descripcion?: string;
 }

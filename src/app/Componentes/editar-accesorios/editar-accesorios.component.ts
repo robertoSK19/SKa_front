@@ -37,6 +37,7 @@ export class EditarAccesoriosComponent implements OnInit {
     serie: '',
     id_estatus: 0,
     costo: 0,
+    descripcion: ''
   };
 
   public accesorioReq: Accesorios = {
@@ -73,6 +74,7 @@ export class EditarAccesoriosComponent implements OnInit {
       serie: ['', Validators.required],
       costo: ['', Validators.required],
       estatus: ['', Validators.required],
+      descripcion: ['', Validators.required]
     });
   }
 
@@ -108,6 +110,7 @@ export class EditarAccesoriosComponent implements OnInit {
             this.datosAccesoriosForm.controls.serie.setValue(this.accesorio.serie);
             this.datosAccesoriosForm.controls.costo.setValue(this.accesorio.costo);
             this.datosAccesoriosForm.controls.estatus.setValue(response.body.id_Estatus.id_estatus);
+            this.datosAccesoriosForm.controls.descripcion.setValue(this.accesorio.descripcion);
             if (response.body.id_Estatus.id_estatus === estatusAsignado) {
               this.ifAsignado = true;
             } else {
@@ -142,6 +145,7 @@ export class EditarAccesoriosComponent implements OnInit {
             this.datosAccesoriosForm.controls.serie.setValue(this.accesorio.serie);
             this.datosAccesoriosForm.controls.costo.setValue(this.accesorio.costo);
             this.datosAccesoriosForm.controls.estatus.setValue(response.body.id_Estatus.id_estatus);
+            this.datosAccesoriosForm.controls.descripcion.setValue(this.accesorio.descripcion);
             if (response.body.id_Estatus.id_estatus === estatusAsignado) {
               this.ifAsignado = true;
             } else {
@@ -172,10 +176,11 @@ export class EditarAccesoriosComponent implements OnInit {
     const serieForm = this.datosAccesoriosForm.controls.serie.value;
     const costoForm = this.datosAccesoriosForm.controls.costo.value;
     const estatusForm = this.datosAccesoriosForm.controls.estatus.value;
+    const descripcionForm = this.datosAccesoriosForm.controls.descripcion.value;
     console.log(estatusForm)
     if (nombreForm !== null && marcaForm !== null && modeloForm !== null && /*productoForm !== null &&*/ hechoEnForm !== null &&
-      serieForm !== null && nombreForm !== '' && marcaForm !== '' && modeloForm !== '' && /* productoForm !== '' &&*/ hechoEnForm !== '' &&
-      serieForm !== '' && costoForm !== null && costoForm !== '') {
+      nombreForm !== '' && marcaForm !== '' && modeloForm !== '' && /* productoForm !== '' &&*/ hechoEnForm !== '' &&
+      costoForm !== null && costoForm !== '') {
         console.log('datos correctos');
         this.accesorioReq = {
           id_accesorio: this.accesorio.id_accesorio,
@@ -187,6 +192,7 @@ export class EditarAccesoriosComponent implements OnInit {
           serie: serieForm,
           id_estatus: estatusForm,
           costo: costoForm,
+          descripcion: descripcionForm
         };
         console.log(this.accesorioReq, estatusForm);
         this.consultaAccesorios.updateAccesorio(this.accesorioReq, estatusForm).subscribe(
@@ -226,6 +232,7 @@ export class EditarAccesoriosComponent implements OnInit {
           this.datosAccesoriosForm.controls.serie.setValue(this.accesorio.serie);
           this.datosAccesoriosForm.controls.costo.setValue(this.accesorio.costo);
           this.datosAccesoriosForm.controls.estatus.setValue(response.body.id_Estatus.id_estatus);
+          this.datosAccesoriosForm.controls.descripcion.setValue(this.accesorio.descripcion);
           this.router.navigate(['IndexAccesorio']);
         } else if (response.status === 204) {
           console.log( 'Accesorio no encontrado');
@@ -251,6 +258,7 @@ export class EditarAccesoriosComponent implements OnInit {
       this.datosAccesoriosForm.controls.serie.enable();
       this.datosAccesoriosForm.controls.costo.enable();
       this.datosAccesoriosForm.controls.estatus.enable();
+      this.datosAccesoriosForm.controls.descripcion.enable();
       this.getEstatus('editar');
     } else if (opcion === 'aceptar') {
       this.router.navigate(['IndexAccesorio']);
@@ -265,6 +273,7 @@ export class EditarAccesoriosComponent implements OnInit {
     this.datosAccesoriosForm.controls.serie.disable();
     this.datosAccesoriosForm.controls.costo.disable();
     this.datosAccesoriosForm.controls.estatus.disable();
+    this.datosAccesoriosForm.controls.descripcion.disable();
   }
   getEstatus(opcion: string) {
     this.consultaAccesorios.getAllEstatus().subscribe(

@@ -41,7 +41,11 @@ export class IndexSoftwareComponent implements OnInit {
 
   usuarioLogeado() {
     datosUser = usuarioRol;
+    console.log(datosUser)
     const token = this.servicioConUser.getToken();
+    const cookieN64 = window.atob(unescape(encodeURIComponent(token)));
+    datosUser = JSON.parse(cookieN64)
+    console.log(token)
     if ( token.length === 0 ) {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
@@ -57,11 +61,13 @@ export class IndexSoftwareComponent implements OnInit {
   getSoftware() {
     this.servicioSoftware.getAllSoftware().subscribe(
       response => {
+        console.log(response)
         if ( response.status === 200 ) {
           this.softwares = response.body;
           this.ifResultados = false;
           this.ifProgreso = true;
         } else {
+          
           console.log('error en el servicio');
           this.ifResultados = false;
           this.ifProgreso = true;
@@ -69,6 +75,7 @@ export class IndexSoftwareComponent implements OnInit {
         }
       },
       error => {
+        console.log(error)
         if (error.status === 500 ) {
           this.ifResultados = false;
           this.ifProgreso = true;

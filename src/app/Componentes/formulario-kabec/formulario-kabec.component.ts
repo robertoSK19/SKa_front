@@ -19,7 +19,7 @@ let datosResponsiva: DatosEquipoResponsiva = {
   idEquipo: '',
 };
 let datosResponsivaAccesorio: DatosAccesorioResponsiva = {
-  idAcceosrio: '',
+  idAcceosrio: [],
 };
 
 export let accesor = [];
@@ -71,6 +71,7 @@ export class FormularioKabecComponent implements OnInit {
   acceModelo = "";
   acceSerie = "";
   acceIdEstatus = "";
+  acceProducto = "";
   datosRespForm: FormGroup;
   datosRespAccForm: FormGroup;
   mostrarAccesorios = false;
@@ -164,13 +165,14 @@ export class FormularioKabecComponent implements OnInit {
     );
   }
 
-  accesoriosCheck(accID: string, accNom: string, accMarca: string, accModelo: string, accSerie: string, accStatusId: string) {
+  accesoriosCheck(accID: string, accNom: string, accMarca: string, accModelo: string, accSerie: string, accStatusId: string, accProducto: string) {
     this.acceId = accID;
     this.acceNom = accNom;
     this.acceMarca = accMarca;
     this.acceModelo = accModelo;
     this.acceSerie = accSerie;
     this.acceIdEstatus = accStatusId;
+    this.acceProducto = accProducto;
 
     let acceId = this.acceId;
     let arrayFiltrado = [];
@@ -181,7 +183,8 @@ export class FormularioKabecComponent implements OnInit {
       accMarca: this.acceMarca,
       accModelo: this.acceModelo,
       accSerie: this.acceSerie,
-      accStatusId: this.acceIdEstatus
+      accStatusId: this.acceIdEstatus,
+      accProducto: this.acceProducto
     }
 
     if (accesor.length !== 0) {
@@ -224,9 +227,9 @@ export class FormularioKabecComponent implements OnInit {
           console.log('no selecciono un dispositivo');
         } else {
           console.log('selecciono al menos uno');
-          for (let accesorio of accesor) {
+         /* for (let accesorio of accesor) {
             console.log(accesorio.accId);
-          }
+          }*/
           datosAsignacion = {
             id_asignacion: '',
             id_dequipo: equipo,
@@ -249,7 +252,7 @@ export class FormularioKabecComponent implements OnInit {
               this.datosDEquipo = response.body;
               datosDEquipoG = response.body;
               if (accion === 'vista') {
-                this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo);
+                this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
               }
             },
             error => {
@@ -269,7 +272,7 @@ export class FormularioKabecComponent implements OnInit {
                         responseA => {
                           if (responseA.status === 200) {
                             console.log('asignacion correcta');
-                            this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo);
+                            this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
                           }
                         },
                         errorA => {
@@ -321,7 +324,7 @@ export class FormularioKabecComponent implements OnInit {
             this.datosDEquipo = response.body;
             datosDEquipoG = response.body;
             if (accion === 'vista') {
-              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco);
+              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
             }
           },
           error => {
@@ -341,7 +344,7 @@ export class FormularioKabecComponent implements OnInit {
                       responseA => {
                         if (responseA.status === 200) {
                           console.log('asignacion correcta');
-                          this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco);
+                          this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
                           this.mensajeResponsivaGenerada();
                           setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
                         } else {
@@ -429,7 +432,7 @@ export class FormularioKabecComponent implements OnInit {
   validarRecurso() {
     datosResponsiva = EquipoResp;
     datosResponsivaAccesorio = AccesorioResp;
-    if (datosResponsivaAccesorio.idAcceosrio !== '') {
+    if (datosResponsivaAccesorio.idAcceosrio.length !== 0) {
       this.ifAccesorio = false;
       this.cargaAccesorio();
     }

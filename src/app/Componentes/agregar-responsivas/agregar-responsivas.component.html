@@ -76,9 +76,10 @@
                 <td>{{equipo.mequipo.modelo}}</td>
                 <td>{{equipo.mequipo.numero_serie}}</td>
                 <td>{{equipo.estatusRecurso.nombre_estatus}}</td>
-                <td><input id="male" type="radio" value="male" name="gender" 
+                <td><input id="radioEquipo" type="radio" value="male" name="radioEquipo" 
                     (click)="$event.stopPropagation()"
                     (change)="$event ? soyCheck(equipo.id_dequipo) : null"
+                    [checked]="selectionEquipos.isSelected(equipo)"
                     >
                 </td>
             </tr>
@@ -123,9 +124,10 @@
                 <td>{{accesorio.modelo}}</td>
                 <td>{{accesorio.serie}}</td>
                 <td>{{accesorio.id_Estatus.nombre_estatus}}</td>
-                <td><input id="male" type="radio" value="male" name="gender" 
+                <td><input id="male" type="checkbox" value="male" name="gender" 
                     (click)="$event.stopPropagation()"
-                    (change)="$event ? accesorioCheck(accesorio.id_accesorio) : null"
+                    (change)="$event ? selection.toggle(accesorio) : null"
+                    [checked]="selection.isSelected(accesorio)"
                     >
                 </td>
             </tr>

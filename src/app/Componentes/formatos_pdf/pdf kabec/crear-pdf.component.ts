@@ -19,7 +19,7 @@ export class CrearPDFComponent implements OnInit {
   ngOnInit() {
   }
 
-  async generarPDF(opcion: string, accesorioEquipo: any, diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string) {
+  async generarPDF(opcion: string, accesorioEquipo: any, diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string, datosCargador?: any) {
     const datosMap = datos;
     const responsable = nombre;
     const costoEquipo = costo;
@@ -31,14 +31,16 @@ export class CrearPDFComponent implements OnInit {
     valorLetra = valorLetra.toUpperCase().trim();
     const discoSolido = SSD;
     console.log(datosAccesorioEquipo);
+    const datosEliminador = datosCargador;
 
     function validarOtros(array) {
+      
       if (array.length > 0 && checkAccesorios === true) {
         datosAccesorioEquipo.map(function (obj) {
           pdf.add(
             [
               new Table([// lista de caracteristicas del eliminador
-                [new Cell(new Txt(obj.accNom).fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
+                [new Cell(new Txt(obj.accProducto).fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
                 new Table([
                   [new Cell(new Txt('Marca:').fontSize(9).end).end,
                   new Cell(new Txt(obj.accMarca).fontSize(9).end).end],
@@ -47,7 +49,7 @@ export class CrearPDFComponent implements OnInit {
                   [new Cell(new Txt('Modelo:').fontSize(9).end).end,
                   new Cell(new Txt(obj.accModelo).fontSize(9).end).end],
                 ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).end,
-                new Cell(new Txt(obj.accId).fontSize(9).alignment('center').relativePosition(0, 15).end).end
+                new Cell(new Txt(obj.accNom).fontSize(9).alignment('center').relativePosition(0, 15).end).end
                 ],
               ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end
             ]
@@ -127,18 +129,18 @@ export class CrearPDFComponent implements OnInit {
         ],
       ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
       new Table([// lista de caracteristicas del eliminador
-        [new Cell(new Txt("Eliminador").fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
+        [ new Cell( new Txt(datosEliminador.nombre_accesorio).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
         new Table([
-          [new Cell(new Txt('Marca:').fontSize(9).end).end,
-          new Cell(new Txt("Dell").fontSize(9).end).end],
-          [new Cell(new Txt('Serie:').fontSize(9).end).end,
-          new Cell(new Txt("LS-09123").fontSize(9).end).end],
-          [new Cell(new Txt('Modelo:').fontSize(9).end).end,
-          new Cell(new Txt("LPS90").fontSize(9).end).end],
-        ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).end,
-        new Cell(new Txt("1").fontSize(9).alignment('center').relativePosition(0, 15).end).end
-        ],
-      ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
+          [new Cell( new Txt('Marca:').fontSize(9).end ).end,
+          new Cell( new Txt(datosEliminador.marca).fontSize(9).end ).end],
+          [ new Cell( new Txt('Serie:').fontSize(9).end ).end,
+          new Cell( new Txt(datosEliminador.serie).fontSize(9).end ).end],
+          [new Cell( new Txt('Modelo:').fontSize(9).end ).end,
+          new Cell( new Txt(datosEliminador.modelo).fontSize(9).end ).end],
+      ]).margin([-5, -3, -5, -3] ).widths([ '25%', '75%' ]).end,
+      new Cell( new Txt(datosEliminador.id_equipo).fontSize(9).alignment('center').relativePosition(0, 15).end ).end
+    ],
+    ]).widths([ '20%', '45%', '35%' ]).margin([0, -1, 0 , 0]).end,
     ]
     );
     validarOtros(accesor);
