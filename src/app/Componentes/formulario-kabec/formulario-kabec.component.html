@@ -92,7 +92,6 @@
                                 (change)="$event  ? accesoriosCheck(accesorio.id_accesorio, accesorio.nombre_accesorio,
                                 accesorio.marca,accesorio.modelo, accesorio.serie, accesorio.id_Estatus.nombre_estatus, accesorio.producto) : null"
                                 [checked]="selection.isSelected(accesorio)"
-                                
                                 >
                             </td>
                         </tr>
@@ -158,7 +157,7 @@
                     <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesorio("vista")'>Vista Previa</button>
                 </div>
                 <div class="col-sm-3 ">
-                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesoio("crear")'>Generar</button>
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesorio("crear")'>Generar</button>
                 </div>
             </div>
             </form>

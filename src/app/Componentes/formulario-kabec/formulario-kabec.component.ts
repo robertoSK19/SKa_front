@@ -401,9 +401,6 @@ export class FormularioKabecComponent implements OnInit {
     } else if (agregarAccesorios === false) {
       this.mostrarAccesorios = false;
       checkAccesorios = false
-      var element = <HTMLInputElement>document.getElementById("male");
-      element.checked = false;
-      accesor = [];
     }
   }
 

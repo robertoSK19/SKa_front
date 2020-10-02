@@ -5,6 +5,7 @@
 }
 .table-wrapper-scroll-y {
     display: block;
+    z-index: 1;
 }
 .mat-spinner::ng-deep circle {
     stroke: #678812;
@@ -16,4 +17,10 @@
     height: 100px;
 }
 
-    
+ td {
+     text-align: center;
+ }   
+
+ th {
+     text-align: center;
+ }
