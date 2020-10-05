@@ -5,6 +5,7 @@ import { Equipos} from '../../Models/equipos/equipos.interface';
 import { DEquipos} from '../../Models/equipos/dequipos.interface';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
+import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ private urlAPIRes = 'http://localhost:8088/responsiva';
 private urlAPIAsig = 'http://localhost:8088/asignacion';
 private urlAPISoft = 'http://localhost:8088/software';
 private urlAPIEstatus = 'http://localhost:8088/estatus';
+private urlApiEquSoft = 'http://localhost:8088/equipoSoftware';
 
   constructor(private http: HttpClient,
     ) { }
@@ -32,6 +34,7 @@ private urlAPIEstatus = 'http://localhost:8088/estatus';
     return this.http.get(url, {observe: 'response'});
   }
   updateEquipo(datosEquipo: Equipos): Observable <any> {
+    console.log(datosEquipo);
     const url = this.urlAPIEq;
     return this.http.put(url, datosEquipo, {observe: 'response'});
   }
@@ -105,5 +108,9 @@ private urlAPIEstatus = 'http://localhost:8088/estatus';
   getAllEstatus(): Observable <any> {
     const url = this.urlAPIEstatus + '/get';
     return this.http.get(url, {observe: 'response'});
+  }
+  crearEquipoSoftware(equipo: number, software: number, equipoSoft: EquipoSoftware): Observable <any> {
+    const url = this.urlApiEquSoft + '/post/' + equipo + ',' + software;
+    return this.http.post(url, equipoSoft, { observe: 'response' });
   }
 }

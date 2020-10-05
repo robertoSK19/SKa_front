@@ -35,6 +35,10 @@ export class AgregarEquiposComponent implements OnInit {
   datosEquipoForm: FormGroup;
   datosAccesorioForm: FormGroup;
   ifLaptop = true;
+  Softwares: any[];
+  softSO: any[];
+  softOf: any[];
+  softExtra: any[];
 
   tiposEquipos: any[] = [
     { nombre: 'LAPTOP'},
@@ -114,6 +118,7 @@ export class AgregarEquiposComponent implements OnInit {
       this.router.navigate(['Login']);
     } else {
       console.log('acceso correcto');
+      this.getSoftware();
     }
   }
   operacionesEquipos(idEquipo?: string) {
@@ -175,7 +180,17 @@ export class AgregarEquiposComponent implements OnInit {
     const vSO = this.datosEquipoForm.controls.tipo_SO.value;
     const mac = this.datosEquipoForm.controls.mac.value;
     const correo = this.datosEquipoForm.controls.correo.value;
-    const regExp    = new RegExp( /[0-9]{1}[0-9]{1}/ );
+    const regExp    = new RegExp( /^\d{0,2}$/ );
+    if (regExp.test(ramE) === false) {
+      this.ifNumero = true;
+      console.log(this.ifNumero, this.ifLongitud);
+    } else if (regExp.test(ramE) === true && ramE.length >= 3) {
+      this.ifLongitud = true;
+      console.log(this.ifNumero, this.ifLongitud);
+    } else if (regExp.test(ramE) === true && ramE.length < 3) {
+      this.ifLongitud = false;
+      this.ifNumero = false;
+    }
     console.log(this.datepipe.transform(date, 'yyyy-MM-dd'));
     if (fecha > this.datepipe.transform(date, 'yyyy-MM-dd')) {
       console.log('fecha errornea');
@@ -189,11 +204,14 @@ export class AgregarEquiposComponent implements OnInit {
       && fecha !== '' && SO !== '' && vSO !== '' && mac !== '' && this.ifFechaCorrecta === true) {
         if (regExp.test(ramE) === false) {
           this.ifNumero = true;
+          console.log(this.ifNumero, this.ifLongitud);
         } else if (regExp.test(ramE) === true && ramE.length >= 3) {
           this.ifLongitud = true;
+          console.log(this.ifNumero, this.ifLongitud);
         } else if (regExp.test(ramE) === true && ramE.length < 3) {
           this.ifLongitud = false;
           this.ifNumero = false;
+          console.log(this.ifNumero, this.ifLongitud);
 
           console.log('Datos correctos');
           this.equipo = {
@@ -324,6 +342,26 @@ export class AgregarEquiposComponent implements OnInit {
     mes = fecha.slice(4, 6);
     anio = fecha.slice(0, 4);
     return dia + '/' + mes + '/' + anio;
+  }
+  getSoftware() {
+    this.dataSvc.getAllSoftware().subscribe(
+      response => {
+        if (response.status === 200) {
+          this.Softwares = response.body;
+          this.softSO = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('windows') === true
+          || so.nombre_software.toLowerCase().includes('mac os') === true);
+          this.softOf = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('office') === true);
+          this.softExtra = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('office') === false
+           || so.nombre_software.toLowerCase().includes('mac os') === false
+           || so.nombre_software.toLowerCase().includes('office') === false );
+        } else {
+          this.mensaje500();
+        }
+      },
+      error => {
+        this.mensaje500();
+      }
+    );
   }
   mensaje200Nuevo() {
     this.toastr.success('Se registro el nuevo equipo', 'Registro Correcto');

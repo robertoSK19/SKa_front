@@ -92,14 +92,6 @@
                         Modelo CMD:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="modelo_cmd" >
                 </div>
-<!--                 <div class="col-sm">
-                    <div class="dropdown">
-                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
-                            Tipo de Computadora:</h6>
-                        <input type="text" class=" form-control form-control-sm" formControlName="tipo_equipo">
-                    </div>
-
-                </div> -->
                 <div class="col-sm" style='font-size:10px'>
                     <div class="dropdown">
                         <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
@@ -119,21 +111,30 @@
             <br>
 
             <div class="row">
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                         Fecha de Fabricación:</h6>
-                    <!-- <input type="text" class=" form-control form-control-sm" formControlName="fecha_fabrica"> -->
-                    <mat-form-field >
-                        <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_fabrica">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Fecha de Fabricación:</h6>
+                        <mat-form-field >
+                            <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_fabrica">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                         Nombre del Sistema Operativo:
-                    </h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="nombre_SO" >
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Nombre del Sistema Operativo:
+                        </h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select  formControlName="nombre_SO" style='font-size:14px'>
+                                <mat-option *ngFor="let software of softSO" [value]="software.nombre_software" >
+                                    {{software.nombre_software}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                     </div>
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -170,8 +171,6 @@
                     <input type="text" class=" form-control form-control-sm" formControlName="correo" [value]="equipo.email_gnp">
                 </div>
                 <div class="col-sm">
-                    
-                    
                 </div>
                 <div class="col-sm">
                 </div>
@@ -179,6 +178,33 @@
 
             <br>
 
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                        ¿Se actualizó el software de Ofimática?:
+                    <input class="row-sm checkBox" type="checkbox" formControlName="checkOfimatica" (change)="cambioOfimatica()">
+                    </h6>
+                </div>
+            </div>
+            <div class="row" [hidden]="ifCambioOfi">
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Nombre de la Ofimática:
+                        </h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select  formControlName="nombre_OF" style='font-size:14px'>
+                                <mat-option *ngFor="let softwareOf of softOf" [value]="softwareOf" >
+                                    {{softwareOf.nombre_software}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                     </div>
+                </div>
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+            </div>
             <div class="row">
                 <div class="col-sm-8">
                 </div>
