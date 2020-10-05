@@ -18,6 +18,7 @@ private urlAPIRes = 'http://localhost:8088/responsiva';
 private urlAPIAsig = 'http://localhost:8088/asignacion';
 private urlAPISoft = 'http://localhost:8088/software';
 private urlAPIEstatus = 'http://localhost:8088/estatus';
+private urlAPIHist = 'http://localhost:8088/historico';
 
   constructor(private http: HttpClient,
     ) { }
@@ -104,6 +105,15 @@ private urlAPIEstatus = 'http://localhost:8088/estatus';
   }
   getAllEstatus(): Observable <any> {
     const url = this.urlAPIEstatus + '/get';
+    return this.http.get(url, {observe: 'response'});
+  }
+  getAllHistorico(): Observable <any> {
+    const url = this.urlAPIHist + '/get';
+    return this.http.get(url, {observe: 'response'});
+  }
+
+  getHistorico(): Observable <any> {
+    const url = this.urlAPIHist + '/get/206';
     return this.http.get(url, {observe: 'response'});
   }
 }
