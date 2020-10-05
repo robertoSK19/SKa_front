@@ -1,29 +1,71 @@
 <h1 mat-dialog-title style="color:black; font-size: 40px; text-align: center;">Historico</h1>
 <div mat-dialog-content>
   <div class="table-wrapper-scroll-y my-custom-scrollbar">
-
     <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th class="sticky-top" scope="col">ID</th>
-                <th class="sticky-top" scope="col">Nombre del Equipo</th>
-                <th class="sticky-top" scope="col">Marca</th>
-                <th class="sticky-top" scope="col">Modelo</th>
-                <th class="sticky-top" scope="col">No. Serie</th>
-                <th class="sticky-top" scope="col">Procesador</th>
-                <th class="sticky-top" scope="col">RAM</th>
-                <th class="sticky-top" scope="col">Disco Duro</th>
-                <th class="sticky-top" scope="col">Tipo de Computadora</th>
-                <th class="sticky-top" scope="col">Fecha Fabricación</th>
-                <th class="sticky-top" scope="col">Nombre Sistema Operativo</th>
-                <th class="sticky-top" scope="col">Direccion Mac</th>
-                <th class="sticky-top" scope="col">Estatus</th>
-            </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
+      <thead class="thead-dark">
+        <tr>
+          <th class="sticky-top" scope="col">ID</th>
+          <th class="sticky-top" scope="col">Nombre del Equipo</th>
+          <th class="sticky-top" scope="col">Marca</th>
+          <th class="sticky-top" scope="col">Modelo</th>
+          <th class="sticky-top" scope="col">No. Serie</th>
+          <th class="sticky-top" scope="col">Procesador</th>
+          <th class="sticky-top" scope="col">RAM</th>
+          <th class="sticky-top" scope="col">Disco Duro</th>
+          <th class="sticky-top" scope="col">Tipo de Computadora</th>
+          <th class="sticky-top" scope="col">Fecha Fabricación</th>
+          <th class="sticky-top" scope="col">Sistema Operativo</th>
+          <th class="sticky-top" scope="col">Software Adicional</th>
+          <th class="sticky-top" scope="col">Direccion Mac</th>
+          <th class="sticky-top" scope="col">No. de Serie CMD</th>
+          <th class="sticky-top" scope="col">Modelo de CMD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dato of historico">
+          <td>{{dato.id_equipo}}</td>
+          <td>{{dato.nombre_equipo}}</td>
+          <td>{{dato.marca}}</td>
+          <td>{{dato.modelo}}</td>
+          <td>{{dato.numero_serie}}</td>
+          <td>{{dato.procesador}}</td>
+          <td>{{dato.ram}}</td>
+          <td>{{dato.disco_duro}}</td>
+          <td>{{dato.tipo_computadora}}</td>
+          <td>{{dato.fecha_fabricacion}}</td>
+          <td>{{dato.nombre_sistema_operativo}}</td>
+          <td><button value="ver" (click)="mostrarTabla()" type="button">Ver</button></td>
+          <td>{{dato.direccion_mac}}</td>
+          <td>{{dato.numero_serie_cmd}}</td>
+          <td>{{dato.modelo_equipo_cmd}}</td>
+        </tr>
+      </tbody>
     </table>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-</div>
+  </div>
+
+  <br>
+
+  <div>
+    <table class="invisible" id="tabla">
+      <thead style="background:#343a40;">
+        <tr>
+          <th class="sticky-top" scope="col" style="width: 20%; height: 40%;">ID</th>
+          <th class="sticky-top" scope="col" style="width: 40%; height: 40%;">Nombre de Software</th>
+          <th class="sticky-top" scope="col" style="width: 60%; height: 40%;">Numero de Serie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Oficce</td>
+          <td>1231245576879</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <br>
+  
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cerrar</button>
+  </div>
