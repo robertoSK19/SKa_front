@@ -217,8 +217,8 @@ export class FormularioKabecComponent implements OnInit {
     const costoNum = costoEquipo.replace(',', '');
     const comentarios = this.datosRespForm.controls.comentarios.value;
     const disco = this.datosRespForm.controls.discoDS.value;
-
-    if (nombre === '' && costoEquipo === '') {
+    console.log('_'+costoEquipo+'_')
+    if (nombre === '' && costoEquipo.length === 0) {
       console.log('no lleno todos los datos');
       this.mensajeDatosVacios();
     } else {

@@ -121,18 +121,24 @@ export class LoginComponent implements OnInit {
           console.log('codigo 500', error.body);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
+          this.loginForm.controls.correoUser.reset('');
+          this.loginForm.controls.contraseña.reset(''); 
           this.mensaje500();
         }
         if (error.status === 504) {
           console.log('codigo 504', error.body);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
+          this.loginForm.controls.correoUser.reset('');
+          this.loginForm.controls.contraseña.reset('');
           this.mensaje504();
         }
         if (error.status === 0) {
           console.log('codigo 0', error.body);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
+          this.loginForm.controls.correoUser.reset('');
+          this.loginForm.controls.contraseña.reset('');
           this.mensaje0();
         }
       }
