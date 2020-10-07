@@ -23,7 +23,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let dato of historico">
-          <td>{{dato.id_equipo}}</td>
+          <td id="historico">{{dato.id_historico}}</td>
           <td>{{dato.nombre_equipo}}</td>
           <td>{{dato.marca}}</td>
           <td>{{dato.modelo}}</td>
@@ -55,7 +55,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr  *ngFor="let dato of historico">
           <td>1</td>
           <td>Oficce</td>
           <td>1231245576879</td>

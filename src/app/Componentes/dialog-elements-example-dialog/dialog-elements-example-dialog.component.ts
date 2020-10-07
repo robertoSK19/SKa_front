@@ -12,6 +12,7 @@ export class DialogElementsExampleDialog implements OnInit{
   historico: any[];
   historicoBack: any[];
 
+
   constructor(
     private dataSvc: DataService,
     private toastr: ToastrService,
@@ -34,6 +35,7 @@ export class DialogElementsExampleDialog implements OnInit{
   
 
   mostrarTabla() {
+  
     let a = document.getElementById('tabla');
 
     if(a.className === 'invisible'){
