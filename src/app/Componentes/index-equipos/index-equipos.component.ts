@@ -15,6 +15,8 @@ let datosUser: RolesUser = {
   id: 0,
 };
 
+export let idValor: string;
+
 export interface DatosEquipo {
   idEquipo: string;
   operacion: string;
@@ -72,8 +74,9 @@ export class IndexEquiposComponent implements OnInit {
   }
 
 
-  openDialog () {
-    this.dialog.open(DialogElementsExampleDialog);
+  openDialog (valorId: string) {
+    this.dialog.open(DialogElementsExampleDialog);    
+    idValor = valorId;
   }
 
   usuarioLogeado() {

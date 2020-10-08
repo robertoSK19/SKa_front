@@ -34,6 +34,10 @@ private urlAPIHist = 'http://localhost:8088/historico';
     const url = this.urlAPIEq + '/get/' + idEquipo;
     return this.http.get(url, {observe: 'response'});
   }
+  getAllEquipo(): Observable <any> {
+    const url = this.urlAPIEq + '/get';
+    return this.http.get(url, {observe: 'response'});
+  }
   updateEquipo(datosEquipo: Equipos): Observable <any> {
     console.log(datosEquipo);
     const url = this.urlAPIEq;

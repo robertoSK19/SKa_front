@@ -55,7 +55,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let equipo of equipos">
-                <td>{{equipo.id_dequipo}}</td>
+                <td>{{equipo.mequipo.id_dequipo}}</td>
                 <td>{{equipo.mequipo.nombre_equipo}}</td>
                 <td>{{equipo.mequipo.marca}}</td>
                 <td>{{equipo.mequipo.modelo}}</td>
@@ -66,7 +66,7 @@
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'
                     [hidden]="equipo.estatusRecurso.id_estatus===idAsignado"></i>
                 </td>
-                <td><button mat-button (click)="openDialog()" class="fas fa-eye" style='font-size:20px;color:purple'></button></td>
+                <td><button mat-button (click)="openDialog(equipo.mequipo.id_equipo)" class="fas fa-eye" style='font-size:20px;color:purple'></button></td>
             </tr>
 
         </tbody>

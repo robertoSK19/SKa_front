@@ -34,7 +34,7 @@
           <td>{{dato.tipo_computadora}}</td>
           <td>{{dato.fecha_fabricacion}}</td>
           <td>{{dato.nombre_sistema_operativo}}</td>
-          <td><button value="ver" (click)="mostrarTabla()" type="button">Ver</button></td>
+          <td><button value="ver" (click)="mostrarTabla(dato.id_historico)" type="button">Ver</button></td>
           <td>{{dato.direccion_mac}}</td>
           <td>{{dato.numero_serie_cmd}}</td>
           <td>{{dato.modelo_equipo_cmd}}</td>
@@ -49,16 +49,24 @@
     <table class="invisible" id="tabla">
       <thead style="background:#343a40;">
         <tr>
-          <th class="sticky-top" scope="col" style="width: 20%; height: 40%;">ID</th>
-          <th class="sticky-top" scope="col" style="width: 40%; height: 40%;">Nombre de Software</th>
-          <th class="sticky-top" scope="col" style="width: 60%; height: 40%;">Numero de Serie</th>
+          <th class="sticky-top" scope="col" style="width: 2%; height: 40%;">ID</th>
+          <th class="sticky-top" scope="col" style="width: 20%; height: 40%;">Nombre de Software</th>
+          <th class="sticky-top" scope="col" style="width: 20%; height: 40%;">Numero de Serie</th>
+          <th class="sticky-top" scope="col" style="width: 15%; height: 40%;">Tipo de Software</th>
+          <th class="sticky-top" scope="col" style="width: 15%; height: 40%;">Tipo de Licencia</th>
+          <th class="sticky-top" scope="col" style="width: 15%; height: 40%;">Vigenncia Inicial</th>
+          <th class="sticky-top" scope="col" style="width: 15%; height: 40%;">Vigenncia Termino</th>
         </tr>
       </thead>
       <tbody>
-        <tr  *ngFor="let dato of historico">
-          <td>1</td>
-          <td>Oficce</td>
-          <td>1231245576879</td>
+        <tr *ngFor="let dato of software">
+          <td>{{dato.id_software}}</td>
+          <td>{{dato.nombre_software}}</td>
+          <td>{{dato.no_serie}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>

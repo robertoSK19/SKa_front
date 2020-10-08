@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { idValor } from '../index-equipos/index-equipos.component';
 import { DataService } from '../list/data.service';
 
 
@@ -10,7 +11,7 @@ import { DataService } from '../list/data.service';
 })
 export class DialogElementsExampleDialog implements OnInit{
   historico: any[];
-  historicoBack: any[];
+  software: any[];
 
 
   constructor(
@@ -19,12 +20,16 @@ export class DialogElementsExampleDialog implements OnInit{
   ){}
 
   ngOnInit(){
-    this.dataSvc.getAllHistorico().subscribe(
+    let recibeResp: Array<any> = [];
+    let guarda: Array<any>;
+    this.dataSvc.getEquipo(idValor).subscribe(
       response => {
-        console.log(response.body);
-        
-        this.historico = response.body;
-        this.historicoBack = response.body;
+        recibeResp[0] = response.body;
+
+        recibeResp.map(guardo => {
+           guarda = guardo.historico;        
+        })
+        this.historico = guarda;       
       },
       error => {
         console.log(error);
@@ -32,11 +37,26 @@ export class DialogElementsExampleDialog implements OnInit{
       }
     );
   }
-  
 
-  mostrarTabla() {
-  
+
+  mostrarTabla(historicoId:string) {
     let a = document.getElementById('tabla');
+    let recibeResp: Array<any> = [];
+    let guarda: Array<any>;
+    this.dataSvc.getHistorico(historicoId).subscribe(
+      response => {
+        recibeResp[0] = response.body;
+
+        recibeResp.map(guardo => {
+          guarda = guardo.software;        
+       })
+       this.software = guarda;       
+      },
+      error => {
+        console.log(error);
+        this.mensaje500();
+      }
+    );   
 
     if(a.className === 'invisible'){
       a.className = 'visible';
