@@ -46,6 +46,7 @@ import { EditarSoftwareComponent } from './Componentes/editar-software/editar-so
 import { FormularioSuraComponent } from './Componentes/formulario-sura/formulario-sura.component';
 import { CrearPDFSuraComponent } from './Componentes/formatos_pdf/crear-pdfsura/crear-pdfsura.component';
 import { DialogElementsExampleDialog } from './Componentes/dialog-elements-example-dialog/dialog-elements-example-dialog.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 // Set the fonts to use
@@ -94,6 +95,7 @@ PdfMakeWrapper.setFonts(pdfFonts);
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatRadioModule,
     MatCheckboxModule,
     ToastrModule.forRoot(), // ToastrModule added
     MatProgressSpinnerModule,

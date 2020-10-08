@@ -31,27 +31,23 @@
             </mat-select>
         </mat-form-field>
         <div class="invisible" id="discos">
-            <td>
-                <p>SSD </p>
-            </td>
-            <td><input id="radioAccesorio" type="radio" value="male" name="ssd" style="margin-left: 10px;"
-                    (click)="$event.stopPropagation()"></td>
-            <td>
-                <p style="margin-left: 20px;">HDD</p>
-            </td>
-            <td><input id="radioAccesorio" type="radio" value="male" name="hdd" style="margin-left: 10px;"
-                    (click)="$event.stopPropagation()"></td>
+            <mat-radio-group aria-label="Select an option">
+                <mat-radio-button value="ssd">SSD</mat-radio-button>
+                <mat-radio-button value="hdd">HDD</mat-radio-button>
+            </mat-radio-group>
         </div>
+
         <div class="invisible" id="ram">
             <td>
-                <div style="margin-left: 10px; width: 200%; margin-bottom: 20px;">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                <div>
+                    <h6 style="width: 200px; margin-left: 10;"> <i class='fas fa-asterisk'
+                            style='font-size:10px;color:red'></i>
                         Tipo de Ranura:</h6>
                     <input type="text" class=" form-control form-control-sm">
                 </div>
             </td>
             <td>
-                <div class="col-sm" style="margin-left: 90px;">
+                <div class="col-sm" style="margin-left: 60px;">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Bus:</h6>
                     <input type="text" class=" form-control form-control-sm">

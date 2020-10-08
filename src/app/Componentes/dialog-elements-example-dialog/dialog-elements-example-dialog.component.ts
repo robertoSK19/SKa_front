@@ -46,9 +46,10 @@ export class DialogElementsExampleDialog implements OnInit{
     this.dataSvc.getHistorico(historicoId).subscribe(
       response => {
         recibeResp[0] = response.body;
-
+        
         recibeResp.map(guardo => {
-          guarda = guardo.software;        
+          guarda = guardo.software; 
+          console.log(guarda);      
        })
        this.software = guarda;       
       },
@@ -56,12 +57,12 @@ export class DialogElementsExampleDialog implements OnInit{
         console.log(error);
         this.mensaje500();
       }
-    );   
+    );
 
-    if(a.className === 'invisible'){
-      a.className = 'visible';
+    if(a.className === 'invisible table'){
+      a.className = 'visible table';
     }else{
-      a.className = 'visible';
+      a.className = 'visible table';
     }
   }
 

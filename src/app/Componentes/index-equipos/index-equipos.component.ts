@@ -61,6 +61,7 @@ export class IndexEquiposComponent implements OnInit {
       response => {
         this.equipos = response.body;
         this.equiposBack = response.body;
+        console.log(this.equipos);        
         this.ifResultados = false;
         this.ifProgreso = true;
       },

@@ -123,7 +123,7 @@ private urlAPIHist = 'http://localhost:8088/historico';
     return this.http.get(url, {observe: 'response'});
   }
 
-  getHistorico(id: number): Observable <any> {
+  getHistorico(id: string): Observable <any> {
     const url = this.urlAPIHist + '/get/' +id;
     return this.http.get(url, {observe: 'response'});
   }
