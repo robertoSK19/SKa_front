@@ -5,3 +5,14 @@
 .table-wrapper-scroll-y {
     display: block;
 }
+
+.visible{
+    display:block;
+}
+.invisible{
+    display:none
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }

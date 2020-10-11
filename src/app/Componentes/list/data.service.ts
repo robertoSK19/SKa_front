@@ -32,7 +32,11 @@ private urlAPIHist = 'http://localhost:8088/historico';
     // return this.http.get<Equipos[]>(url);
   }
   getEquipo(idEquipo: string): Observable <any> {
-    const url = this.urlAPIEq + '?id=' + idEquipo;
+    const url = this.urlAPIEq + '/get/' + idEquipo;
+    return this.http.get(url, {observe: 'response'});
+  }
+  getAllEquipo(): Observable <any> {
+    const url = this.urlAPIEq + '/get';
     return this.http.get(url, {observe: 'response'});
   }
   updateEquipo(datosEquipo: Equipos): Observable <any> {
@@ -120,8 +124,8 @@ private urlAPIHist = 'http://localhost:8088/historico';
     return this.http.get(url, {observe: 'response'});
   }
 
-  getHistorico(): Observable <any> {
-    const url = this.urlAPIHist + '/get/206';
+  getHistorico(id: string): Observable <any> {
+    const url = this.urlAPIHist + '/get/' +id;
     return this.http.get(url, {observe: 'response'});
   }
   crearSoftware(software: Software): Observable <any> {

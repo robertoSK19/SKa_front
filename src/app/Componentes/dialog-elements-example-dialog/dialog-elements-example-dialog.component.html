@@ -10,9 +10,12 @@
           <th class="sticky-top" scope="col">Modelo</th>
           <th class="sticky-top" scope="col">No. Serie</th>
           <th class="sticky-top" scope="col">Procesador</th>
+          <th class="sticky-top" scope="col">Generación de Procesador</th>
           <th class="sticky-top" scope="col">RAM</th>
           <th class="sticky-top" scope="col">Disco Duro</th>
+          <th class="sticky-top" scope="col">Tipo de Disco Duro</th>
           <th class="sticky-top" scope="col">Tipo de Computadora</th>
+          <th class="sticky-top" scope="col">Tamaño de Pantalla</th>
           <th class="sticky-top" scope="col">Fecha Fabricación</th>
           <th class="sticky-top" scope="col">Sistema Operativo</th>
           <th class="sticky-top" scope="col">Software Adicional</th>
@@ -23,18 +26,21 @@
       </thead>
       <tbody>
         <tr *ngFor="let dato of historico">
-          <td>{{dato.id_equipo}}</td>
+          <td id="historico">{{dato.id_historico}}</td>
           <td>{{dato.nombre_equipo}}</td>
           <td>{{dato.marca}}</td>
           <td>{{dato.modelo}}</td>
           <td>{{dato.numero_serie}}</td>
           <td>{{dato.procesador}}</td>
+          <td>{{dato.generacion_procesador}}</td>
           <td>{{dato.ram}}</td>
           <td>{{dato.disco_duro}}</td>
+          <td>{{dato.tipo_disco_duro}}</td>
           <td>{{dato.tipo_computadora}}</td>
+          <td>{{dato.tamano_pantalla}}</td>
           <td>{{dato.fecha_fabricacion}}</td>
           <td>{{dato.nombre_sistema_operativo}}</td>
-          <td><button value="ver" (click)="mostrarTabla()" type="button">Ver</button></td>
+          <td><i class='fas fa-eye' value="ver" (click)="mostrarTabla(dato.id_historico)" style='font-size:20px;color:purple'></i></td>
           <td>{{dato.direccion_mac}}</td>
           <td>{{dato.numero_serie_cmd}}</td>
           <td>{{dato.modelo_equipo_cmd}}</td>
@@ -46,19 +52,29 @@
   <br>
 
   <div>
-    <table class="invisible" id="tabla">
+    <table class="invisible table" id="tabla">
       <thead style="background:#343a40;">
         <tr>
-          <th class="sticky-top" scope="col" style="width: 20%; height: 40%;">ID</th>
-          <th class="sticky-top" scope="col" style="width: 40%; height: 40%;">Nombre de Software</th>
-          <th class="sticky-top" scope="col" style="width: 60%; height: 40%;">Numero de Serie</th>
+          <th class="sticky-top" scope="col" style="height: 80%;">ID</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Nombre de Software</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Numero de Serie</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Tipo de Software</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Tipo de Licencia</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Licencia Software</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Vigencia Inicial</th>
+          <th class="sticky-top" scope="col" style="height: 40%;">Vigencia Termino</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Oficce</td>
-          <td>1231245576879</td>
+        <tr *ngFor="let dato of software">
+          <td>{{dato.id_software}}</td>
+          <td>{{dato.nombre_software}}</td>
+          <td>{{dato.no_serie}}</td>
+          <td>{{dato.tipo_software}}</td>
+          <td>{{dato.tipo_licencia}}</td>
+          <td>{{dato.licencia_software}}</td>
+          <td>{{dato.vigencia_inicial}}</td>
+          <td>{{dato.vigencia_final}}</td>
         </tr>
       </tbody>
     </table>

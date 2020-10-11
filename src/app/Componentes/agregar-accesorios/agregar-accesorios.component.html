@@ -18,89 +18,136 @@
 <!-- <br> -->
 
 <div class="card">
+    <div class="col-sm-3">
+        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+            Tipo de Recurso:</h6>
+        <mat-form-field class="col-med-7">
+            <mat-label>Seleccionar Recurso</mat-label>
+            <mat-select style='font-size:14px' [formControl]="tipoAccesorio"
+                (selectionChange)="tipoAccesorioSelect($event.value)">
+                <mat-option *ngFor="let recurso of tipoAccesorioE" [value]="recurso.nombre">
+                    {{recurso.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="invisible" id="discos">
+            <mat-radio-group aria-label="Select an option">
+                <mat-radio-button value="ssd">SSD</mat-radio-button>
+                <mat-radio-button value="hdd">HDD</mat-radio-button>
+            </mat-radio-group>
+        </div>
 
-    <div class="card-body">
+        <div class="invisible" id="ram">
+            <td>
+                <div>
+                    <h6 style="width: 200px; margin-left: 10;"> <i class='fas fa-asterisk'
+                            style='font-size:10px;color:red'></i>
+                        Tipo de Ranura:</h6>
+                    <input type="text" class=" form-control form-control-sm">
+                </div>
+            </td>
+            <td>
+                <div class="col-sm" style="margin-left: 60px;">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Bus:</h6>
+                    <input type="text" class=" form-control form-control-sm">
+                </div>
+            </td>
+        </div>
+    </div>
+
+
+    <div class="invisible card-body" id="otros">
         <blockquote class="blockquote mb-0">
             <form [formGroup]="datosAccesorioForm">
 
-            <div class="row">
-                <div class="col-sm">
+                <div class="row">
+                    <div class="invisible col-sm" id="nombre">
 
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Nombe del Accesorio:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="nombre_accesorio" >
-                </div>
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Nombe del Accesorio:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="nombre_accesorio">
+                    </div>
 
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Marca:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="marca">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Modelo:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="modelo">
-                </div>
-                <div class="col-sm">
-                    <!-- <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                    <div class=" invisible col-sm" id="capacidad">
+
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Capacidad:</h6>
+                        <input type="text" class=" form-control form-control-sm">
+                    </div>
+
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Marca:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="marca">
+                    </div>
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Modelo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="modelo">
+                    </div>
+                    <div class="col-sm">
+                        <!-- <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Producto:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="producto"> -->
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Costo:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="costo">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Costo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="costo">
+                    </div>
                 </div>
-            </div>
 
-            <br>
+                <br>
 
-            <div class="row">
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Hecho en:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="hecho_en">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
-                        Número de Serie:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="serie">
-                </div>
-                <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
-                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
-                        Descripcion:</h6>
-                    <textarea type="text" class=" form-control form-control-sm" style="width: 100%; height: 40%; resize: none;" formControlName="descripcion">
+                <div class="row">
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Hecho en:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="hecho_en">
+                    </div>
+                    <div class="col-sm">
+                        <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                            Número de Serie:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="serie">
+                    </div>
+                    <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
+                        <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                            Descripcion:</h6>
+                        <textarea type="text" class=" form-control form-control-sm"
+                            style="width: 100%; height: 40%; resize: none;" formControlName="descripcion">
                     </textarea>
-                </div>
-
-            </div>
-
-            <br>
-
-            <div class="row">
-                <div class="col-sm">
-                    <h6></h6>
-                </div>
-            </div>
-
-            <br>
-            <div class="row">
-                <div class="col-sm">
-                    <h6></h6>
-                </div>
-            </div>
-            
-            <br>
-
-            <div class="row">
-                <div class="col-sm-8">
+                    </div>
 
                 </div>
-                <div class="col-sm-2 ">
-                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <h6></h6>
+                    </div>
                 </div>
-                <div class="col-sm-2 ">
-                    <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
+
+                <br>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6></h6>
+                    </div>
                 </div>
-            </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-sm-8">
+
+                    </div>
+                    <div class="col-lm-2 ">
+                        <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+                    </div>
+                    <div class="col-sm-2 ">
+                        <button type="button" class="btn btn-success btn-block"
+                            (click)='guardarDatos()'>Guardar</button>
+                    </div>
+                </div>
             </form>
         </blockquote>
     </div>

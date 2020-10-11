@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { usuarioRol, RolesUser } from '../login/login.component';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { DataService } from '../list/data.service';
 import { ToastrService } from 'ngx-toastr';
+import { SelectionModel } from '@angular/cdk/collections';
 
 const estatusId = 2;
 let datosUser: RolesUser = {
@@ -23,6 +24,7 @@ let datosUser: RolesUser = {
 export class AgregarAccesoriosComponent implements OnInit {
 
   datosAccesorioForm: FormGroup;
+  tipoAccesorio: FormControl;
 
   public accesorio: Accesorios = {
     id_accesorio: '',
@@ -36,6 +38,13 @@ export class AgregarAccesoriosComponent implements OnInit {
     costo: 0,
     descripcion: ''
   };
+
+
+  tipoAccesorioE: any[] = [
+    { nombre: 'RAM' },
+    { nombre: 'Disco Duro' },
+    { nombre: 'Otro' }
+  ];
 
   constructor(
     private router: Router,
@@ -57,19 +66,51 @@ export class AgregarAccesoriosComponent implements OnInit {
       costo: ['', Validators.required],
       descripcion: ['', Validators.required]
     });
-
+    this.tipoAccesorio = new FormControl('')
   }
 
   usuarioLogeado() {
     datosUser = usuarioRol;
     const token = this.servicioConUser.getToken();
-    if ( token.length === 0) {
+    if (token.length === 0) {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
     } else {
       console.log('acceso correcto');
     }
   }
+
+  tipoAccesorioSelect(tipo: string) {
+    let a = document.getElementById('discos');
+    let b = document.getElementById('ram');
+    let c = document.getElementById('otros');
+    let d = document.getElementById('nombre');
+    let e = document.getElementById('capacidad')
+
+    if (tipo === this.tipoAccesorioE[0].nombre) {
+      console.log(this.tipoAccesorioE[0]);
+      a.className = 'invisible';
+      b.className = 'visible';
+      c.className = 'visible card-body';
+      d.className = 'invisible col-sm';
+      e.className = 'visible col-sm';
+    } else if (tipo === this.tipoAccesorioE[1].nombre) {
+      console.log(this.tipoAccesorioE[1]);
+      a.className = 'visible';
+      b.className = 'invisible';
+      c.className = 'visible card-body';
+      d.className = 'invisible col-sm';
+      e.className = 'visible col-sm';
+    } else if (tipo === this.tipoAccesorioE[2].nombre) {
+      console.log(this.tipoAccesorioE[2]);
+      a.className = 'invisible';
+      b.className = 'invisible';
+      c.className = 'visible card-body';
+      d.className = 'visible col-sm';
+      e.className = 'invisible col-sm';
+    }
+  }
+
   guardarDatos() {
     const nombreForm = this.datosAccesorioForm.controls.nombre_accesorio.value;
     const marcaForm = this.datosAccesorioForm.controls.marca.value;
@@ -81,7 +122,7 @@ export class AgregarAccesoriosComponent implements OnInit {
     const descripcionForm = this.datosAccesorioForm.controls.descripcion.value;
 
     if (nombreForm !== '' && marcaForm !== '' && modeloForm !== '' /* && productoForm !== ''*/ && hechoEnForm !== '' &&
-    costoForm !== '') {
+      costoForm !== '') {
       console.log('Datos completos');
       this.accesorio = {
         id_accesorio: '',
@@ -99,10 +140,10 @@ export class AgregarAccesoriosComponent implements OnInit {
       this.servicioAccesorio.crearAccesorio(this.accesorio, estatusId).subscribe(
         response => {
           console.log(response);
-          if (response.status === 200 ) {
+          if (response.status === 200) {
             console.log('Registro Correcto');
             this.mensaje200Nuevo();
-            setTimeout( () => {this.router.navigate(['IndexAccesorio']); }, 3000 );
+            setTimeout(() => { this.router.navigate(['IndexAccesorio']); }, 3000);
           } else {
             console.log('Error en el registro');
             this.mensaje204Nuevo();
@@ -120,6 +161,11 @@ export class AgregarAccesoriosComponent implements OnInit {
       this.mensajeDatosVacios();
     }
   }
+
+  soyCheck(accesorios: string) {
+    let accesorio = accesorios;
+  }
+
 
   cancelar() {
     this.router.navigate(['IndexAccesorio']);
