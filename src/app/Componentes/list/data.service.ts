@@ -6,6 +6,7 @@ import { DEquipos} from '../../Models/equipos/dequipos.interface';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
+import { Software } from 'src/app/Models/Software/software.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -122,5 +123,13 @@ private urlAPIHist = 'http://localhost:8088/historico';
   getHistorico(): Observable <any> {
     const url = this.urlAPIHist + '/get/206';
     return this.http.get(url, {observe: 'response'});
+  }
+  crearSoftware(software: Software): Observable <any> {
+    const url = this.urlAPISoft + '/post';
+    return this.http.post(url, software, { observe: 'response'});
+  }
+  getSoftware(idsoftwre: number): Observable <any> {
+    const url = this.urlAPISoft + '/get/' + idsoftwre;
+    return this.http.get(url, {observe : 'response'});
   }
 }

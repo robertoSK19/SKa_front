@@ -43,13 +43,14 @@ export class IndexSoftwareComponent implements OnInit {
     datosUser = usuarioRol;
     console.log(datosUser)
     const token = this.servicioConUser.getToken();
-    const cookieN64 = window.atob(unescape(encodeURIComponent(token)));
-    datosUser = JSON.parse(cookieN64)
+    
     console.log(token)
     if ( token.length === 0 ) {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
     } else {
+      const cookieN64 = window.atob(unescape(encodeURIComponent(token)));
+      datosUser = JSON.parse(cookieN64);
       if (datosUser.rol === 'Admin') {
         console.log('acceso correcto');
         this.getSoftware();

@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.loginForm.controls.correoUser.reset('');
-          this.loginForm.controls.contraseña.reset(''); 
+          this.loginForm.controls.contraseña.reset('');
           this.mensaje500();
         }
         if (error.status === 504) {

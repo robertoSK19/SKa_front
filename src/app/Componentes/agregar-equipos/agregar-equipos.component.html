@@ -68,14 +68,8 @@
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        RAM:</h6>
-                    <input type="text" id="ram" class=" form-control form-control-sm" formControlName="ram" placeholder="Ejemplo: 8">
-                    <mat-error *ngIf="ifNumero" style='font-size:10px'>
-                        Campo Numerico 
-                    </mat-error>
-                    <mat-error *ngIf="ifLongitud" style='font-size:10px'>
-                        Máximo dos dígitos
-                    </mat-error>
+                        Generación del Procesador:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="generacion_procesador">
                 </div>
             </div>
 
@@ -87,6 +81,19 @@
                         Disco Duro:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="disco_duro" placeholder="Ejemplo: 500 GB">
                 </div>
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Tipo de Disco Duro:</h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select  formControlName="tipo_disco_duro" style='font-size:14px'>
+                                <mat-option *ngFor="let tipoDD of tiposDiscos" [value]="tipoDD.tipo" >
+                                    {{tipoDD.tipo}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Modelo:</h6>
@@ -96,27 +103,6 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Modelo CMD:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="modelo_cmd">
-                </div>
-                <div class="col-sm" style='font-size:10px'>
-                    
-                    <!-- <div class="dropdown">
-                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
-                            Tipo de Computadora:</h6>
-                        <select name="marcaauto" class="btn btn-block btn-sm btn-info dropdown-toggle" *ngFor="let tipo of tiposEquipos" formControlName="tipo_equipo">
-                            <option value="">Elige una opción</option>
-                            <option>LAPTOP</option>
-
-                        </select>
-                    </div> -->
-                    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
-                        Tipo de Computadora:</h6>
-                    <mat-form-field class="col-sm">
-                        <mat-select  formControlName="tipo_equipo" style='font-size:14px' (selectionChange)="tipoComputadora($event.value)" >
-                            <mat-option *ngFor="let tipo of tiposEquipos" [value]="tipo.nombre" >
-                                {{tipo.nombre}}
-                            </mat-option>
-                        </mat-select>
-                     </mat-form-field>
                 </div>
             </div>
 
@@ -139,18 +125,26 @@
                         </h6>
                         <mat-form-field class="col-sm" >
                             <mat-select  formControlName="nombre_SO" style='font-size:14px'>
-                                <mat-option *ngFor="let software of softSO" [value]="software.nombre_software" >
+                                <mat-option *ngFor="let software of softSO" [value]="software" >
                                     {{software.nombre_software}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                         Tipo del Sistema Operativo :
+                         Tipo del Sistema Operativo:
                     </h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="tipo_SO">
+                    <mat-form-field class="col-sm" >
+                        <mat-select  formControlName="tipo_SO" style='font-size:14px'>
+                            <mat-option *ngFor="let nBits of tiposProcesadorBits" [value]="nBits.nombre" >
+                                {{nBits.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
@@ -160,14 +154,69 @@
             </div>
 
             <br>
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        RAM:</h6>
+                    <input type="text" id="ram" class=" form-control form-control-sm" formControlName="ram" placeholder="Ejemplo: 8">
+                    <mat-error *ngIf="ifNumero" style='font-size:10px'>
+                        Campo Numerico 
+                    </mat-error>
+                    <mat-error *ngIf="ifLongitud" style='font-size:10px'>
+                        Máximo dos dígitos
+                    </mat-error>
+                </div>
+                <div class="col-sm">
+                    <h6>Lugar de Compra:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="lugar_compra">
+                </div>
+                <div class="col-sm">
+                    <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
+                         Fecha de Compra:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="pickerFC" style="font-size:13px; margin-top: 0;" formControlName="fecha_compra">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFC"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFC></mat-datepicker>
+                      </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
+                         Fecha de termino de Garantia:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="pickerFG" style="font-size:13px; margin-top: 0;" formControlName="fecha_garantia">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFG"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFG></mat-datepicker>
+                      </mat-form-field>
+                </div>
+            </div>
+
+            <br>
 
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm">
                     <h6>Email GNP:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="correo">
                 </div>
+                <div class="col-sm" style='font-size:10px'>
+                    <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                        Tipo de Computadora:</h6>
+                    <mat-form-field class="col-sm">
+                        <mat-select  formControlName="tipo_equipo" style='font-size:14px' (selectionChange)="tipoComputadora($event.value)" >
+                            <mat-option *ngFor="let tipo of tiposEquipos" [value]="tipo.nombre" >
+                                {{tipo.nombre}}
+                            </mat-option>
+                        </mat-select>
+                     </mat-form-field>
+                </div>
+                <div class="col-sm" >
+                    <h6 [hidden]="ifLaptop">Tamaño de la Pantalla:</h6>
+                    <input  [hidden]="ifLaptop" type="text" class=" form-control form-control-sm" formControlName="tamaño_pantalla">
+                </div>
+                <div class="col-sm">
+                </div>
             </div>
         </form>
+
         <div  [hidden]="ifLaptop">
             <br>
             <hr class="linea">

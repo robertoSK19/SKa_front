@@ -18,6 +18,12 @@
 <!-- <br> -->
 
 <div class="row">
+    <div class="col-sm-9 ">
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" class="btn btn-outline-primary btn-sm btn-block "
+            [routerLink]="[ '/AgregarSoftware' ]">AGREGAR SOFTWARE </button>
+    </div>
 </div>
 <div class="row">
 </div>
@@ -40,7 +46,7 @@
             <tr *ngFor="let software of softwares">
                 <td>{{software.nombre_software}}</td>
                 <td>{{software.no_serie}}</td>
-                <td>{{software.fecha_licencia}}</td>
+                <td>{{software.fecha_licencia | date:'dd/MM/yyyy'}}</td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarSoftware' ]" (click)="editarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>
                 </td>
                 <td><i class='fas fa-trash-alt' (click)="eliminarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>

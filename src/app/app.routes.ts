@@ -18,6 +18,7 @@ import { EditarUsuariosComponent } from './Componentes/editar-usuarios/editar-us
 import { IndexSoftwareComponent } from './Componentes/index-software/index-software.component';
 import { EditarSoftwareComponent } from './Componentes/editar-software/editar-software.component';
 import { FormularioSuraComponent } from './Componentes/formulario-sura/formulario-sura.component';
+import { AgregarSoftwareComponent } from './Componentes/agregar-software/agregar-software.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -39,6 +40,7 @@ export const APP_ROUTES: Routes = [
 { path: 'IndexSoftware', component: IndexSoftwareComponent},
 { path: 'EditarSoftware', component: EditarSoftwareComponent},
 { path: 'FormularioSURA', component: FormularioSuraComponent},
+{ path: 'AgregarSoftware', component: AgregarSoftwareComponent},
 
 
 { path: '**', pathMatch: 'full', redirectTo: ' Principal '}

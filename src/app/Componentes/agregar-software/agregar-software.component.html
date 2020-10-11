@@ -11,7 +11,7 @@
 
     <div class="col-sm-8 ">
 
-        <h2 class="modal-title text-center">Editar datos de Software</h2>
+        <h2 class="modal-title text-center">Agregar Software</h2>
     </div>
 </div>
 
@@ -35,13 +35,13 @@
                     <input type="text" class=" form-control form-control-sm" formControlName="no_serie">
                 </div>
                 <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
                         Fecha de vigencia:</h6>
-                        <mat-form-field >
-                            <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_vigencia">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_vigencia">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
                 </div>
             </div>
 

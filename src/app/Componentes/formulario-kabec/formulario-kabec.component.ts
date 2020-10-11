@@ -193,12 +193,12 @@ export class FormularioKabecComponent implements OnInit {
         accesor.push(objAcc);
       } else{
         var index: number = accesor.findIndex(x => x.accId === acceId)
-        accesor.splice(index, 1);        
+        accesor.splice(index, 1);
       }
     } else {
       accesor.push(objAcc);
     }
-    console.log("Accesorios");    
+    console.log("Accesorios");
     console.log(accesor);
   }
 
@@ -217,7 +217,6 @@ export class FormularioKabecComponent implements OnInit {
     const costoNum = costoEquipo.replace(',', '');
     const comentarios = this.datosRespForm.controls.comentarios.value;
     const disco = this.datosRespForm.controls.discoDS.value;
-    console.log('_'+costoEquipo+'_')
     if (nombre === '' && costoEquipo.length === 0) {
       console.log('no lleno todos los datos');
       this.mensajeDatosVacios();
@@ -400,7 +399,7 @@ export class FormularioKabecComponent implements OnInit {
       checkAccesorios = true;
     } else if (agregarAccesorios === false) {
       this.mostrarAccesorios = false;
-      checkAccesorios = false
+      checkAccesorios = false;
     }
   }
 

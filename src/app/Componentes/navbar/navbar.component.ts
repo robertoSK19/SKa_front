@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ifToken;
-  ifToken2=true;
+  ifToken2 = true;
   usuarioLogeado() {
     datosUser = usuarioRol;
     // console.log(datosUser);
@@ -78,7 +78,7 @@ export class NavbarComponent implements OnInit {
      // console.log(this.ifToken)
     }
   }
-  token2=true;
+  token2 = true;
   activaMenu(tokenValor: boolean) {
     // console.log(token);
     if (tokenValor === true) {

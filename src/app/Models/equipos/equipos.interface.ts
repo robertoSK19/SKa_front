@@ -17,4 +17,12 @@ export interface Equipos {
     tipo_sistema_operativo: string;
     direccion_mac: string;
     email_gnp: string;
+    tipo_disco_duro: string;
+    generacion_procesador: string;
+    tamaño_pantalla: string;
+    fecha_compra: string;
+    lugar_compra: string;
+    fecha_garantia_termino: string;
+    id_historico_equipo?: number;
+    id_equipo_software?: number;
 }

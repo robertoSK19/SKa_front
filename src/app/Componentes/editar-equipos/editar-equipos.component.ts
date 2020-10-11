@@ -5,14 +5,18 @@ import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { DatosEquipo, EquipoAE } from '../index-equipos/index-equipos.component';
 import { DataService } from '../list/data.service';
 import { Equipos } from '../../Models/equipos/equipos.interface';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DEquipos } from 'src/app/Models/equipos/dequipos.interface';
 import { DatePipe } from '@angular/common';
 import { Software } from 'src/app/Models/Software/software.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
+import { tiposDisco, tiposEquipo, tiposPbit } from 'src/app/Constantes/constante';
 
 const estatusAsignado = 1;
+const tipoLaptop = 'LAPTOP';
+const tipoEscritorio = 'ESCRITORIO';
+const tipoServidor = 'SERVIDOR';
 
 let datosUser: RolesUser = {
   rol: '',
@@ -37,15 +41,15 @@ export class EditarEquiposComponent implements OnInit {
   datosDEquipo: DEquipos;
   ifAsignado = false;
   Softwares: any[];
-  tiposEquipos: any[] = [
-    { nombre: 'LAPTOP'},
-    { nombre: 'ESCRITORIO'}
-  ];
+  tiposEquipos: any[];
+  tiposProcesadorBits: any[];
+  public tiposDiscos: any[];
   softSO: any[];
   softOf: any[];
   softExtra: any[];
   ifCambioOfi = true;
   ifOfimaticaOk = true;
+  ifLaptop = true;
 
   public equipo: Equipos = {
     id_equipo: '',
@@ -65,7 +69,15 @@ export class EditarEquiposComponent implements OnInit {
     nombre_sistema_operativo: '',
     tipo_sistema_operativo: '',
     direccion_mac: '',
-    email_gnp: ''
+    email_gnp: '',
+    fecha_compra: '',
+    fecha_garantia_termino: '',
+    generacion_procesador: '',
+    id_equipo_software: 0,
+    id_historico_equipo: 0,
+    lugar_compra: '',
+    tamaño_pantalla: '',
+    tipo_disco_duro: '',
   };
 
   public equipoReq: Equipos = {
@@ -86,12 +98,26 @@ export class EditarEquiposComponent implements OnInit {
     nombre_sistema_operativo: '',
     tipo_sistema_operativo: '',
     direccion_mac: '',
-    email_gnp: ''
+    email_gnp: '',
+    fecha_compra: '',
+    fecha_garantia_termino: '',
+    id_historico_equipo: 0,
+    generacion_procesador: '',
+    id_equipo_software: 0,
+    lugar_compra: '',
+    tamaño_pantalla: '',
+    tipo_disco_duro: '',
   };
   public software: Software = {
     fecha_licencia: '',
     no_serie: '',
-    nombre_sofware: '',
+    nombre_software: '',
+    id_software: '',
+  };
+  public softwareSO: Software = {
+    fecha_licencia: '',
+    no_serie: '',
+    nombre_software: '',
     id_software: '',
   };
   public equipoSoft: EquipoSoftware = {
@@ -114,7 +140,9 @@ export class EditarEquiposComponent implements OnInit {
     public datepipe: DatePipe,
   ) { }
   ngOnInit() {
-
+    this.tiposDiscos = tiposDisco;
+    this.tiposEquipos = tiposEquipo;
+    this.tiposProcesadorBits = tiposPbit;
     this.usuarioLogeado();
     // this.operacionesEquipos();
     this.datosEquipoForm = this.formBuilder.group({
@@ -138,6 +166,12 @@ export class EditarEquiposComponent implements OnInit {
       estatus: ['', Validators.required],
       checkOfimatica: ['', Validators.required],
       nombre_OF: ['', Validators.required],
+      fecha_compra: ['', Validators.required],
+      fecha_garantia: ['', Validators.required],
+      generacion_procesador: ['', Validators.required],
+      lugar_compra: ['', Validators.required],
+      tamaño_pantalla: ['', Validators.required],
+      tipo_disco_duro: ['', Validators.required],
     });
 
   }
@@ -187,6 +221,17 @@ export class EditarEquiposComponent implements OnInit {
             this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
             this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
             this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+            this.datosEquipoForm.controls.tipo_disco_duro.setValue(this.equipo.tipo_disco_duro);
+            this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
+            this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
+            this.datosEquipoForm.controls.lugar_compra.setValue(this.equipo.lugar_compra);
+            this.datosEquipoForm.controls.fecha_compra.setValue(this.equipo.fecha_compra);
+            this.datosEquipoForm.controls.tamaño_pantalla.setValue(this.equipo.tamaño_pantalla);
+            if (this.equipo.tipo_computadora !== tipoLaptop) {
+              this.ifLaptop = true;
+            } else {
+              this.ifLaptop = false;
+            }
           } else if (response.status === 204) {
             console.log( 'Equipo no encontrado');
             this.deshabilitaForm();
@@ -224,6 +269,7 @@ export class EditarEquiposComponent implements OnInit {
         response => {
           if (response.status === 200) {
             this.equipo = response.body;
+            console.log(this.equipo);
             this.datosEquipoForm.controls.nombre_equipo.setValue(this.equipo.nombre_equipo);
             this.datosEquipoForm.controls.marca.setValue(this.equipo.marca);
             this.datosEquipoForm.controls.modelo.setValue(this.equipo.modelo);
@@ -242,6 +288,17 @@ export class EditarEquiposComponent implements OnInit {
             this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
             this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
             this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+            this.datosEquipoForm.controls.tipo_disco_duro.setValue(this.equipo.tipo_disco_duro);
+            this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
+            this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
+            this.datosEquipoForm.controls.lugar_compra.setValue(this.equipo.lugar_compra);
+            this.datosEquipoForm.controls.fecha_compra.setValue(this.equipo.fecha_compra);
+            this.datosEquipoForm.controls.tamaño_pantalla.setValue(this.equipo.tamaño_pantalla);
+            if (this.equipo.tipo_computadora !== tipoLaptop) {
+              this.ifLaptop = true;
+            } else {
+              this.ifLaptop = false;
+            }
             this.deshabilitaForm();
           } else if (response.status === 204) {
             console.log( 'Equipo no encontrado');
@@ -297,6 +354,12 @@ export class EditarEquiposComponent implements OnInit {
     const correo = this.datosEquipoForm.controls.correo.value;
     const estatus = this.datosEquipoForm.controls.estatus.value;
     const cambioOf = this.datosEquipoForm.controls.checkOfimatica.value;
+    const tipoProcesador = this.datosEquipoForm.controls.generacion_procesador.value;
+    const fechaGarantia = this.datepipe.transform(this.datosEquipoForm.controls.fecha_garantia.value, 'yyyy-MM-dd');
+    const tipoDiscoDuro = this.datosEquipoForm.controls.tipo_disco_duro.value;
+    const lugarCompra = this.datosEquipoForm.controls.lugar_compra.value;
+    const fechaCompra = this.datepipe.transform(this.datosEquipoForm.controls.fecha_compra.value, 'yyyy-MM-dd');
+    const tamañoPantalla = this.datosEquipoForm.controls.tamaño_pantalla.value;
     let  idSoftware = '';
     if (fecha > this.datepipe.transform(new Date(), 'yyyy-MM-dd')) {
       console.log('fecha errornea');
@@ -314,7 +377,7 @@ export class EditarEquiposComponent implements OnInit {
         idSoftware = ofimatica.id_software;
         this.software = {
           id_software: ofimatica.id_software,
-          nombre_sofware: ofimatica.nombre_software,
+          nombre_software: ofimatica.nombre_software,
           fecha_licencia: ofimatica.fecha_licencia,
           no_serie: ofimatica.no_serie,
         };
@@ -348,10 +411,18 @@ export class EditarEquiposComponent implements OnInit {
           cuenta_usuario_contraseña: cuentaPass,
           tipo_computadora: tipoEquipo,
           fecha_fabricacion: fecha,
-          nombre_sistema_operativo: SO,
+          nombre_sistema_operativo: SO.nombre_software,
           tipo_sistema_operativo: vSO,
           direccion_mac: mac,
-          email_gnp: correo
+          email_gnp: correo,
+          fecha_compra: fechaCompra,
+          fecha_garantia_termino: fechaGarantia,
+          generacion_procesador: tipoProcesador,
+          id_equipo_software: Number(this.equipo.id_equipo),
+          id_historico_equipo: Number (this.equipo.id_equipo),
+          lugar_compra: lugarCompra,
+          tamaño_pantalla: tamañoPantalla,
+          tipo_disco_duro: tipoDiscoDuro,
         };
         this.datosDEquipoReq = {
           disco_duro_solido: this.datosDEquipo.disco_duro_solido,
@@ -365,10 +436,15 @@ export class EditarEquiposComponent implements OnInit {
           id_equipo: this.equipoReq,
           id_software: this.software,
         };
+        this.softwareSO = {
+          fecha_licencia: SO.fecha_licencia,
+          id_software: SO.id_software,
+          no_serie: SO.no_serie,
+          nombre_software: SO.nombre_software,
+        };
         console.log(this.equipoReq);
         this.dataSvc.updateEquipo(this.equipoReq).subscribe(
           response => {
-            
             console.log(response.status);
             if (response.status === 200) {
               console.log('Actualizacion Correcta');
@@ -384,17 +460,17 @@ export class EditarEquiposComponent implements OnInit {
         this.dataSvc.updateDEquipo(estatus, this.datosDEquipoReq).subscribe(
           response => {
             if (response.status === 200 ) {
-              console.log(this.equipoSoft)
-             /* if (this.equipoSoft.id_software.id_software !== '') {
-                this.dataSvc.crearEquipoSoftware(Number(this.equipo.id_equipo), Number(idSoftware), this.equipoSoft ).subscribe(
-                  responseES => {
-                    console.log(responseES);
-                  },
-                  errorES => {
-                    console.log(errorES);
-                  }
-                );
-              }*/
+              console.log(this.equipoSoft);
+              if (this.equipoSoft.id_software.id_software !== '') {
+                  this.dataSvc.crearEquipoSoftware(Number(this.equipo.id_equipo), Number(idSoftware), this.equipoSoft ).subscribe(
+                    responseES => {
+                      console.log(responseES);
+                    },
+                    errorES => {
+                      console.log(errorES);
+                    }
+                  );
+              }
               this.mensaje200Actulizacion();
               setTimeout( () => {this.router.navigate(['IndexEquipo']); }, 3000 );
             }
@@ -422,6 +498,7 @@ export class EditarEquiposComponent implements OnInit {
     this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
       response => {
         this.equipo = response.body;
+        console.log(this.equipo);
         this.datosEquipoForm.controls.nombre_equipo.setValue(this.equipo.nombre_equipo);
         this.datosEquipoForm.controls.marca.setValue(this.equipo.marca);
         this.datosEquipoForm.controls.modelo.setValue(this.equipo.modelo);
@@ -439,6 +516,9 @@ export class EditarEquiposComponent implements OnInit {
         this.datosEquipoForm.controls.tipo_SO.setValue(this.equipo.tipo_sistema_operativo);
         this.datosEquipoForm.controls.mac.setValue(this.equipo.direccion_mac);
         this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
+        this.datosEquipoForm.controls.tipo_disco_duro.setValue(this.equipo.tipo_disco_duro);
+        this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
+        this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
         this.mensajeCancelar();
         this.router.navigate(['IndexEquipo']);
       },
@@ -488,6 +568,12 @@ export class EditarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.correo.disable();
     this.datosEquipoForm.controls.estatus.disable();
     this.datosEquipoForm.controls.checkOfimatica.disable();
+    this.datosEquipoForm.controls.tipo_disco_duro.disable();
+    this.datosEquipoForm.controls.generacion_procesador.disable();
+    this.datosEquipoForm.controls.fecha_garantia.disable();
+    this.datosEquipoForm.controls.lugar_compra.disable();
+    this.datosEquipoForm.controls.fecha_compra.disable();
+    this.datosEquipoForm.controls.tamaño_pantalla.disable();
   }
   habilitaForm() {
     this.datosEquipoForm.controls.nombre_equipo.enable();
@@ -509,6 +595,12 @@ export class EditarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.correo.enable();
     this.datosEquipoForm.controls.estatus.enable();
     this.datosEquipoForm.controls.checkOfimatica.enable();
+    this.datosEquipoForm.controls.tipo_disco_duro.enable();
+    this.datosEquipoForm.controls.generacion_procesador.enable();
+    this.datosEquipoForm.controls.fecha_garantia.enable();
+    this.datosEquipoForm.controls.lugar_compra.enable();
+    this.datosEquipoForm.controls.fecha_compra.enable();
+    this.datosEquipoForm.controls.tamaño_pantalla.enable();
   }
   getEstatus(opcion: string) {
     this.dataSvc.getAllEstatus().subscribe(
@@ -542,6 +634,7 @@ export class EditarEquiposComponent implements OnInit {
     this.dataSvc.getAllSoftware().subscribe(
       response => {
         if (response.status === 200) {
+          console.log(response)
           this.Softwares = response.body;
           this.softSO = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('windows') === true
           || so.nombre_software.toLowerCase().includes('mac os') === true);
@@ -549,6 +642,7 @@ export class EditarEquiposComponent implements OnInit {
           this.softExtra = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('office') === false
            || so.nombre_software.toLowerCase().includes('mac os') === false
            || so.nombre_software.toLowerCase().includes('office') === false );
+           console.log(this.softSO);
         } else {
           this.mensaje500();
         }

@@ -10,9 +10,11 @@ import { DatePipe } from '@angular/common';
 import { DEquipos } from 'src/app/Models/equipos/dequipos.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
+import { Software } from 'src/app/Models/Software/software.interface';
+import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
+import { tiposDisco, tiposEquipo, tipoLaptop, tipoEscritorio, tipoServidor, tiposPbit } from 'src/app/Constantes/constante';
 
-const tipoLaptop = 'LAPTOP';
-const tipoEscritorio = 'ESCRITORIO';
+
 const idEstatusAsignado = 1;
 let datosUser: RolesUser = {
   rol: '',
@@ -40,10 +42,8 @@ export class AgregarEquiposComponent implements OnInit {
   softOf: any[];
   softExtra: any[];
 
-  tiposEquipos: any[] = [
-    { nombre: 'LAPTOP'},
-    { nombre: 'ESCRITORIO'}
-  ];
+  tiposEquipos: any[];
+  tiposProcesadorBits: any[];
 
   public equipo: Equipos = {
     id_equipo: '',
@@ -63,7 +63,13 @@ export class AgregarEquiposComponent implements OnInit {
     nombre_sistema_operativo: '',
     tipo_sistema_operativo: '',
     direccion_mac: '',
-    email_gnp: ''
+    email_gnp: '',
+    fecha_compra: '',
+    fecha_garantia_termino: '',
+    generacion_procesador: '',
+    lugar_compra: '',
+    tamaño_pantalla: '',
+    tipo_disco_duro: ''
   };
   public dequipo: DEquipos;
   public Eliminador: Accesorios;
@@ -71,6 +77,18 @@ export class AgregarEquiposComponent implements OnInit {
   ifLongitud = false;
   ifFechaCorrecta = false;
 
+  public software: Software = {
+    fecha_licencia: '',
+    no_serie: '',
+    nombre_software: '',
+    id_software: '',
+  };
+
+  public equipoSoftware: EquipoSoftware = {
+    id_equipo: null,
+    id_software: null,
+  };
+  public tiposDiscos: any[];
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,
@@ -80,6 +98,9 @@ export class AgregarEquiposComponent implements OnInit {
     private toastr: ToastrService
   ) { }
   ngOnInit() {
+    this.tiposDiscos = tiposDisco;
+    this.tiposEquipos = tiposEquipo;
+    this.tiposProcesadorBits = tiposPbit;
     this.usuarioLogeado();
     // this.operacionesEquipos();
     this.datosEquipoForm = this.formBuilder.group({
@@ -96,10 +117,16 @@ export class AgregarEquiposComponent implements OnInit {
       cuenta_pass: ['', Validators.required],
       tipo_equipo: ['', Validators.required],
       fecha_fabrica: ['', Validators.required],
-      nombre_SO: ['', Validators.required],
+      nombre_SO: [null, Validators.required],
       tipo_SO: ['', Validators.required],
       mac: ['', Validators.required],
-      correo: ['', Validators.required]
+      correo: ['', Validators.required],
+      fecha_compra: ['', Validators.required],
+      fecha_garantia: ['', Validators.required],
+      generacion_procesador: ['', Validators.required],
+      lugar_compra: ['', Validators.required],
+      tamaño_pantalla: ['', Validators.required],
+      tipo_disco_duro: ['', Validators.required],
     });
     this.datosAccesorioForm = this.formBuilder.group({
       marcaA: ['', Validators.required],
@@ -108,6 +135,7 @@ export class AgregarEquiposComponent implements OnInit {
       hechoEnA: ['', Validators.required],
       numeroSerieA: ['', Validators.required]
     });
+    
   }
 
   usuarioLogeado() {
@@ -126,14 +154,14 @@ export class AgregarEquiposComponent implements OnInit {
     if (datosEquipo.operacion === 'editar') {
       console.log('soy editar');
       this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
-        response => {
-          this.equipo = response.body;
+        responseE => {
+          this.equipo = responseE.body;
 //          console.log(this.equipo);
-          this.equipo.cuenta_usuario_contraseña = response.body.cuenta_usuario_contraseña;
+          this.equipo.cuenta_usuario_contraseña = responseE.body.cuenta_usuario_contraseña;
           console.log(this.equipo);
         },
-        error => {
-          console.log(error);
+        errorE => {
+          console.log(errorE);
           this.mensaje500();
         }
       );
@@ -180,6 +208,13 @@ export class AgregarEquiposComponent implements OnInit {
     const vSO = this.datosEquipoForm.controls.tipo_SO.value;
     const mac = this.datosEquipoForm.controls.mac.value;
     const correo = this.datosEquipoForm.controls.correo.value;
+    const lugarCompra = this.datosEquipoForm.controls.lugar_compra.value;
+    const fechaCompra = this.datepipe.transform(this.datosEquipoForm.controls.fecha_compra.value, 'yyyy-MM-dd');
+    const fechaGarantia = this.datepipe.transform(this.datosEquipoForm.controls.fecha_garantia.value, 'yyyy-MM-dd');
+    const tipoDD = this.datosEquipoForm.controls.tipo_disco_duro.value;
+    const tamañoPantalla = this.datosEquipoForm.controls.tamaño_pantalla.value;
+    const generacionProcesador = this.datosEquipoForm.controls.generacion_procesador.value;
+    const idSoftware = SO.id_software;
     const regExp    = new RegExp( /^\d{0,2}$/ );
     if (regExp.test(ramE) === false) {
       this.ifNumero = true;
@@ -201,7 +236,8 @@ export class AgregarEquiposComponent implements OnInit {
     }
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
-      && fecha !== '' && SO !== '' && vSO !== '' && mac !== '' && this.ifFechaCorrecta === true) {
+      && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' && generacionProcesador !== '' &&
+      fechaCompra !== '' &&  lugarCompra !== this.ifFechaCorrecta === true) {
         if (regExp.test(ramE) === false) {
           this.ifNumero = true;
           console.log(this.ifNumero, this.ifLongitud);
@@ -229,11 +265,25 @@ export class AgregarEquiposComponent implements OnInit {
           cuenta_usuario_contraseña: cuentaPass,
           tipo_computadora: tipoEquipo,
           fecha_fabricacion: fecha,
-          nombre_sistema_operativo: SO,
+          nombre_sistema_operativo: SO.nombre_software,
           tipo_sistema_operativo: vSO,
           direccion_mac: mac,
-          email_gnp: correo
+          email_gnp: correo,
+          fecha_compra: fechaCompra,
+          fecha_garantia_termino: fechaGarantia,
+          generacion_procesador: generacionProcesador,
+          lugar_compra: lugarCompra,
+          tamaño_pantalla: tamañoPantalla,
+          tipo_disco_duro: tipoDD,
         };
+          this.software = {
+          fecha_licencia: SO.fecha_licencia,
+          id_software: SO.id_software,
+          no_serie: SO.no_serie,
+          nombre_software: SO.nombre_software,
+        };
+          console.log(this.software);
+
           if ( this.ifLaptop === false ) {
           const marcaAc = this.datosAccesorioForm.controls.marcaA.value;
           const modeloAc = this.datosAccesorioForm.controls.modeloA.value;
@@ -258,9 +308,9 @@ export class AgregarEquiposComponent implements OnInit {
           }
         }
           this.dataSvc.crearEquipo(this.equipo).subscribe(
-          response => {
-            console.log(response.status);
-            if (response.status === 200) {
+          responseCE => {
+            console.log(responseCE.status);
+            if (responseCE.status === 200) {
               console.log('Registro Correcto');
               console.log(this.equipo);
               this.dequipo = {
@@ -271,7 +321,7 @@ export class AgregarEquiposComponent implements OnInit {
                 id_estatus: 0,
               };
               if ( this.ifLaptop === false ) {
-                this.Eliminador.id_equipo = response.body.id_equipo;
+                this.Eliminador.id_equipo = responseCE.body.id_equipo;
                 this.dataSvc.crearAccesorio(this.Eliminador, idEstatusAsignado ).subscribe(
                   responseAc => {
                     if (responseAc.status === 200) {
@@ -285,7 +335,7 @@ export class AgregarEquiposComponent implements OnInit {
                   }
                 );
               }
-              this.dataSvc.crearDEquipo(this.dequipo, response.body.id_equipo).subscribe(
+              this.dataSvc.crearDEquipo(this.dequipo, responseCE.body.id_equipo).subscribe(
                 responseDE => {
                   if (responseDE.status === 200) {
                     console.log('Registro completo');
@@ -298,10 +348,30 @@ export class AgregarEquiposComponent implements OnInit {
                   this.mensaje500();
                 }
               );
+              this.equipoSoftware = {
+                id_equipo: responseCE.body,
+                id_software: this.software
+              };
+              this.dataSvc.crearEquipoSoftware(responseCE.body.id_equipo, idSoftware, this.equipoSoftware).subscribe(
+                responseES => {
+                  if (responseES.status === 200 ) {
+                    console.log('codigo 200');
+                  } else {
+                    console.log('error respuesta', responseES);
+                  }
+                },
+                errorES => {
+                  if (errorES.status === 500) {
+                    console.log(500);
+                  } else {
+                    console.log('error', errorES);
+                  }
+                }
+              );
             }
           },
-          error => {
-            console.log('Error en el registro', error);
+          errorCE => {
+            console.log('Error en el registro', errorCE);
             this.mensaje500();
           }
         );
@@ -345,9 +415,9 @@ export class AgregarEquiposComponent implements OnInit {
   }
   getSoftware() {
     this.dataSvc.getAllSoftware().subscribe(
-      response => {
-        if (response.status === 200) {
-          this.Softwares = response.body;
+      responseGS => {
+        if (responseGS.status === 200) {
+          this.Softwares = responseGS.body;
           this.softSO = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('windows') === true
           || so.nombre_software.toLowerCase().includes('mac os') === true);
           this.softOf = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('office') === true);
@@ -358,7 +428,7 @@ export class AgregarEquiposComponent implements OnInit {
           this.mensaje500();
         }
       },
-      error => {
+      errorSG => {
         this.mensaje500();
       }
     );
@@ -386,6 +456,8 @@ export class AgregarEquiposComponent implements OnInit {
     if (tipoCompu === tipoLaptop) {
       this.ifLaptop = false;
     } else if (tipoCompu === tipoEscritorio) {
+      this.ifLaptop = true;
+    } else if (tipoCompu === tipoServidor) {
       this.ifLaptop = true;
     }
   }
