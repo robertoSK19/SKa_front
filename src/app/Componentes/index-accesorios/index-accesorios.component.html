@@ -30,8 +30,8 @@
 <div class="row">
 
     <div class="col-sm-3">
-        <label>Buscar:</label>
-        <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtrarNoSerie($event)">
+        <label>Buscar por Nombre:</label>
+        <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtrarNombre($event)">
     </div>
 
 </div>
@@ -60,13 +60,13 @@
                 <td>{{accesorio.marca}}</td>
                 <td>{{accesorio.modelo}}</td>
                 <td>{{accesorio.serie}}</td>
-                <td>{{accesorio.id_Estatus.nombre_estatus}}</td>
+                <td>{{accesorio.id_estatus.nombre_estatus}}</td>
                 <td><i class='fas fa-eye' [routerLink]="[ '/EditarAccesorio' ]"
                         style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'mostrar')"></i>
                 </td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarAccesorio' ]"
                         style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'editar')"
-                        [hidden]="accesorio.id_Estatus.id_estatus===idAsignado"></i>
+                        [hidden]="accesorio.id_estatus.id_estatus===idAsignado"></i>
                 </td>
             </tr>
 

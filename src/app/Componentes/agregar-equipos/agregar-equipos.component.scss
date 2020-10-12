@@ -1,6 +1,5 @@
 .my-custom-scrollbar {
     position: relative;
-    height: 300px;
     overflow: auto;
 }
 .table-wrapper-scroll-y {
@@ -12,4 +11,21 @@
 }
 input:invalid {
     color: red;
+}
+.example-radio-group {
+    display: flex;
+    margin: 15px 0;
+  }
+.example-radio-button {
+  margin: 5px;
+}
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    opacity: 0 !important;     /*click effect color change*/
+    background-color: rgb(0, 91, 171, 0.26) !important;
+}
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+background-color:rgb(0, 91, 171) !important;   
+}
+::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+border-color:rgb(0, 91, 171) !important;
 }

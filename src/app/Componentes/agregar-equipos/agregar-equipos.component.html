@@ -180,7 +180,7 @@
                       </mat-form-field>
                 </div>
                 <div class="col-sm">
-                    <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
+                    <h6 style="margin-bottom: 0;"> <i class='fas' style='font-size:10px;color:red;'></i>
                          Fecha de termino de Garantia:</h6>
                     <mat-form-field >
                         <input matInput [matDatepicker]="pickerFG" style="font-size:13px; margin-top: 0;" formControlName="fecha_garantia">
@@ -227,19 +227,19 @@
                     <div class="col-sm">
 
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                            Marca:</h6>
-                        <input type="text" class=" form-control form-control-sm" formControlName="marcaA" >
+                            Nombe del Accesorio:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="productoA" >
                     </div>
 
                     <div class="col-sm">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                            Modelo:</h6>
-                        <input type="text" class=" form-control form-control-sm" formControlName="modeloA">
+                            Marca:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="marcaA">
                     </div>
                     <div class="col-sm">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                            Producto:</h6>
-                        <input type="text" class=" form-control form-control-sm" formControlName="productoA">
+                            Modelo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="modeloA">
                     </div>
                     <div class="col-sm">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -255,14 +255,167 @@
                         <input type="text" class=" form-control form-control-sm" formControlName="numeroSerieA" >
                     </div>
                     <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Costo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="costo" >
                     </div>
-                    <div class="col-sm">
-                    </div>
-                    <div class="col-sm">
+                    <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
+                        <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                            Descripcion:</h6>
+                        <textarea type="text" class=" form-control form-control-sm"
+                            style="width: 100%; height: 40%; resize: none;" formControlName="descripcionA">
+                    </textarea>
                     </div>
                 </div>
             </form>
         </div>
+        <div  [hidden]="ifEscritorio">
+            <br>
+            <hr class="linea">
+            <h5 class="modal-title text-center">Accesorios Adicionales</h5>
+            <br>
+            <form [formGroup]="datosAccesorioFormEscritorio">
+                <div class="row">
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Mouse:
+                            <mat-radio-group
+                            aria-labelledby="example-radio-group-label"
+                            class="example-radio-group"
+                            formControlName="checkMouse"
+                            (change)="tipoMouse($event.value)"
+                            >
+                            <mat-radio-button class="example-radio-button" *ngFor="let season of opciones" [value]="season">
+                              {{season}}
+                            </mat-radio-button>
+                          </mat-radio-group>
+                        </h6>
+                    </div>
+                </div>
+            
+            
+            <div class="card card-body" [hidden]="ifMouseN">
+                <blockquote class="blockquote mb-0">
+                <div>
+                    <form [formGroup]="datosMouseForm">
+                        <div class="row">
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Nombre del Accesorio:</h6>
+                                <input type="text" class=" form-control form-control-sm" formControlName="productoA" >
+                            </div>
+        
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Marca:</h6>
+                                <input type="text" class=" form-control form-control-sm" formControlName="marcaA">
+                            </div>
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Modelo:</h6>
+                                <input type="text" class=" form-control form-control-sm" formControlName="modeloA">
+                            </div>
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Hecho en:</h6>
+                                <input type="text" class=" form-control form-control-sm" formControlName="hechoEnA">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Número de Serie:</h6>
+                                <input type="text" class=" form-control form-control-sm" formControlName="numeroSerieA" >
+                            </div>
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Costo:</h6>
+                                <input type="text" class=" form-control form-control-sm" formControlName="costo" >
+                                </div>
+                            <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
+                                <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                                    Descripcion:</h6>
+                                <textarea type="text" class=" form-control form-control-sm"
+                                    style="width: 100%; height: 40%; resize: none;" formControlName="descripcionA">
+                            </textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </blockquote>
+            </div>
+            <br>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Teclado:
+                            <mat-radio-group
+                            aria-labelledby="example-radio-group-label"
+                            class="example-radio-group"
+                            formControlName="checkTeclado"
+                            (change)="tipoTeclado($event.value)"
+                            >
+                            <mat-radio-button class="mat-radio-button" *ngFor="let season of opciones" [value]="season">
+                              {{season}}
+                            </mat-radio-button>
+                          </mat-radio-group>
+                        </h6>
+                    </div>
+                </div>
+                <div class="card card-body" [hidden]="ifTecladoN" >
+                    <blockquote class="blockquote mb-0">
+                    <div>
+                        <form [formGroup]="datosTecladoForm">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                        Nombre del Accesorio:</h6>
+                                    <input type="text" class=" form-control form-control-sm" formControlName="productoAT" >
+                                </div>
+            
+                                <div class="col-sm">
+                                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                        Marcar:</h6>
+                                    <input type="text" class=" form-control form-control-sm" formControlName="marcaAT">
+                                </div>
+                                <div class="col-sm">
+                                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                        Modelo:</h6>
+                                    <input type="text" class=" form-control form-control-sm" formControlName="modeloAT">
+                                </div>
+                                <div class="col-sm">
+                                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                        Hecho en:</h6>
+                                    <input type="text" class=" form-control form-control-sm" formControlName="hechoEnAT">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                        Número de Serie:</h6>
+                                    <input type="text" class=" form-control form-control-sm" formControlName="numeroSerieAT">
+                                </div>
+                                <div class="col-sm">
+                                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Costo:</h6>
+                                    <input type="text" class=" form-control form-control-sm" formControlName="costo" >
+                                    </div>
+                                <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
+                                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                                        Descripcion:</h6>
+                                    <textarea type="text" class=" form-control form-control-sm"
+                                        style="width: 100%; height: 40%; resize: none;" formControlName="descripcionAT">
+                                </textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    </blockquote>
+                </div>
+            </form>
+        </div>    
         
         <br>
             <div class="row">
