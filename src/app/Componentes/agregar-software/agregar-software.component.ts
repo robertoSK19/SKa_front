@@ -60,7 +60,7 @@ export class AgregarSoftwareComponent implements OnInit {
     this.usuarioLogeado();
     this.datosSoftwareForm = this.formBuilder.group({
       nombre_software: ['', Validators.required],
-      no_serie: ['', Validators.required],
+      no_serie: [''],
       vigencia_final: [''],
       vigencia_inicial: [''],
       version: [''],
