@@ -27,9 +27,14 @@ export class EditarSoftwareComponent implements OnInit {
   datosSoftwareForm: FormGroup;
   public datosSoftware: Software = {
     id_software: '',
-    fecha_licencia: '',
     no_serie: '',
     nombre_software: '',
+    version: '',
+    vigencia_inicial:'',
+    vigencia_final:'',
+    tipo_licencia:'',
+    factura: null,
+    tipo_software:'',
   };
   software: Software;
 
@@ -77,7 +82,6 @@ export class EditarSoftwareComponent implements OnInit {
         if (response.status === 200 ) {
           this.software = response.body;
           this.datosSoftwareForm.controls.nombre_software.setValue(this.software.nombre_software);
-          this.datosSoftwareForm.controls.fecha_vigencia.setValue(this.software.fecha_licencia);
           this.datosSoftwareForm.controls.no_serie.setValue(this.datepipe.transform(this.software.no_serie, 'MM-dd-yyyy'));
         }
       },
@@ -91,7 +95,6 @@ export class EditarSoftwareComponent implements OnInit {
   }
   cargaDatos() {
     this.datosSoftwareForm.controls.nombre_software.setValue(this.software.nombre_software);
-    this.datosSoftwareForm.controls.fecha_vigencia.setValue(this.software.fecha_licencia);
     this.datosSoftwareForm.controls.no_serie.setValue(this.software.no_serie);
   }
 }

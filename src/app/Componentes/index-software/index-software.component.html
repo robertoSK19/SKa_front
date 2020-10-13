@@ -37,7 +37,7 @@
             <tr>
                 <th class="sticky-top" scope="col">Nombre Software</th>
                 <th class="sticky-top" scope="col">Número de Serie</th>
-                <th class="sticky-top" scope="col">Fecha de Vigencia</th>
+                <th class="sticky-top" scope="col">Tipo Software</th>
                 <th class="sticky-top" scope="col">Modificar</th>
                 <th class="sticky-top" scope="col">Eliminar</th>
             </tr>
@@ -46,7 +46,7 @@
             <tr *ngFor="let software of softwares">
                 <td>{{software.nombre_software}}</td>
                 <td>{{software.no_serie}}</td>
-                <td>{{software.fecha_licencia | date:'dd/MM/yyyy'}}</td>
+                <td>{{software.tipo_software}}</td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarSoftware' ]" (click)="editarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>
                 </td>
                 <td><i class='fas fa-trash-alt' (click)="eliminarSoftware(software.id_software)" style='font-size:20px;color:purple'></i>
