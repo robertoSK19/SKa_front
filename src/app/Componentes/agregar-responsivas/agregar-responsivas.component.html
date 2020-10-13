@@ -46,8 +46,8 @@
 <div class="row">
 
     <div class="col-sm-3">
-        <label>Buscar:</label>
-        <input type="text" class=" form-control form-control-sm">
+        <label>Buscar por No. de Serie:</label>
+        <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtrarNoSerie($event)">
     </div>
 
 </div>
@@ -99,6 +99,7 @@
             (click)="llenarResponsiva()">Llenar Formulario</button>
     </div>
 </div>
+<br>
 
 <div [hidden]="ifAccesorio">
 <mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
@@ -123,7 +124,7 @@
                 <td>{{accesorio.marca}}</td>
                 <td>{{accesorio.modelo}}</td>
                 <td>{{accesorio.serie}}</td>
-                <td>{{accesorio.id_Estatus.nombre_estatus}}</td>
+                <td>{{accesorio.id_estatus.nombre_estatus}}</td>
                 <td><input id="male" type="checkbox" value="male" name="gender" 
                     (click)="$event.stopPropagation()"
                     (change)="$event ? selection.toggle(accesorio) : null"
@@ -146,4 +147,6 @@
             (click)="llenarResponsivaAccesorio()">Llenar Formulario</button>
     </div>
 </div>
+<br>
+
 <router-outlet></router-outlet>

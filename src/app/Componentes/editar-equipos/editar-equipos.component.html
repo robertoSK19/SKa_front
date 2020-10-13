@@ -236,6 +236,15 @@
 
             <br>
 
+            <div class="row" [hidden]="ifFactura">
+                <div class="col-sm" style='font-size:10px'>
+                    <h6>Seleccionar Factura:</h6>
+                    <input type="file" class="btn btn-block" (change)="fileEvent($event)">
+                </div>
+                <div class="col-sm">
+                    
+                </div>
+            </div>
 <!--             <div class="row">
                 <div class="col-sm">
                     <h6> <i class='fas' style='font-size:10px;color:red'></i>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { tipoFiltroResponsibas } from 'src/app/Constantes/constante';
 import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
 import { DEquipos } from 'src/app/Models/equipos/dequipos.interface';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
@@ -23,7 +24,10 @@ export class IndexResponsivasComponent implements OnInit {
   datosAsignacion: Asignacion;
   ifProgreso = false;
   ifResultados = true;
-
+  filtros: any[];
+  tipofiltro = '';
+  sinFiltro = true;
+  responsivasBackup: any[];
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,
@@ -34,6 +38,7 @@ export class IndexResponsivasComponent implements OnInit {
   ngOnInit() {
     this.usuarioLogeado();
     this.getAllResponsivas();
+    this.filtros = tipoFiltroResponsibas;
   }
 
   usuarioLogeado() {
@@ -47,12 +52,13 @@ export class IndexResponsivasComponent implements OnInit {
     }
   }
   getAllResponsivas() {
-    //this.servicioResponsivas.getAllResponsivas().subscribe(
+    // this.servicioResponsivas.getAllResponsivas().subscribe(
       this.servicioResponsivas.getAllAsignaciones().subscribe(
       response => {
         console.log(response);
         if (response.status === 200) {
           this.responsivas = response.body;
+          this.responsivasBackup = response.body;
           this.ifResultados = false;
           this.ifProgreso = true;
         } else {
@@ -138,6 +144,38 @@ export class IndexResponsivasComponent implements OnInit {
         console.log(errorREs)
       }
     ) */
+  }
+  filtroSelect(value: any) {
+    console.log();
+    this.tipofiltro = value;
+    this.sinFiltro = false;
+  }
+  filtro(parametro: any) {
+    const valor = parametro;
+    if (valor.length < 3 ) {
+      this.responsivas = this.responsivasBackup;
+    } else {
+      const responsivasNoNull = this.responsivas.filter(item => item.dequipo.mequipo.numero_serie !== null);
+      switch (this.tipofiltro) {
+        case this.filtros[0]:
+          console.log('responsable');
+          const filtroResponsable = responsivasNoNull.filter(item => item.nombre_consultor.toLowerCase().startsWith(valor.toLowerCase()));
+          this.responsivas = filtroResponsable;
+          break;
+        case this.filtros[1]:
+          const filtroId = this.responsivas.filter(item => item.dequipo.mequipo.id_equipo === Number(valor));
+          this.responsivas = filtroId;
+          console.log('id');
+          break;
+        case this.filtros[2]:
+          console.log('serie');
+          const filtroNserie = responsivasNoNull.filter(item => item.dequipo.mequipo.numero_serie.toLowerCase().startsWith(valor.toLowerCase()));
+          this.responsivas = filtroNserie;
+          console.log('id');
+          break;
+      }
+    }
+
   }
   mensaja204() {
     this.toastr.error('No se pudo cancelar la Responsiva', 'Error en la actualizacion');

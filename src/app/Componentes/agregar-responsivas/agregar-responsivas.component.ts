@@ -44,6 +44,7 @@ export class AgregarResponsivasComponent implements OnInit {
   accesorios: any[];
   ifAccesorio = true;
   idAccesorioResponsiva = '';
+  equiposBack: any[];
 
   tiposResponsivasAce: any[] = [
     {nombre: 'Kabec'}
@@ -51,7 +52,6 @@ export class AgregarResponsivasComponent implements OnInit {
 
   tiposResponsivasEqu: any[] = [
     {nombre: 'Kabec'},
-    {nombre: 'GNP'},
     {nombre: 'SURA'}
   ];
 
@@ -101,6 +101,7 @@ export class AgregarResponsivasComponent implements OnInit {
         this.equipos = response.body;
         const equiposDisp =  this.equipos.filter(item => item.estatusRecurso.id_estatus === 2);
         this.equipos = equiposDisp;
+        this.equiposBack = equiposDisp;
         this.ifProgreso = true;
         this.ifResultados = false;
         } else if (response.status === 204) {
@@ -180,7 +181,7 @@ export class AgregarResponsivasComponent implements OnInit {
         if (response.status === 200) {
           console.log(status);
           this.accesorios = response.body;
-          const accesoriosDisp =  this.accesorios.filter(item => item.id_Estatus.id_estatus === 2);
+          const accesoriosDisp =  this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
           this.ifResultados = false;
           this.ifProgreso = true;
@@ -249,6 +250,16 @@ export class AgregarResponsivasComponent implements OnInit {
         }
       }
     } */
+  }
+  filtrarNoSerie(noSerie: string): any {
+    const valor = noSerie;
+    if (valor.length < 2 ) {
+      this.equipos = this.equiposBack;
+    } else {
+      const equipoNoNull = this.equipos.filter(item => item.mequipo.numero_serie !== null);
+      const equiposFiltro = equipoNoNull.filter(item => item.mequipo.numero_serie.toLowerCase().startsWith(noSerie.toLowerCase()));
+      this.equipos = equiposFiltro;
+    }
   }
   datosKabec() {
   }
