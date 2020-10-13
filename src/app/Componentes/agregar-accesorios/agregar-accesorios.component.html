@@ -18,6 +18,7 @@
 <!-- <br> -->
 
 <div class="card">
+
     <div class="col-sm-3">
         <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
             Tipo de Recurso:</h6>
@@ -31,35 +32,37 @@
             </mat-select>
         </mat-form-field>
         <div class="invisible" id="discos">
-            <mat-radio-group aria-label="Select an option">
-                <mat-radio-button value="ssd">SSD</mat-radio-button>
-                <mat-radio-button value="hdd">HDD</mat-radio-button>
+            <mat-radio-group aria-label="Select an option" name="disco_duro" (change)="tipoDiscoDuro($event.value)">
+                <mat-radio-button value="SSD">SSD</mat-radio-button>
+                <mat-radio-button value="HDD">HDD</mat-radio-button>
             </mat-radio-group>
         </div>
 
-        <div class="invisible" id="ram">
-            <td>
-                <div>
-                    <h6 style="width: 200px; margin-left: 10;"> <i class='fas fa-asterisk'
-                            style='font-size:10px;color:red'></i>
-                        Tipo de Ranura:</h6>
-                    <input type="text" class=" form-control form-control-sm">
-                </div>
-            </td>
-            <td>
-                <div class="col-sm" style="margin-left: 60px;">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Bus:</h6>
-                    <input type="text" class=" form-control form-control-sm">
-                </div>
-            </td>
-        </div>
+        
     </div>
 
 
     <div class="invisible card-body" id="otros">
         <blockquote class="blockquote mb-0">
             <form [formGroup]="datosAccesorioForm">
+
+                <div class="invisible" id="ram" style="margin-bottom: 20px;">
+                    <td>
+                        <div>
+                            <h6 style="width: 200px; margin-left: 10;"> <i class='fas fa-asterisk'
+                                    style='font-size:10px;color:red'></i>
+                                Tipo de Ranura:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="ram_ranura">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-sm" style="margin-left: 60px;">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Bus:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="ram_bus">
+                        </div>
+                    </td>
+                </div>
 
                 <div class="row">
                     <div class="invisible col-sm" id="nombre">

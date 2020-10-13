@@ -14,7 +14,9 @@ let datosUser: RolesUser = {
   nombre: '',
   id: 0,
 };
-
+let discoDuro = "";
+let accesorioTipo = "";
+let nombreForm = "";
 
 @Component({
   selector: 'app-agregar-accesorios',
@@ -34,11 +36,13 @@ export class AgregarAccesoriosComponent implements OnInit {
     producto: '',
     hecho_en: '',
     serie: '',
-    id_estatus: 0,
     costo: 0,
-    descripcion: ''
+    descripcion: '',
+    capacidad: '',
+    tipo_disco_duro:'',
+    ram_bus:'',
+    ram_ranura:'',
   };
-
 
   tipoAccesorioE: any[] = [
     { nombre: 'RAM' },
@@ -57,14 +61,17 @@ export class AgregarAccesoriosComponent implements OnInit {
   ngOnInit() {
     this.usuarioLogeado();
     this.datosAccesorioForm = this.formBuilder.group({
-      nombre_accesorio: ['', Validators.required],
+      nombre_accesorio: [''],
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
-      //producto: ['', Validators.required],
       hecho_en: ['', Validators.required],
       serie: ['', Validators.required],
       costo: ['', Validators.required],
-      descripcion: ['', Validators.required]
+      descripcion: [''],
+      capacidad: ['', Validators.required],
+      tipo_disco_duro: [''],
+      ram_ranura: [''],
+      ram_bus: [''],
     });
     this.tipoAccesorio = new FormControl('')
   }
@@ -86,7 +93,9 @@ export class AgregarAccesoriosComponent implements OnInit {
     let c = document.getElementById('otros');
     let d = document.getElementById('nombre');
     let e = document.getElementById('capacidad')
-
+    accesorioTipo = tipo;
+    console.log(accesorioTipo);
+    
     if (tipo === this.tipoAccesorioE[0].nombre) {
       console.log(this.tipoAccesorioE[0]);
       a.className = 'invisible';
@@ -111,30 +120,45 @@ export class AgregarAccesoriosComponent implements OnInit {
     }
   }
 
+  tipoDiscoDuro (tipo: string){
+    discoDuro = tipo;
+    console.log(discoDuro);
+  }
+
   guardarDatos() {
-    const nombreForm = this.datosAccesorioForm.controls.nombre_accesorio.value;
+    if (this.datosAccesorioForm.controls.nombre_accesorio.value === ""){
+      nombreForm = accesorioTipo;
+    } else{
+      nombreForm = this.datosAccesorioForm.controls.nombre_accesorio.value;
+    }   
     const marcaForm = this.datosAccesorioForm.controls.marca.value;
     const modeloForm = this.datosAccesorioForm.controls.modelo.value;
-    // const productoForm = this.datosAccesorioForm.controls.producto.value;
     const hechoEnForm = this.datosAccesorioForm.controls.hecho_en.value;
     const serieForm = this.datosAccesorioForm.controls.serie.value;
     const costoForm = this.datosAccesorioForm.controls.costo.value;
     const descripcionForm = this.datosAccesorioForm.controls.descripcion.value;
-
-    if (nombreForm !== '' && marcaForm !== '' && modeloForm !== '' /* && productoForm !== ''*/ && hechoEnForm !== '' &&
+    const capacidadForm = this.datosAccesorioForm.controls.capacidad.value;
+    const ranuraForm = this.datosAccesorioForm.controls.ram_ranura.value;
+    const busForm = this.datosAccesorioForm.controls.ram_bus.value;
+    
+    if (marcaForm !== '' && modeloForm !== '' && hechoEnForm !== '' &&
       costoForm !== '') {
       console.log('Datos completos');
       this.accesorio = {
         id_accesorio: '',
-        nombre_accesorio: '',
+        nombre_accesorio: nombreForm,
         marca: marcaForm,
         modelo: modeloForm,
         producto: nombreForm,
         hecho_en: hechoEnForm,
         serie: serieForm,
-        id_estatus: estatusId,
         costo: costoForm,
-        descripcion: descripcionForm
+        descripcion: descripcionForm,
+        capacidad: capacidadForm,
+        tipo_disco_duro: discoDuro,
+        ram_ranura:ranuraForm,
+        ram_bus: busForm,
+        id_estatus: null
       };
       console.log(this.accesorio);
       this.servicioAccesorio.crearAccesorio(this.accesorio, estatusId).subscribe(
