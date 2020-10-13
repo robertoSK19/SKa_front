@@ -136,7 +136,7 @@ export class EditarAccesoriosComponent implements OnInit {
         response => {
           if (response.status === 200) {
             this.accesorio = response.body;
-            this.accesorio.id_estatus = response.body.id_Estatus.id_estatus;
+            this.accesorio.id_estatus = response.body.id_estatus.id_estatus;
             this.datosAccesoriosForm.controls.nombre.setValue(this.accesorio.producto);
             this.datosAccesoriosForm.controls.marca.setValue(this.accesorio.marca);
             this.datosAccesoriosForm.controls.modelo.setValue(this.accesorio.modelo);
@@ -144,7 +144,7 @@ export class EditarAccesoriosComponent implements OnInit {
             this.datosAccesoriosForm.controls.hechoEn.setValue(this.accesorio.hecho_en);
             this.datosAccesoriosForm.controls.serie.setValue(this.accesorio.serie);
             this.datosAccesoriosForm.controls.costo.setValue(this.accesorio.costo);
-            this.datosAccesoriosForm.controls.estatus.setValue(response.body.id_Estatus.id_estatus);
+            this.datosAccesoriosForm.controls.estatus.setValue(response.body.id_estatus.id_estatus);
             this.datosAccesoriosForm.controls.descripcion.setValue(this.accesorio.descripcion);
             if (response.body.id_Estatus.id_estatus === estatusAsignado) {
               this.ifAsignado = true;

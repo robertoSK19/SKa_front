@@ -36,7 +36,16 @@ export class AgregarEquiposComponent implements OnInit {
 
   datosEquipoForm: FormGroup;
   datosAccesorioForm: FormGroup;
+  datosAccesorioFormEscritorio: FormGroup;
+  datosMouseForm: FormGroup;
+  datosTecladoForm: FormGroup;
+  datosMonitor: FormGroup;
   ifLaptop = true;
+  ifEscritorio = true;
+  ifMouseN = true;
+  ifMouseS = true;
+  ifTecladoN = true;
+  ifTecladoS = true;
   Softwares: any[];
   softSO: any[];
   softOf: any[];
@@ -44,7 +53,10 @@ export class AgregarEquiposComponent implements OnInit {
 
   tiposEquipos: any[];
   tiposProcesadorBits: any[];
-
+  opciones: any[] = [
+    'Nuevo',
+    'Stock'
+  ];
   public equipo: Equipos = {
     id_equipo: '',
     nombre_equipo: '',
@@ -73,6 +85,9 @@ export class AgregarEquiposComponent implements OnInit {
   };
   public dequipo: DEquipos;
   public Eliminador: Accesorios;
+  public mouse: Accesorios;
+  public teclado: Accesorios;
+  AccesoriosPc: Accesorios[];
   ifNumero = false;
   ifLongitud = false;
   ifFechaCorrecta = false;
@@ -93,6 +108,7 @@ export class AgregarEquiposComponent implements OnInit {
     private router: Router,
     protected servicioConUser: ServiciosService,
     private dataSvc: DataService,
+    private dataSvcAcce: DataService,
     private formBuilder: FormBuilder,
     public datepipe: DatePipe,
     private toastr: ToastrService
@@ -133,9 +149,34 @@ export class AgregarEquiposComponent implements OnInit {
       modeloA: ['', Validators.required],
       productoA: ['', Validators.required],
       hechoEnA: ['', Validators.required],
-      numeroSerieA: ['', Validators.required]
+      numeroSerieA: ['', Validators.required],
+      costo: ['', Validators.required],
+      descripcionA: ['', Validators.required],
     });
-    
+    this.datosAccesorioFormEscritorio = this.formBuilder.group({
+      checkMouse:  ['', Validators.required],
+      checkTeclado:  ['', Validators.required],
+      checkMonitorIn:  ['', Validators.required],
+      checkMonitor:  ['', Validators.required],
+    });
+    this.datosMouseForm = this.formBuilder.group({
+      marcaA: ['', Validators.required],
+      modeloA: ['', Validators.required],
+      productoA: ['', Validators.required],
+      hechoEnA: ['', Validators.required],
+      numeroSerieA: ['', Validators.required],
+      costo: ['', Validators.required],
+      descripcionA: ['', Validators.required],
+    });
+    this.datosTecladoForm = this.formBuilder.group({
+      marcaAT: ['', Validators.required],
+      modeloAT: ['', Validators.required],
+      productoAT: ['', Validators.required],
+      hechoEnAT: ['', Validators.required],
+      numeroSerieAT: ['', Validators.required],
+      costo: ['', Validators.required],
+      descripcionAT: ['', Validators.required],
+    });
   }
 
   usuarioLogeado() {
@@ -189,6 +230,7 @@ export class AgregarEquiposComponent implements OnInit {
     console.log(this.datosEquipoForm.controls.mac.value);
     console.log(this.datosEquipoForm.controls.correo.value);
 */
+    this.AccesoriosPc = [];
     const date = new Date();
 
     const nombre = this.datosEquipoForm.controls.nombre_equipo.value;
@@ -237,7 +279,7 @@ export class AgregarEquiposComponent implements OnInit {
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
       && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' && generacionProcesador !== '' &&
-      fechaCompra !== '' &&  lugarCompra !== this.ifFechaCorrecta === true) {
+      fechaCompra !== '' &&  this.ifFechaCorrecta === true) {
         if (regExp.test(ramE) === false) {
           this.ifNumero = true;
           console.log(this.ifNumero, this.ifLongitud);
@@ -290,6 +332,7 @@ export class AgregarEquiposComponent implements OnInit {
           const productoAc = this.datosAccesorioForm.controls.productoA.value;
           const hechoEnAc = this.datosAccesorioForm.controls.hechoEnA.value;
           const numeroSerieAc = this.datosAccesorioForm.controls.numeroSerieA.value;
+          const descripcionAc = this.datosAccesorioForm.controls.descripcion.value;
           if (marcaAc !== '' && modeloAc !== '' && productoAc !== '' && hechoEnAc !== '' && numeroSerieAc !== '') {
             this.Eliminador = {
               id_accesorio: '',
@@ -299,13 +342,65 @@ export class AgregarEquiposComponent implements OnInit {
               producto: productoAc,
               hecho_en: hechoEnAc,
               serie: numeroSerieAc,
-              id_estatus: 0,
+              id_estatus: null,
               id_equipo: 0,
-              costo: 0
+              costo: 0,
+              descripcion: descripcionAc,
             };
           } else {
             this.mensajeDatosVaciosAccesorio();
           }
+        }
+          if (this.ifEscritorio === false ) {
+          const marcaAcM = this.datosMouseForm.controls.marcaA.value;
+          const modeloAcM = this.datosMouseForm.controls.modeloA.value;
+          const productoAcM = this.datosMouseForm.controls.productoA.value;
+          const hechoEnAcM = this.datosMouseForm.controls.hechoEnA.value;
+          const numeroSerieAcM = this.datosMouseForm.controls.numeroSerieA.value;
+          const descripcionAcM = this.datosAccesorioForm.controls.descripcionA.value;
+          const costoM = this.datosMouseForm.controls.costo.value;
+          const marcaAcT = this.datosTecladoForm.controls.marcaAT.value;
+          const modeloAcT = this.datosTecladoForm.controls.modeloAT.value;
+          const productoAcT = this.datosTecladoForm.controls.productoAT.value;
+          const hechoEnAcT = this.datosTecladoForm.controls.hechoEnAT.value;
+          const numeroSerieAcT = this.datosTecladoForm.controls.numeroSerieAT.value;
+          const costoT = this.datosMouseForm.controls.costo.value;
+          const descripcionAcT = this.datosAccesorioForm.controls.descripcionAT.value;
+          if (marcaAcM !== '' && modeloAcM !== '' && productoAcM !== '' && hechoEnAcM !== '' && numeroSerieAcM !== '' && costoM !== '') {
+            this.mouse = {
+              id_accesorio: '',
+              nombre_accesorio: 'Mouse',
+              marca: marcaAcM,
+              modelo: modeloAcM,
+              producto: productoAcM,
+              hecho_en: hechoEnAcM,
+              serie: numeroSerieAcM,
+              id_estatus: null,
+              id_equipo: 0,
+              costo: costoM,
+              descripcion: descripcionAcM,
+            };
+          } else {
+            this.mensajeDatosVaciosAccesorio();
+          }
+          if (marcaAcT !== '' && modeloAcT !== '' && productoAcT !== '' && hechoEnAcT !== '' && numeroSerieAcT !== '' && costoT !== '') {
+            this.teclado = {
+              id_accesorio: '',
+              nombre_accesorio: 'Teclado',
+              marca: marcaAcT,
+              modelo: modeloAcT,
+              producto: productoAcT,
+              hecho_en: hechoEnAcT,
+              serie: numeroSerieAcT,
+              id_estatus: null,
+              id_equipo: 0,
+              costo: costoT,
+              descripcion: descripcionAcT,
+            };
+          } else {
+            this.mensajeDatosVaciosAccesorio();
+          }
+
         }
           this.dataSvc.crearEquipo(this.equipo).subscribe(
           responseCE => {
@@ -335,12 +430,56 @@ export class AgregarEquiposComponent implements OnInit {
                   }
                 );
               }
+              if (this.ifEscritorio  === false ) {
+                this.mouse.id_equipo = responseCE.body.id_equipo;
+                this.teclado.id_equipo = responseCE.body.id_equipo;
+                /* this.AccesoriosPc.push(this.mouse);
+                this.AccesoriosPc.push(this.teclado);
+                for (const ac of this.AccesoriosPc) {
+                  this.dataSvc.crearAccesorio(ac, idEstatusAsignado).subscribe(
+                    responseAc => {
+                      if (responseAc.status === 200) {
+                        console.log('codigo 200', responseAc.id_accesorio);
+                      }
+                    },
+                    errorAc => {
+                      if (errorAc === 500) {
+                        console.log('codigo 500 AccePC' );
+                      }
+                    }
+                  );
+                } */
+                this.dataSvc.crearAccesorio(this.mouse, idEstatusAsignado).subscribe(
+                  responseAcM => {
+                    if (responseAcM.status === 200) {
+                      console.log('codigo 200', responseAcM.id_accesorio);
+                      this.dataSvcAcce.crearAccesorio(this.teclado, idEstatusAsignado).subscribe(
+                        responseAcT => {
+                          if (responseAcT.status === 200) {
+                            console.log('codigo 200 -2', responseAcT.id_accesorio);
+                          }
+                        },
+                        errorAcT => {
+                          if (errorAcT === 500) {
+                            console.log('codigo 500 AccePC 2' );
+                          }
+                        }
+                      );
+                    }
+                  },
+                  errorAcM => {
+                    if (errorAcM === 500) {
+                      console.log('codigo 500 AccePC' );
+                    }
+                  }
+                );
+              }
               this.dataSvc.crearDEquipo(this.dequipo, responseCE.body.id_equipo).subscribe(
                 responseDE => {
                   if (responseDE.status === 200) {
                     console.log('Registro completo');
                     this.mensaje200Nuevo();
-                    setTimeout( () => {this.router.navigate(['IndexEquipo']); }, 3000 );
+                    //setTimeout( () => {this.router.navigate(['IndexEquipo']); }, 3000 );
                   }
                 },
                 errorDE => {
@@ -455,10 +594,35 @@ export class AgregarEquiposComponent implements OnInit {
     const tipoCompu = tipo;
     if (tipoCompu === tipoLaptop) {
       this.ifLaptop = false;
+      this.ifEscritorio = true;
     } else if (tipoCompu === tipoEscritorio) {
+      this.ifEscritorio = false;
       this.ifLaptop = true;
     } else if (tipoCompu === tipoServidor) {
       this.ifLaptop = true;
+      this.ifEscritorio = true;
+    }
+  }
+  tipoMouse(tipo: any) {
+    console.log(tipo);
+    const tipoM = tipo;
+    if (tipoM === this.opciones[0]) {
+      this.ifMouseN = false;
+      this.ifMouseS = true;
+    } else if (tipoM === this.opciones[1]) {
+      this.ifMouseN = true;
+      this.ifMouseS = false;
+    }
+  }
+  tipoTeclado(tipo: any) {
+    console.log(tipo);
+    const tipoM = tipo;
+    if (tipoM === this.opciones[0]) {
+      this.ifTecladoN = false;
+      this.ifTecladoS = true;
+    } else if (tipoM === this.opciones[1]) {
+      this.ifTecladoN = true;
+      this.ifTecladoS = false;
     }
   }
 }

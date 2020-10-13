@@ -61,7 +61,7 @@ export class IndexAccesoriosComponent implements OnInit {
       response => {
         console.log(response);
         if (response.status === 200) {
-          console.log(status);
+          console.log(response.status);
           this.accesorios = response.body;
           this.accesoriosback = response.body;
           this.ifResultados = false;
@@ -90,13 +90,13 @@ export class IndexAccesoriosComponent implements OnInit {
   mensaje500() {
     this.toastr.error('Intentar más tarde', 'Error del Servidor ');
   }
-  filtrarNoSerie(nombre: string): any {
+  filtrarNombre(nombre: string): any {
     const valor = nombre;
     if (valor.length < 2 ) {
       this.accesorios = this.accesoriosback;
     } else {
-      const equipoNoNull = this.accesorios.filter(item => item.nombre_accesorio !== null);
-      const equiposFiltro = equipoNoNull.filter(item => item.nombre_accesorio.toLowerCase().startsWith(nombre.toLowerCase()));
+      const equipoNoNull = this.accesorios.filter(item => item.producto !== null);
+      const equiposFiltro = equipoNoNull.filter(item => item.producto.toLowerCase().startsWith(nombre.toLowerCase()));
       this.accesorios = equiposFiltro;
     }
   }
