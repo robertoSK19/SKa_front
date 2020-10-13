@@ -50,7 +50,7 @@ export class AgregarEquiposComponent implements OnInit {
   softSO: any[];
   softOf: any[];
   softExtra: any[];
-
+  aux: any;
   tiposEquipos: any[];
   tiposProcesadorBits: any[];
   opciones: any[] = [
@@ -317,6 +317,7 @@ export class AgregarEquiposComponent implements OnInit {
           lugar_compra: lugarCompra,
           tamaño_pantalla: tamañoPantalla,
           tipo_disco_duro: tipoDD,
+          factura: this.aux,
         };
           this.software = {
           fecha_licencia: SO.fecha_licencia,
@@ -624,5 +625,50 @@ export class AgregarEquiposComponent implements OnInit {
       this.ifTecladoN = true;
       this.ifTecladoS = false;
     }
+  }
+  fileEvent(valor: Event): any  {
+    const file = (<HTMLInputElement>valor.target).files[0];
+    const reader = new FileReader();
+    const tipoArchivo = '';
+    reader.readAsDataURL(file);
+    const pathSplitted = file.name.split('.');
+    const extension = pathSplitted.pop();
+    reader.onload = () => {
+        this.aux = reader.result;
+        console.log(this.aux);
+    };
+    // funcion para recuperar los datos en base64 de la bd y muestra una vista previa
+    this.dataSvc.getEquipo('244').subscribe(
+      response => {
+        console.log(response.body.factura);
+        const partes = response.body.factura.split(",");
+        console.log(partes);
+        const byteArray = new Uint8Array(atob(partes[1]).split('').map(char => char.charCodeAt(0)));
+        let archivo = new Blob([byteArray], {type: 'application/pdf'});
+        const url = window.URL.createObjectURL(archivo);
+
+    // i.e. display the PDF content via iframe
+    document.querySelector("iframe").src = url;
+      },
+      error => {
+
+      }
+    );
+// funcion para recuperar los datos en base64 de la bd sin vista previa
+    /* this.dataSvc.getEquipo('244').subscribe(
+      response => {
+
+        const datosFile = response.body.factura;
+        console.log(datosFile);
+        const downloadLink = document.createElement('a');
+        const fileName = 'factura_' + response.body.numero_serie_cmd + '.pdf';
+        downloadLink.href = datosFile;
+        downloadLink.download = fileName;
+        downloadLink.click();
+      },
+      error => {
+
+      }
+    ); */
   }
 }

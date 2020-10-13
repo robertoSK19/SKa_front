@@ -59,6 +59,109 @@
             <br>
             <div class="row">
                 <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Tipo Sistema Operativo:</h6>
+                        <mat-radio-group
+                        aria-labelledby="example-radio-group-label"
+                        class="example-radio-group"
+                        (change)="tipoLicenciaSO($event.value)"
+                        >
+                        <mat-radio-button class="example-radio-button" style="font-size:16px;"  *ngFor="let licencia of tiposLicencias" [value]="licencia">
+                          {{licencia}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                </div>
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Nombre y versión del sistema operativo:</h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select style='font-size:14px'>
+                                <mat-option *ngFor="let software of softwares" [value]="software" >
+                                    {{software.nombre_software}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-sm" [hidden]="ifOriginalSO">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Fecha Inicio Vigencia:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="pickerFI" style="font-size:13px; margin-top: 0;" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerFI"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFI></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm" [hidden]="ifOriginalSO">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Fecha Termino Vigencia:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="pickerFF" style="font-size:13px; margin-top: 0;" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerFF"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFF></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm" [hidden]="!ifOriginalSO">
+                </div>
+                <div class="col-sm" [hidden]="!ifOriginalSO">
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Tipo de Ofimática:</h6>
+                        <mat-radio-group
+                        aria-labelledby="example-radio-group-label"
+                        class="example-radio-group"
+                        (change)="tipoLicenciaOF($event.value)"
+                        >
+                        <mat-radio-button class="example-radio-button" style="font-size:16px;"  *ngFor="let licencia of tiposLicencias" [value]="licencia">
+                          {{licencia}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                </div>
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Nombre y versión de la Ofimática:</h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select style='font-size:14px'>
+                                <mat-option *ngFor="let software of softwares" [value]="software" >
+                                    {{software.nombre_software}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-sm" [hidden]="ifOriginalOF">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Fecha Inicio Vigencia:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerFIOf"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFIOf></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm" [hidden]="ifOriginalOF">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Fecha Termino Vigencia:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerFFOf"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFFOf></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm" [hidden]="!ifOriginalOF">
+                </div>
+                <div class="col-sm" [hidden]="!ifOriginalOF">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm">
                     <h6> <i class='fas' style='font-size:10px;color:red'></i>
                         Agregar Accesorio: 
                         <input type="checkbox" class="row-sm" style="width: 50px;" formControlName="opcionAccesorio" (change)="seleccinarAccesorios()" >
@@ -86,7 +189,7 @@
                             <td id = "marca">{{accesorio.marca}}</td>
                             <td id = "modelo">{{accesorio.modelo}}</td>
                             <td id = "serie">{{accesorio.serie}}</td>
-                            <td id = "estatusId">{{accesorio.id_Estatus.nombre_estatus}}</td>
+                            <td id = "estatusId">{{accesorio.id_estatus.nombre_estatus}}</td>
                             <td><input id="male" type="checkbox" value="male" name="gender"
                                 (click)="$event.stopPropagation()"
                                 (change)="$event  ? accesoriosCheck(accesorio.id_accesorio, accesorio.nombre_accesorio,

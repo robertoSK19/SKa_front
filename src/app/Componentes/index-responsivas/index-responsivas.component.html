@@ -26,13 +26,26 @@
 </div>
 <div class="row">
 
-    <!-- <div class="col-sm-3">
-        <label>Buscar:</label>
-        <input type="text" class=" form-control form-control-sm">
-    </div> -->
+
+    <div class="col-sm-3">
+        <label>Buscar por:</label>
+        <mat-form-field class="col-sm" >
+            <mat-select  (selectionChange)="filtroSelect($event.value)"  style='font-size:14px' placeholder="Seleccione un parametro">
+                <mat-option *ngFor="let filtro of filtros" [value]="filtro" >
+                    {{filtro}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-sm-3">
+        <label>Parametro:</label>
+        <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtro($event)" [disabled]="sinFiltro">
+    </div>
 
 </div>
 
+<br>
+<br>
 <br>
 <mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
 <div class="table-wrapper-scroll-y my-custom-scrollbar">
@@ -81,5 +94,5 @@
         <button type="button" class="btn btn-success btn-block" (click)="cancelarResponsiva()">Cancelar Responsiva</button>
     </div>
 </div>
-
+<br>
 <router-outlet></router-outlet>

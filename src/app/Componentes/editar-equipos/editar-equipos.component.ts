@@ -50,6 +50,8 @@ export class EditarEquiposComponent implements OnInit {
   ifCambioOfi = true;
   ifOfimaticaOk = true;
   ifLaptop = true;
+  aux: any;
+  ifFactura = false;
 
   public equipo: Equipos = {
     id_equipo: '',
@@ -231,6 +233,11 @@ export class EditarEquiposComponent implements OnInit {
               this.ifLaptop = true;
             } else {
               this.ifLaptop = false;
+            }
+            if ( this.equipo.factura !== null) {
+              this.ifFactura = true;
+            } else {
+              this.ifFactura = false;
             }
           } else if (response.status === 204) {
             console.log( 'Equipo no encontrado');
@@ -423,6 +430,7 @@ export class EditarEquiposComponent implements OnInit {
           lugar_compra: lugarCompra,
           tamaño_pantalla: tamañoPantalla,
           tipo_disco_duro: tipoDiscoDuro,
+          factura: this.aux,
         };
         this.datosDEquipoReq = {
           disco_duro_solido: this.datosDEquipo.disco_duro_solido,
@@ -660,6 +668,18 @@ cambioOfimatica() {
   } else if (cambioOfimatica === false) {
     this.ifCambioOfi = true;
   }
+}
+fileEvent(valor: Event): any  {
+  const file = (<HTMLInputElement>valor.target).files[0];
+  const reader = new FileReader();
+  const tipoArchivo = '';
+  reader.readAsDataURL(file);
+  const pathSplitted = file.name.split('.');
+  const extension = pathSplitted.pop();
+  reader.onload = () => {
+      this.aux = reader.result;
+      //console.log(this.aux);
+  };
 }
   mensaje200Actulizacion() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

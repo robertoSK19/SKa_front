@@ -215,6 +215,17 @@
                 <div class="col-sm">
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-sm" style='font-size:10px'>
+                    <h6>Seleccionar Factura:</h6>
+                    <input type="file" class="btn btn-block" (change)="fileEvent($event)">
+                </div>
+                <div class="col-sm">
+                    
+                </div>
+                <!-- <iframe id="iframepdf"></iframe> --> <!-- Tag con el cual muestra la vista previa del archivo de la factura-->
+            </div>
         </form>
 
         <div  [hidden]="ifLaptop">

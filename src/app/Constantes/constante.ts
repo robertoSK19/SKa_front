@@ -18,3 +18,13 @@ export const tiposPbit: any[] = [
     { nombre: P32Bits},
     { nombre: P64Bits}
 ];
+export const tipoLicencia: any[] = [
+    'Original',
+    'Genérica'
+];
+export const tipoFiltroResponsibas: any[] = [
+    'Responsable',
+    'Id de Equipo',
+    'No. Serie',
+];
+

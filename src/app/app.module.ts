@@ -48,6 +48,7 @@ import { CrearPDFSuraComponent } from './Componentes/formatos_pdf/crear-pdfsura/
 import { DialogElementsExampleDialog } from './Componentes/dialog-elements-example-dialog/dialog-elements-example-dialog.component';
 import { AgregarSoftwareComponent } from './Componentes/agregar-software/agregar-software.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 
 // Set the fonts to use
@@ -102,7 +103,7 @@ PdfMakeWrapper.setFonts(pdfFonts);
     ToastrModule.forRoot(), // ToastrModule added
     MatProgressSpinnerModule,
   ],
-  providers: [CookieService, DatePipe],
+  providers: [CookieService, DatePipe,{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
