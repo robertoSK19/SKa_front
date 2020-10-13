@@ -1,0 +1,19 @@
+.visible{
+    display:block;
+}
+.invisible{
+    display:none
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  } 
+
+  mat-form-field {
+    margin-right: 12px;
+  }
+
+  label{
+      color: black;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+  }

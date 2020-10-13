@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Software } from 'src/app/Models/Software/software.interface';
@@ -14,6 +14,8 @@ let datosUser: RolesUser = {
   id: 0,
 };
 
+let facturaBase = null;
+
 @Component({
   selector: 'app-agregar-software',
   templateUrl: './agregar-software.component.html',
@@ -23,10 +25,27 @@ export class AgregarSoftwareComponent implements OnInit {
   datosSoftwareForm: FormGroup;
   public datosSoftware: Software = {
     id_software: '',
-    fecha_licencia: '',
     no_serie: '',
+    version: '',
+    vigencia_inicial: '',
+    vigencia_final: '',
+    tipo_licencia: '',
     nombre_software: '',
+    factura: null,
+    tipo_software: ''
   };
+
+  tipoLicenciaE: any[] = [
+    { nombre: 'Original' },
+    { nombre: 'Generico' },
+  ];
+
+  tipoSoftwareE: any[] = [
+    { nombre: 'Sistema Operativo' },
+    { nombre: 'Ofimatica' },
+    { nombre: 'Antivirus' },
+    { nombre: 'Otros' }
+  ];
 
   constructor(
     private router: Router,
@@ -41,15 +60,29 @@ export class AgregarSoftwareComponent implements OnInit {
     this.usuarioLogeado();
     this.datosSoftwareForm = this.formBuilder.group({
       nombre_software: ['', Validators.required],
-      no_serie: ['', Validators.required],
-      fecha_vigencia: ['']
+      no_serie: [''],
+      vigencia_final: [''],
+      vigencia_inicial: [''],
+      version: [''],
+      tipo_licencia: [''],
+      factura: [''],
+      tipo_software: ['']
     });
+  }
+
+  handleUpload(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      facturaBase = reader.result;
+    };
   }
 
   usuarioLogeado() {
     datosUser = usuarioRol;
     const token = this.servicioConUser.getToken();
-    if ( token.length === 0) {
+    if (token.length === 0) {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
     } else {
@@ -57,21 +90,30 @@ export class AgregarSoftwareComponent implements OnInit {
     }
   }
 
-  guardarDatos() {
+  guardarDatos() {    
     const nombreForm = this.datosSoftwareForm.controls.nombre_software.value;
     const noSerieForm = this.datosSoftwareForm.controls.no_serie.value;
-    const fechaVigenciaForm = this.datepipe.transform(this.datosSoftwareForm.controls.fecha_vigencia.value, 'yyyy-MM-dd');
-    const fechaVigenciaForm2 = this.datosSoftwareForm.controls.fecha_vigencia.value;
-    console.log(nombreForm, noSerieForm, '_', fechaVigenciaForm, '_',fechaVigenciaForm);
+    const versionForm = this.datosSoftwareForm.controls.version.value;
+    const inicialForm = "";
+    const finalForm = "";
+    const tipoSoftForm = this.datosSoftwareForm.controls.tipo_software.value;
+    const tipoLicenciaForm = this.datosSoftwareForm.controls.tipo_licencia.value;
+    const facturaForm = btoa(facturaBase);
+    console.log(nombreForm, noSerieForm, versionForm, inicialForm, finalForm, tipoSoftForm, tipoLicenciaForm, facturaForm);
 
     if (nombreForm !== '' && noSerieForm !== '') {
-      console.log(nombreForm, noSerieForm, fechaVigenciaForm);
       console.log('datos correctos');
+      facturaBase = btoa(facturaBase);
       this.datosSoftware = {
         id_software: '',
-        fecha_licencia: fechaVigenciaForm,
-        no_serie: noSerieForm,
         nombre_software: nombreForm,
+        no_serie: noSerieForm,
+        version: versionForm,
+        vigencia_inicial: inicialForm,
+        vigencia_final: finalForm,
+        tipo_software: tipoSoftForm,
+        tipo_licencia: tipoLicenciaForm,
+        factura: facturaBase,
       };
       console.log(this.datosSoftware);
       this.servicioSoftware.crearSoftware(this.datosSoftware).subscribe(
@@ -79,7 +121,7 @@ export class AgregarSoftwareComponent implements OnInit {
           if (response.status === 200) {
             this.mensaje200Nuevo();
             console.log('ok');
-            setTimeout( () => {this.router.navigate(['IndexSoftware']); }, 2000 );
+            setTimeout(() => { this.router.navigate(['IndexSoftware']); }, 2000);
           } else {
             this.mensaje204Nuevo();
             console.log('error registro');
@@ -99,9 +141,29 @@ export class AgregarSoftwareComponent implements OnInit {
       this.mensajeDatosVacios();
     }
   }
+
+  tipoSoftwareSelect(tipo: string) {
+    console.log(tipo);
+    console.log("Si entre");
+
+    let a = document.getElementById('select');
+    let b = document.getElementById('original');
+    let c = document.getElementById('generico');
+
+    if (tipo === "Original") {
+      a.className = 'visible';
+      b.className = 'visible';
+      c.className = 'invisible';
+    } else if (tipo === "Generico") {
+      a.className = 'visible';
+      b.className = 'invisible';
+      c.className = 'visible';
+    }
+  }
+
   cancelar() {
     this.mensajeCancelar();
-    setTimeout( () => {this.router.navigate(['IndexSoftware']); }, 1000 );
+    setTimeout(() => { this.router.navigate(['IndexSoftware']); }, 1000);
 
   }
   mensaje200Nuevo() {

@@ -23,33 +23,76 @@
         <blockquote class="blockquote mb-0">
             <form [formGroup]="datosSoftwareForm">
 
-            <div class="row">
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Nombre del Software:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="nombre_software">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Número de Serie:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="no_serie">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
-                        Fecha de vigencia:</h6>
-                    <mat-form-field >
-                        <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_vigencia">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                <div class="col-sm-3">
+                    <h6>
+                        Tipo de Licencia</h6>
+                    <mat-form-field class="col-med-7">
+                        <mat-label style="font-size: 12px;">Seleccionar Tipo de Licencia</mat-label>
+                        <mat-select style='font-size:14px' formControlName="tipo_licencia"
+                            (selectionChange)="tipoSoftwareSelect($event.value)">
+                            <mat-option *ngFor="let recurso of tipoLicenciaE" [value]="recurso.nombre">
+                                {{recurso.nombre}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
-            </div>
+
+                <div class="invisible" id="select">
+                    <mat-form-field class="col-med-7" style="margin-left: 15px;">
+                        <mat-label style="font-size: 12px;">Seleccionar Tipo de Software</mat-label>
+                        <mat-select style='font-size:14px' formControlName="tipo_software">
+                            <mat-option *ngFor="let recurso of tipoSoftwareE" [value]="recurso.nombre">
+                                {{recurso.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="invisible" id="original">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Nombre del Software:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="nombre_software">
+                        </div>
+                        <div class="col-sm">
+                            <h6>
+                                Versión:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="version">
+                        </div>
+                        <div class="col-sm">
+                            <h6> <i class='fas fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Licencia:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="no_serie">
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label>Seleccione Factura</label>
+                        <br>
+                        <input id="file" type="file" accept=".pdf" (change)="handleUpload($event)" style="font-size: small;">
+                    </div>
+                </div>
+
+                <div class="invisible" id="generico">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Nombre del Software:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="nombre_software">
+                        </div>
+                        <div class="col-sm">
+                            <h6>
+                                Versión:</h6>
+                            <input type="text" class=" form-control form-control-sm" formControlName="version">
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+            </form>
 
             <br>
-
-        </form>
-        
-        <br>
             <div class="row">
                 <div class="col-sm-8">
 
@@ -61,7 +104,7 @@
                     <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
                 </div>
             </div>
-            
+
         </blockquote>
     </div>
 </div>

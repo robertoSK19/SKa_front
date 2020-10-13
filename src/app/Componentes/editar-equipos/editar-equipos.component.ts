@@ -52,6 +52,7 @@ export class EditarEquiposComponent implements OnInit {
   ifLaptop = true;
   aux: any;
   ifFactura = false;
+  ifLongitud = 2;
 
   public equipo: Equipos = {
     id_equipo: '',
@@ -111,16 +112,26 @@ export class EditarEquiposComponent implements OnInit {
     tipo_disco_duro: '',
   };
   public software: Software = {
-    fecha_licencia: '',
-    no_serie: '',
-    nombre_software: '',
     id_software: '',
+    no_serie: '',
+    version: '',
+    vigencia_inicial: '',
+    vigencia_final: '',
+    tipo_licencia: '',
+    nombre_software: '',
+    factura: null,
+    tipo_software: ''
   };
   public softwareSO: Software = {
-    fecha_licencia: '',
-    no_serie: '',
-    nombre_software: '',
     id_software: '',
+    no_serie: '',
+    version: '',
+    vigencia_inicial: '',
+    vigencia_final: '',
+    tipo_licencia: '',
+    nombre_software: '',
+    factura: null,
+    tipo_software: ''
   };
   public equipoSoft: EquipoSoftware = {
     id_equipo: null,
@@ -385,8 +396,13 @@ export class EditarEquiposComponent implements OnInit {
         this.software = {
           id_software: ofimatica.id_software,
           nombre_software: ofimatica.nombre_software,
-          fecha_licencia: ofimatica.fecha_licencia,
           no_serie: ofimatica.no_serie,
+          version: '',
+          vigencia_inicial: '',
+          vigencia_final: '',
+          tipo_licencia: '',
+          factura: null,
+          tipo_software: ''
         };
       } else {
         console.log('Falta indicar el nombre de la ofimática');
@@ -445,10 +461,15 @@ export class EditarEquiposComponent implements OnInit {
           id_software: this.software,
         };
         this.softwareSO = {
-          fecha_licencia: SO.fecha_licencia,
           id_software: SO.id_software,
           no_serie: SO.no_serie,
           nombre_software: SO.nombre_software,
+          version: '',
+          vigencia_inicial: '',
+          vigencia_final: '',
+          tipo_licencia: '',
+          factura: null,
+          tipo_software: ''
         };
         console.log(this.equipoReq);
         this.dataSvc.updateEquipo(this.equipoReq).subscribe(
