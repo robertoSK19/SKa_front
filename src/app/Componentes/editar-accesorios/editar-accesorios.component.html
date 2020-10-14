@@ -20,113 +20,143 @@
 <div class="card">
 
     <div class="card-body">
-        <blockquote class="blockquote mb-0">
-            <form [formGroup]="datosAccesoriosForm">
+        <div>
+            <blockquote class="blockquote mb-0">
+                <form [formGroup]="datosAccesoriosForm">
+    
+                <div class="row">
+                    <div class="col-sm">
+    
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Tipo de Accesorio:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="nombre" disabled>
+                    </div>
 
-            <div class="row">
-                <div class="col-sm">
+                    <div id="memoria" class="col-sm invisible">
+    
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Capacidad:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="capacidad" disabled>
+                    </div>
 
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Nombe del Accesorio:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="nombre" >
-                </div>
+                    <div id="disco" class="col-sm invisible">
+    
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Tipo Disco Duro:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="tipo_disco_duro" disabled>
+                    </div>
 
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Marca:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="marca">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Modelo:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="modelo">
-                </div>
-                <div class="col-sm">
-                    <!-- <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Producto:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="producto"> -->
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Costo:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="costo">
-                </div>
-            </div>
+                    <div id="ram" class="col-sm invisible">
+    
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Tipo de Ranura:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="ram_ranura" disabled>
+                    </div>
 
-            <br>
-
-            <div class="row">
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Hecho en:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="hechoEn">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
-                        Número de Serie:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="serie">
-                </div>
-                <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
-                    <h6> <i class='fas' style='font-size:10px;color:red'></i>
-                        Descripción:</h6>
-                        <textarea type="text" class=" form-control form-control-sm" style="width: 100%; height: 40%; resize: none;" formControlName="descripcion">
-                        </textarea>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-sm" style='font-size:10px'>
-                    <!--                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                                        Costo:</h6>
-                                    <input type="text" class=" form-control form-control-sm" formControlName="costo"> -->
-                    <div class="dropdown">
-                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
-                            Estatus Accesorio:</h6>
-                        <!-- <input type="text" class=" form-control form-control-sm" formControlName="estatus" value="Estatus."> -->
-                        <mat-form-field class="col-sm">
-                            <mat-select style='font-size:14px;;' formControlName="estatus"
-                                (selectionChange)="cambioEstatus($event.value)">
-                                <mat-option *ngFor="let estado of Estatus" [value]="estado.id_estatus">
-                                    {{estado.nombre_estatus}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                    <div id="bus" class="col-sm invisible">
+    
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Bus:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="ram_bus" disabled>
+                    </div>
+    
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Marca:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="marca" disabled>
+                    </div>
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Modelo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="modelo" disabled>
+                    </div>
+                    <div class="col-sm">
+                        <!-- <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Producto:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="producto"> -->
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Costo:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="costo" disabled>
                     </div>
                 </div>
-                <div class="col-sm">
+    
+                <br>
+    
+                <div class="row">
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Hecho en:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="hechoEn" disabled>
+                    </div>
+                    <div class="col-sm">
+                        <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                            Número de Serie:</h6>
+                        <input type="text" class=" form-control form-control-sm" formControlName="serie" disabled>
+                    </div>
+                    <div class="col-sm-6 my-custom-scrollbar table-wrapper-scroll-y">
+                        <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                            Descripción:</h6>
+                            <textarea type="text" class=" form-control form-control-sm" style="width: 100%; height: 40%; resize: none;" formControlName="descripcion" disabled>
+                            </textarea>
+                    </div>
+    
                 </div>
-                <div class="col-sm">
+                <div class="row">
+                    <div class="col-sm" style='font-size:10px'>
+                        <!--                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                            Costo:</h6>
+                                        <input type="text" class=" form-control form-control-sm" formControlName="costo"> -->
+                        <div class="dropdown">
+                            <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                                Estatus Accesorio:</h6>
+                            <!-- <input type="text" class=" form-control form-control-sm" formControlName="estatus" value="Estatus."> -->
+                            <mat-form-field class="col-sm">
+                                <mat-select style='font-size:14px;;' formControlName="estatus"
+                                    (selectionChange)="cambioEstatus($event.value)">
+                                    <mat-option *ngFor="let estado of Estatus" [value]="estado.nombre_estatus">
+                                        {{estado.nombre_estatus}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                    <div class="col-sm">
+                    </div>
                 </div>
-                <div class="col-sm">
+    
+                <br>
+                <div class="row">
+                    <div class="col-sm">
+                        <h6></h6>
+                    </div>
                 </div>
-            </div>
-
-            <br>
-            <div class="row">
-                <div class="col-sm">
-                    <h6></h6>
+                
+                <br>
+    
+                <div class="row">
+                    <div class="col-sm-8">
+    
+                    </div>
+                    <div class="col-sm-2 "[hidden]="ifMostrar === false && ifEditar === true">
+                        <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+                    </div>
+                    <div class="col-sm-2 " [hidden]="ifMostrar === false && ifEditar === true">
+                        <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
+                    </div>
+                    <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
+                        <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')" [disabled]="ifAsignado">Editar</button>
+                    </div>
+                    <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
+                        <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('aceptar')">Aceptar</button>
+                    </div>
                 </div>
-            </div>
-            
-            <br>
-
-            <div class="row">
-                <div class="col-sm-8">
-
-                </div>
-                <div class="col-sm-2 "[hidden]="ifMostrar === false && ifEditar === true">
-                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
-                </div>
-                <div class="col-sm-2 " [hidden]="ifMostrar === false && ifEditar === true">
-                    <button type="button" class="btn btn-success btn-block" (click)='guardarDatos()'>Guardar</button>
-                </div>
-                <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
-                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('editar')" [disabled]="ifAsignado">Editar</button>
-                </div>
-                <div class="col-sm-2 " [hidden]="ifMostrar === true && ifEditar === false">
-                    <button type="button" class="btn btn-success btn-block" (click)="opcionesVistaVer('aceptar')">Aceptar</button>
-                </div>
-            </div>
-            </form>
-        </blockquote>
+                </form>
+            </blockquote>
+        </div>
     </div>
 </div>
 <br>

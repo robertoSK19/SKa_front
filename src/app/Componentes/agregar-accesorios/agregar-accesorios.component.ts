@@ -94,24 +94,20 @@ export class AgregarAccesoriosComponent implements OnInit {
     let d = document.getElementById('nombre');
     let e = document.getElementById('capacidad')
     accesorioTipo = tipo;
-    console.log(accesorioTipo);
-    
+
     if (tipo === this.tipoAccesorioE[0].nombre) {
-      console.log(this.tipoAccesorioE[0]);
       a.className = 'invisible';
       b.className = 'visible';
       c.className = 'visible card-body';
       d.className = 'invisible col-sm';
       e.className = 'visible col-sm';
     } else if (tipo === this.tipoAccesorioE[1].nombre) {
-      console.log(this.tipoAccesorioE[1]);
       a.className = 'visible';
       b.className = 'invisible';
       c.className = 'visible card-body';
       d.className = 'invisible col-sm';
       e.className = 'visible col-sm';
     } else if (tipo === this.tipoAccesorioE[2].nombre) {
-      console.log(this.tipoAccesorioE[2]);
       a.className = 'invisible';
       b.className = 'invisible';
       c.className = 'visible card-body';
@@ -122,7 +118,6 @@ export class AgregarAccesoriosComponent implements OnInit {
 
   tipoDiscoDuro (tipo: string){
     discoDuro = tipo;
-    console.log(discoDuro);
   }
 
   guardarDatos() {

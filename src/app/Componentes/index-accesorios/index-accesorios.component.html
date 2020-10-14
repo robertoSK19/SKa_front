@@ -43,29 +43,23 @@
     <table class="table " [hidden]="ifResultados">
         <thead class="thead-dark">
             <tr>
-                <th class="sticky-top" scope="col">ID</th>
                 <th class="sticky-top" scope="col">Nombre del Accesorio</th>
                 <th class="sticky-top" scope="col">Marca</th>
                 <th class="sticky-top" scope="col">Modelo</th>
                 <th class="sticky-top" scope="col">No. Serie</th>
                 <th class="sticky-top" scope="col">Estatus</th>
-                <th class="sticky-top" scope="col">Ver</th>
-                <th class="sticky-top" scope="col">Modificar</th>
+                <th class="sticky-top" scope="col">Ver/Modificar</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let accesorio of accesorios">
-                <td>{{accesorio.nombre_accesorio}}</td>
                 <td>{{accesorio.producto}}</td>
                 <td>{{accesorio.marca}}</td>
                 <td>{{accesorio.modelo}}</td>
                 <td>{{accesorio.serie}}</td>
                 <td>{{accesorio.id_estatus.nombre_estatus}}</td>
-                <td><i class='fas fa-eye' [routerLink]="[ '/EditarAccesorio' ]"
-                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'mostrar')"></i>
-                </td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarAccesorio' ]"
-                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'editar')"
+                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'mostrar')"
                         [hidden]="accesorio.id_estatus.id_estatus===idAsignado"></i>
                 </td>
             </tr>
