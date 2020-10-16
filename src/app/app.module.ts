@@ -49,6 +49,8 @@ import { DialogElementsExampleDialog } from './Componentes/dialog-elements-examp
 import { AgregarSoftwareComponent } from './Componentes/agregar-software/agregar-software.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { FormularioKabecAccesoriosComponent } from './Componentes/formulario-kabec-accesorios/formulario-kabec-accesorios.component';
+import { PdfKabecAccesoriosComponent } from './Componentes/formatos_pdf/pdf-kabec-accesorios/pdf-kabec-accesorios.component';
 
 
 // Set the fonts to use
@@ -79,6 +81,8 @@ PdfMakeWrapper.setFonts(pdfFonts);
     CrearPDFSuraComponent,
     DialogElementsExampleDialog,
     AgregarSoftwareComponent,
+    FormularioKabecAccesoriosComponent,
+    PdfKabecAccesoriosComponent,
   ],
   entryComponents: [DialogElementsExampleDialog],
   imports: [
