@@ -59,8 +59,10 @@
                 <td>{{accesorio.serie}}</td>
                 <td>{{accesorio.id_estatus.nombre_estatus}}</td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarAccesorio' ]"
-                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'mostrar')"
-                        [hidden]="accesorio.id_estatus.id_estatus===idAsignado"></i>
+                        style='font-size:20px;color:purple' (click)="editarAccesorio(accesorio.id_accesorio,'editar')"
+                        ></i>
+                        <!-- [hidden]="accesorio.producto===ifEliminador" --> <!-- otra opcion para bloquear el cambio de estatus -->
+                        <!-- [hidden]="accesorio.id_estatus.id_estatus===idAsignado" --> <!--para cuando se pasen las responsivas activas al sistema-->
                 </td>
             </tr>
 

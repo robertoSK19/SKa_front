@@ -22,7 +22,7 @@ let datosResponsiva: DatosEquipoResponsiva = {
 let datosResponsivaAccesorio: DatosAccesorioResponsiva = {
   idAcceosrio: [],
 };
-
+export let accesor = [];
 let datosAsignacion: Asignacion = {
   id_asignacion: '',
   nombre_consultor: '',
@@ -113,6 +113,7 @@ export class FormularioSuraComponent implements OnInit {
   cargaIdEquipo(id?: string) {
     datosResponsiva = EquipoResp;
     this.datosRespForm.controls.id_equipo.setValue(datosResponsiva.idEquipo);
+    this.datosRespForm.controls.id_equipo.disable();
     this.ServiceConsulta.getDEquipo(datosResponsiva.idEquipo).subscribe(
       response => {
         if (response.status === 200) {
@@ -131,6 +132,7 @@ export class FormularioSuraComponent implements OnInit {
     );
     this.ServiceConsulta.getAccesorioEquipo(Number (datosResponsiva.idEquipo)).subscribe(
       responseAE => {
+        console.log(responseAE)
         if (responseAE.status === 200 ) {
           accesorioEquipo = responseAE.body;
         } else if (responseAE.status === 204) {
@@ -200,8 +202,8 @@ export class FormularioSuraComponent implements OnInit {
             this.datosDEquipo = response.body;
             datosDEquipoG = response.body;
             if (accion === 'vista') {
-              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco);
-              this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo);
+              this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
+              this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo,);
             }
           },
           error => {
@@ -221,7 +223,7 @@ export class FormularioSuraComponent implements OnInit {
                       responseA => {
                         if (responseA.status === 200) {
                           console.log('asignacion correcta');
-                          this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco);
+                          this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
                           this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo);
                           this.mensajeResponsivaGenerada();
                           setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
@@ -286,7 +288,7 @@ export class FormularioSuraComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.accesorios = response.body;
-          const accesoriosDisp =  this.accesorios.filter(item => item.id_Estatus.id_estatus === 2);
+          const accesoriosDisp =  this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
         } else {
           console.log('Error de servicio');
@@ -306,7 +308,8 @@ export class FormularioSuraComponent implements OnInit {
   validarRecurso() {
     datosResponsiva = EquipoResp;
     datosResponsivaAccesorio = AccesorioResp;
-    if (datosResponsivaAccesorio.idAcceosrio !== []) {
+    console.log(datosResponsivaAccesorio.idAcceosrio)
+    if (datosResponsivaAccesorio.idAcceosrio.length !== 0) {
       this.ifAccesorio = false;
       this.cargaAccesorio();
     }

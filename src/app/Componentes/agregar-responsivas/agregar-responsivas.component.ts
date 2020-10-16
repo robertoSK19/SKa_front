@@ -143,9 +143,7 @@ export class AgregarResponsivasComponent implements OnInit {
         if (this.tipoResponsiva.value === this.tiposResponsivasEqu[0].nombre) {
           this.router.navigate(['FormularioKabec']);
         } else if (this.tipoResponsiva.value === this.tiposResponsivasEqu[1].nombre) {
-          console.log('GNP');
-        } else if (this.tipoResponsiva.value === this.tiposResponsivasEqu[2].nombre) {
-          console.log('Sura');
+          console.log('Suras');
           this.router.navigate(['FormularioSURA']);
         }
       } else if (this.tipoResponsiva.value === '') {

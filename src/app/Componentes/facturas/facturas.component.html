@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-sm-2 ">
+        <a class='fas fa-arrow-alt-circle-left' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+
+        &nbsp;
+
+        <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
+    </div>
+
+    <div class="col-sm-8 ">
+        <h2 class="text-center ">FACTURAS</h2>
+    </div>
+</div>
+
+<hr>
+
+<!-- <br> -->
+<form [formGroup]="parametrosBusquedaForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-sm">
+            <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                Buscar por ID del Equipo:</h6>
+            <input type="text" class=" form-control form-control-sm" formControlName="id_equipo">
+        </div>
+        <div class="col-sm">
+            <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                Buscar por No. de Serie:</h6>
+            <input type="text" class=" form-control form-control-sm" formControlName="no_serie">
+        </div>
+        <div class="col-sm-3 ">
+            <h6> <i class='fas' style='font-size:10px;color:red'></i>
+                </h6>
+            <button type="submit" class="btn btn-outline-primary btn-sm btn-block " >BUSCAR FACTURA</button>
+        </div>
+    </div>
+</form>
+<div class="row">
+</div>
+
+<br>
+<br>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+    <table class="table " >
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">Id</th>
+                <th class="sticky-top" scope="col">Nombre del Equipo</th>
+                <th class="sticky-top" scope="col">Numero de Serie</th>
+                <th class="sticky-top" scope="col">Ver</th>
+                <th class="sticky-top" scope="col">Descargar</th>
+            </tr>
+        </thead>
+        <mat-spinner [hidden]="ifResultados" class="mat-spinner circle centrar"></mat-spinner>
+        <tbody>
+            <tr *ngFor="let equipo of resultados">
+                <td>{{equipo.id_equipo}}</td>
+                <td>{{equipo.nombre_equipo}}</td>
+                <td>{{equipo.numero_serie_cmd}}</td>
+                <td><i class="fas fa-eye" style='font-size:20px;color:purple' [hidden]="equipo.factura === null" (click)="opcionesFactura(equipo.id_equipo, 'mostrar')"></i></td>
+                <td><i class='fas fa-download' style='font-size:20px;color:purple' [hidden]="equipo.factura === null" (click)="opcionesFactura(equipo.id_equipo, 'descargar')"></i></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<label  class="labelPdf">Vista Previa de la Factura</label>
+<iframe id="iframe" class="vistaPDF" ></iframe>
+<br>
+<router-outlet></router-outlet>

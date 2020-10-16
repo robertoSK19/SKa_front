@@ -147,6 +147,22 @@ export class FormularioKabecComponent implements OnInit {
         if (response.status === 200) {
           this.datosRespForm.controls.discoDS.setValue(response.body.disco_duro_solido);
           this.datosRespForm.controls.comentarios.setValue(response.body.comentarios);
+          this.ServiceConsulta.getAccesorioEquipo(Number(response.body.mequipo.id_equipo)).subscribe(
+            responseAE => {
+              if (responseAE.status === 200) {
+                accesorioEquipo = responseAE.body;
+              } else if (responseAE.status === 204) {
+                this.mensajeErrorObtencionDatos();
+              }
+            },
+            errorAE => {
+              if (errorAE.status === 500) {
+                this.mensaje500();
+              } else if (errorAE.status === 400) {
+                this.mensaje400();
+              }
+            }
+          );
         } else if (response.status === 204) {
           console.log('Equipo no encontrado');
         }
@@ -158,7 +174,7 @@ export class FormularioKabecComponent implements OnInit {
         }
       }
     );
-    this.ServiceConsulta.getAccesorioEquipo(Number(datosResponsiva.idEquipo)).subscribe(
+    /* this.ServiceConsulta.getAccesorioEquipo(Number(datosResponsiva.idEquipo)).subscribe(
       responseAE => {
         if (responseAE.status === 200 || responseAE.status === 204) {
           accesorioEquipo = responseAE.body;
@@ -173,7 +189,7 @@ export class FormularioKabecComponent implements OnInit {
           this.mensaje400();
         }
       }
-    );
+    ); */
   }
 
   accesoriosCheck(accID: string, accNom: string, accMarca: string, accModelo: string, accSerie: string, accStatusId: string, accProducto: string) {
@@ -419,6 +435,7 @@ export class FormularioKabecComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.accesorios = response.body;
+          console.log(response.body)
           const accesoriosDisp = this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
         } else {

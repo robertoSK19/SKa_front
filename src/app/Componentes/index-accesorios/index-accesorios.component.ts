@@ -32,6 +32,7 @@ export class IndexAccesoriosComponent implements OnInit {
   accesoriosback: any[];
   valor = '';
   idAsignado = 1;
+  ifEliminador = 'Eliminador de Corriente';
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,

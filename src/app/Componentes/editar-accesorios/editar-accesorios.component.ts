@@ -211,7 +211,7 @@ export class EditarAccesoriosComponent implements OnInit {
             this.datosAccesoriosForm.controls.costo.setValue(this.accesorio.costo);
             this.datosAccesoriosForm.controls.estatus.setValue(estatusNom);
             this.datosAccesoriosForm.controls.descripcion.setValue(this.accesorio.descripcion);
-            if (response.body.id_Estatus.id_estatus === estatusAsignado) {
+            if (response.body.id_estatus.id_estatus === estatusAsignado) {
               this.ifAsignado = true;
             } else {
               this.ifAsignado = false;

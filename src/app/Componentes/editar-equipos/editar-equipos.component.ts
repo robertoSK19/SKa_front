@@ -262,16 +262,21 @@ export class EditarEquiposComponent implements OnInit {
           }
         }
       );
-      this.dataSvc.getDEquipo(datosEquipo.idEquipo).subscribe(
+      this.dataSvc.getAllEquipos().subscribe(
         response => {
           console.log(response);
           if (response.status === 200 ) {
-            this.datosDEquipo = response.body;
-            this.datosEquipoForm.controls.estatus.setValue(response.body.estatusRecurso.id_estatus);
-            if (response.body.estatusRecurso.id_estatus === estatusAsignado) {
-              this.ifAsignado = true;
-            } else {
-              this.ifAsignado = false;
+            for (const auxDE of response.body) {
+              if (auxDE.mequipo.id_equipo === datosEquipo.idEquipo) {
+                this.datosDEquipo = auxDE;
+                console.log(this.datosDEquipo);
+                this.datosEquipoForm.controls.estatus.setValue(auxDE.estatusRecurso.id_estatus);
+                if (auxDE.estatusRecurso.id_estatus === estatusAsignado) {
+                  this.ifAsignado = true;
+                } else {
+                  this.ifAsignado = false;
+                }
+              }
             }
           }
         },
@@ -418,6 +423,14 @@ export class EditarEquiposComponent implements OnInit {
       && ramE !== '' && disco !== '' && cuenta !== '' && tipoEquipo !== ''
       && fecha !== null && SO !== null && vSO !== null && mac !== null
       && fecha !== '' && SO !== '' && vSO !== '' && mac !== '' && this.ifFechaCorrecta === true  && this.ifOfimaticaOk === true) {
+        console.log(this.aux);
+        if (this.aux === undefined) {
+          this.aux = null;
+        } else {
+          console.log(this.aux);
+          this.aux = btoa(this.aux);
+        }
+        
         console.log('Datos correctos');
         this.equipoReq = {
           id_equipo: this.equipo.id_equipo,

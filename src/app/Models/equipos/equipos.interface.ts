@@ -25,5 +25,5 @@ export interface Equipos {
     fecha_garantia_termino: string;
     id_historico_equipo?: number;
     id_equipo_software?: number;
-    factura?: string;
+    factura?: Blob;
 }

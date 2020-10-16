@@ -91,7 +91,7 @@ export class CrearPDFComponent implements OnInit {
         ]).widths(['35%', '10%']).layout('noBorders').end,
         new Table([
           [new Cell(new Txt('fila').end).color('white').end],
-        ]).layout('noBorders').end
+        ]).layout('noBorders').fontSize(8).end
       ]
     );
     // Tabla con los datos del equipo
@@ -129,7 +129,7 @@ export class CrearPDFComponent implements OnInit {
         ],
       ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
       new Table([// lista de caracteristicas del eliminador
-        [ new Cell( new Txt(datosEliminador.nombre_accesorio).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
+        [ new Cell( new Txt(datosEliminador.producto).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
         new Table([
           [new Cell( new Txt('Marca:').fontSize(9).end ).end,
           new Cell( new Txt(datosEliminador.marca).fontSize(9).end ).end],
@@ -165,7 +165,7 @@ export class CrearPDFComponent implements OnInit {
     pdf.add(
       [
         new Table([
-          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+          [new Cell(new Txt('fila').fontSize(8).end).color('white').end]
         ]).layout('noBorders').end,
         new Table([
           [new Cell(new Txt('El costo por desperfectos y/o composturas que presente este equipo, '
@@ -174,7 +174,7 @@ export class CrearPDFComponent implements OnInit {
         ]
         ).layout('noBorders').end,
         new Table([
-          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+          [new Cell(new Txt('fila').fontSize(8).end).color('white').end]
         ]).layout('noBorders').end,
         new Table([
           [new Cell(new Txt('Está estrictamente prohibido pegarle calcomanías y tocar la pantalla, '
@@ -183,7 +183,7 @@ export class CrearPDFComponent implements OnInit {
         ]
         ).layout('noBorders').end,
         new Table([
-          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+          [new Cell(new Txt('fila').fontSize(8).end).color('white').end]
         ]).layout('noBorders').end,
         new Table([
           [new Cell(new Txt('Éste es única y exclusivamente para cubrir las necesidades de trabajo '
@@ -194,13 +194,13 @@ export class CrearPDFComponent implements OnInit {
         ]
         ).layout('noBorders').end,
         new Table([
-          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+          [new Cell(new Txt('fila').fontSize(8).end).color('white').end]
         ]).layout('noBorders').end,
         new Table([
-          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+          [new Cell(new Txt('fila').fontSize(8).end).color('white').end]
         ]).layout('noBorders').end,
         new Table([
-          [new Cell(new Txt('fila').fontSize(9).end).color('white').end]
+          [new Cell(new Txt('fila').fontSize(8).end).color('white').end]
         ]).layout('noBorders').end,
       ]);
     // nombre y firma del responsable
@@ -228,7 +228,7 @@ export class CrearPDFComponent implements OnInit {
           new Cell(new Txt('C.' + responsable).end).fontSize(9).alignment('center').end],
         ]).widths(['10%', '55%']).layout('noBorders').end,
         new Table([
-          [new Cell(new Txt('fila').end).color('white').end],
+          [new Cell(new Txt('fila').end).color('white').fontSize(8).end],
         ]).layout('noBorders').end,
         new Table([
           [new Cell(new Txt('NOTA: EN CASO DE PÉRDIDA, ROBO Y/O INSTALACIÓN DE SOFTWARE SIN LICENCIA, '
@@ -314,7 +314,7 @@ export class CrearPDFComponent implements OnInit {
     let res = '';
     let cadena = '';
     let N = 1;
-    const parts = valor.split(',');
+    const parts = this.partesValor(valor);
     const l = parts.length;
     for (let i = (l - 1); i >= 0; i--) {
       numero = Number(parts[i]);
@@ -508,5 +508,43 @@ export class CrearPDFComponent implements OnInit {
     this.datepipe.transform(new Date(), 'EEEE');
     console.log(this.datepipe.transform(new Date(), 'EEEE'));
     this.diaSemana = this.datepipe.transform(new Date(), 'EEEE');
+  }
+  partesValor(valor: any): any[] {
+    const lon = valor.length;
+    const v1 = lon % 3;
+    const v2 = lon / 3;
+    let partes: any[];
+    partes = [];
+    switch (v1) {
+      case 0:
+        // console.log("caso mod = 0")
+        for (let i = 0; i < v2; i++) {
+          // console.log(valor.substring(i * 3, (3 * (i + 1))))
+          partes[i] = valor.substring(i * 3, (3 * (i + 1)));
+        }
+        break;
+      case 1:
+        // console.log("caso mod = 1")
+        for (let i = 0; i < Math.ceil(v2); i++) {
+          if ( i === 0) {
+            partes[i] = valor.substring(0, 1);
+          } else {
+            partes[i] = valor.substring((i * 3) - 2, (3 * (i + 1) - 2) );
+          }
+        }
+        break;
+      case 2:
+        // console.log("caso mod = 2")
+        for (let i = 0; i < Math.ceil(v2); i++) {
+          if ( i === 0) {
+            partes[i] = valor.substring(0, 2);
+          } else {
+            partes[i] = valor.substring((i * 3) - 1, (3 * (i + 1) - 1) );
+          }
+        }
+        break;
+      }
+    // console.log(partes);
+    return partes;
   }
 }
