@@ -358,6 +358,10 @@ export class AgregarEquiposComponent implements OnInit {
               id_equipo: 0,
               costo: 0,
               descripcion: descripcionAc,
+              capacidad: null,
+              ram_bus: null,
+              ram_ranura: null,
+              tipo_disco_duro: null,
             };
           } else {
             this.mensajeDatosVaciosAccesorio();
@@ -391,6 +395,10 @@ export class AgregarEquiposComponent implements OnInit {
               id_equipo: 0,
               costo: costoM,
               descripcion: descripcionAcM,
+              capacidad: null,
+              ram_bus: null,
+              ram_ranura: null,
+              tipo_disco_duro: null,
             };
           } else {
             this.mensajeDatosVaciosAccesorio();
@@ -408,6 +416,10 @@ export class AgregarEquiposComponent implements OnInit {
               id_equipo: 0,
               costo: costoT,
               descripcion: descripcionAcT,
+              capacidad: null,
+              ram_bus: null,
+              ram_ranura: null,
+              tipo_disco_duro: null,
             };
           } else {
             this.mensajeDatosVaciosAccesorio();
