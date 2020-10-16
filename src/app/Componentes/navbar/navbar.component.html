@@ -18,8 +18,9 @@
           </li>
           <button mat-button  [matMenuTriggerFor]="menu" (click)="activaMenu()"> Menú </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item [routerLink]="[ '/IndexUsuario' ]" [hidden]="ifNoAdmin">Administrar Usuarios</button>
-            <button mat-menu-item [routerLink]="[ '/IndexSoftware' ]" [hidden]="ifNoAdmin">Administrar Software</button>
+            <button mat-menu-item [routerLink]="[ '/IndexUsuario' ]" [hidden]="ifNoAdmin">Usuarios</button>
+            <button mat-menu-item [routerLink]="[ '/IndexSoftware' ]" [hidden]="ifNoAdmin">Software</button>
+            <button mat-menu-item [routerLink]="[ '/Facturas' ]" [hidden]="ifNoAdmin">Facturas</button>
             <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
           </mat-menu>
 

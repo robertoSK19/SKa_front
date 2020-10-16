@@ -49,6 +49,7 @@ import { DialogElementsExampleDialog } from './Componentes/dialog-elements-examp
 import { AgregarSoftwareComponent } from './Componentes/agregar-software/agregar-software.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { FacturasComponent } from './Componentes/facturas/facturas.component';
 
 
 // Set the fonts to use
@@ -79,6 +80,7 @@ PdfMakeWrapper.setFonts(pdfFonts);
     CrearPDFSuraComponent,
     DialogElementsExampleDialog,
     AgregarSoftwareComponent,
+    FacturasComponent,
   ],
   entryComponents: [DialogElementsExampleDialog],
   imports: [

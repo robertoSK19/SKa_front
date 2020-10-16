@@ -41,18 +41,17 @@ export class IndexSoftwareComponent implements OnInit {
 
   usuarioLogeado() {
     datosUser = usuarioRol;
-    console.log(datosUser)
+    // console.log(datosUser)
     const token = this.servicioConUser.getToken();
-    
-    console.log(token)
+    console.log(token);
     if ( token.length === 0 ) {
-      console.log('error en el acceso');
+      // console.log('error en el acceso');
       this.router.navigate(['Login']);
     } else {
       const cookieN64 = window.atob(unescape(encodeURIComponent(token)));
       datosUser = JSON.parse(cookieN64);
       if (datosUser.rol === 'Admin') {
-        console.log('acceso correcto');
+        // console.log('acceso correcto');
         this.getSoftware();
       } else if (datosUser.rol !== 'Admin') {
         this.router.navigate(['Principal']);
@@ -62,7 +61,7 @@ export class IndexSoftwareComponent implements OnInit {
   getSoftware() {
     this.servicioSoftware.getAllSoftware().subscribe(
       response => {
-        console.log(response)
+        // console.log(response)
         if ( response.status === 200 ) {
           this.softwares = response.body;
           this.ifResultados = false;
@@ -76,7 +75,7 @@ export class IndexSoftwareComponent implements OnInit {
         }
       },
       error => {
-        console.log(error)
+        // console.log(error)
         if (error.status === 500 ) {
           this.ifResultados = false;
           this.ifProgreso = true;

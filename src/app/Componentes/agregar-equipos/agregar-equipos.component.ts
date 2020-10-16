@@ -50,7 +50,7 @@ export class AgregarEquiposComponent implements OnInit {
   softSO: any[];
   softOf: any[];
   softExtra: any[];
-  aux: any;
+  aux = null;
   tiposEquipos: any[];
   tiposProcesadorBits: any[];
   opciones: any[] = [
@@ -81,7 +81,8 @@ export class AgregarEquiposComponent implements OnInit {
     generacion_procesador: '',
     lugar_compra: '',
     tamaño_pantalla: '',
-    tipo_disco_duro: ''
+    tipo_disco_duro: '',
+    factura: null,
   };
   public dequipo: DEquipos;
   public Eliminador: Accesorios;
@@ -93,7 +94,12 @@ export class AgregarEquiposComponent implements OnInit {
   ifFechaCorrecta = false;
 
   public software: Software = {
-    fecha_licencia: '',
+    vigencia_final: '',
+    version: '',
+    factura: null,
+    tipo_licencia: '',
+    tipo_software: '',
+    vigencia_inicial: '',
     no_serie: '',
     nombre_software: '',
     id_software: '',
@@ -290,7 +296,7 @@ export class AgregarEquiposComponent implements OnInit {
           this.ifLongitud = false;
           this.ifNumero = false;
           console.log(this.ifNumero, this.ifLongitud);
-
+          this.aux = btoa(this.aux);
           console.log('Datos correctos');
           this.equipo = {
           id_equipo: this.equipo.id_equipo,
@@ -320,7 +326,12 @@ export class AgregarEquiposComponent implements OnInit {
           factura: this.aux,
         };
           this.software = {
-          fecha_licencia: SO.fecha_licencia,
+          factura: SO.factura,
+          tipo_licencia: SO.tipo_licencia,
+          tipo_software: SO.tipo_software,
+          version: SO.version,
+          vigencia_final: SO.vigencia_final,
+          vigencia_inicial: SO.vigencia_inicial,
           id_software: SO.id_software,
           no_serie: SO.no_serie,
           nombre_software: SO.nombre_software,
@@ -333,14 +344,14 @@ export class AgregarEquiposComponent implements OnInit {
           const productoAc = this.datosAccesorioForm.controls.productoA.value;
           const hechoEnAc = this.datosAccesorioForm.controls.hechoEnA.value;
           const numeroSerieAc = this.datosAccesorioForm.controls.numeroSerieA.value;
-          const descripcionAc = this.datosAccesorioForm.controls.descripcion.value;
+          const descripcionAc = this.datosAccesorioForm.controls.descripcionA.value;
           if (marcaAc !== '' && modeloAc !== '' && productoAc !== '' && hechoEnAc !== '' && numeroSerieAc !== '') {
             this.Eliminador = {
               id_accesorio: '',
-              nombre_accesorio: 'ELIMINADOR DE CORRIENTE',
+              nombre_accesorio: '',
               marca: marcaAc,
               modelo: modeloAc,
-              producto: productoAc,
+              producto: 'ELIMINADOR DE CORRIENTE',
               hecho_en: hechoEnAc,
               serie: numeroSerieAc,
               id_estatus: null,
@@ -370,10 +381,10 @@ export class AgregarEquiposComponent implements OnInit {
           if (marcaAcM !== '' && modeloAcM !== '' && productoAcM !== '' && hechoEnAcM !== '' && numeroSerieAcM !== '' && costoM !== '') {
             this.mouse = {
               id_accesorio: '',
-              nombre_accesorio: 'Mouse',
+              nombre_accesorio: '',
               marca: marcaAcM,
               modelo: modeloAcM,
-              producto: productoAcM,
+              producto: 'Mouse',
               hecho_en: hechoEnAcM,
               serie: numeroSerieAcM,
               id_estatus: null,
@@ -387,10 +398,10 @@ export class AgregarEquiposComponent implements OnInit {
           if (marcaAcT !== '' && modeloAcT !== '' && productoAcT !== '' && hechoEnAcT !== '' && numeroSerieAcT !== '' && costoT !== '') {
             this.teclado = {
               id_accesorio: '',
-              nombre_accesorio: 'Teclado',
+              nombre_accesorio: '',
               marca: marcaAcT,
               modelo: modeloAcT,
-              producto: productoAcT,
+              producto: 'Teclado',
               hecho_en: hechoEnAcT,
               serie: numeroSerieAcT,
               id_estatus: null,
@@ -480,7 +491,7 @@ export class AgregarEquiposComponent implements OnInit {
                   if (responseDE.status === 200) {
                     console.log('Registro completo');
                     this.mensaje200Nuevo();
-                    //setTimeout( () => {this.router.navigate(['IndexEquipo']); }, 3000 );
+                    setTimeout( () => {this.router.navigate(['IndexEquipo']); }, 3000 );
                   }
                 },
                 errorDE => {
@@ -635,25 +646,25 @@ export class AgregarEquiposComponent implements OnInit {
     const extension = pathSplitted.pop();
     reader.onload = () => {
         this.aux = reader.result;
-        console.log(this.aux);
+        // console.log(this.aux);
     };
-    // funcion para recuperar los datos en base64 de la bd y muestra una vista previa
-    this.dataSvc.getEquipo('244').subscribe(
+    // funcion para recuperar los datos en blob de la bd y muestra una vista previa
+/*     this.dataSvc.getEquipo('244').subscribe(
       response => {
-        console.log(response.body.factura);
-        const partes = response.body.factura.split(",");
+        const aux2 = atob(response.body.factura);
+        console.log(aux2);
+        const partes = aux2.split(",");
         console.log(partes);
         const byteArray = new Uint8Array(atob(partes[1]).split('').map(char => char.charCodeAt(0)));
         let archivo = new Blob([byteArray], {type: 'application/pdf'});
         const url = window.URL.createObjectURL(archivo);
-
-    // i.e. display the PDF content via iframe
-    document.querySelector("iframe").src = url;
+        // i.e. display the PDF content via iframe
+        document.querySelector("iframe").src = url;
       },
       error => {
 
       }
-    );
+    ); */
 // funcion para recuperar los datos en base64 de la bd sin vista previa
     /* this.dataSvc.getEquipo('244').subscribe(
       response => {
@@ -671,4 +682,19 @@ export class AgregarEquiposComponent implements OnInit {
       }
     ); */
   }
+  
+    /* console.log(valor.length)
+    do{
+      if(i === 1){
+        division = Number(valor) / Math.pow(10,valor.length-i);
+        residuio = Number(valor) % Math.pow(10,valor.length-i);
+      } else {
+        division = Number(division) / Math.pow(10,div.length-i);
+        residuio = Number(residuio) % Math.pow(10,div.length-i);
+      }
+      div = division.toString();
+      console.log(division, residuio);
+      i++;
+    }while(div.length !==3); */
+    //}
 }

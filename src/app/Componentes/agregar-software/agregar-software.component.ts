@@ -101,7 +101,7 @@ export class AgregarSoftwareComponent implements OnInit {
     const facturaForm = btoa(facturaBase);
     console.log(nombreForm, noSerieForm, versionForm, inicialForm, finalForm, tipoSoftForm, tipoLicenciaForm, facturaForm);
 
-    if (nombreForm !== '' && noSerieForm !== '') {
+    if (nombreForm !== '' && versionForm !== '') {
       console.log('datos correctos');
       facturaBase = btoa(facturaBase);
       this.datosSoftware = {

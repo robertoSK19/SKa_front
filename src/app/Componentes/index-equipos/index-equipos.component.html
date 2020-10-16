@@ -64,7 +64,8 @@
                 <td><i class='fas fa-eye' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo,'mostrar')" style='font-size:20px;color:purple'></i>
                 </td>
                 <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'
-                    [hidden]="equipo.estatusRecurso.id_estatus===idAsignado"></i>
+                    ></i>
+                    <!-- [hidden]="equipo.estatusRecurso.id_estatus===idAsignado" -->
                 </td>
                 <td><i mat-button (click)="openDialog(equipo.mequipo.id_equipo)" class="fas fa-eye" style='font-size:20px;color:purple'></i></td>
             </tr>
