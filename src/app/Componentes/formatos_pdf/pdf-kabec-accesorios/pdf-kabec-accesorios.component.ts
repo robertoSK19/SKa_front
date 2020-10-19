@@ -4,6 +4,7 @@ import { PdfMakeWrapper, Txt, Img, Cell, Table } from 'pdfmake-wrapper';
 import { accesoriosID } from '../../agregar-responsivas/agregar-responsivas.component';
 
 let responsable = "";
+export let letra = "";
 
 @Component({
   selector: 'app-pdf-kabec-accesorios',
@@ -21,13 +22,12 @@ export class PdfKabecAccesoriosComponent implements OnInit {
   }
 
   async generarPDF(accion: string, accesorios: any, diaSemana: string, datos?: any, costo: number = 0) {
-    console.log(datos);
-    console.log(accesorios);
     const opcion = accion;
     const pdf = new PdfMakeWrapper();
     const fecha = this.obtenerFecha(diaSemana);
     const valorLetra = this.NumeroALetras(costo);
     const costoEquipo = costo;
+    letra = this.NumeroALetras(costo);
 
     datos.map(function(obj){
       responsable = obj.nombre_consultor;
@@ -237,7 +237,6 @@ export class PdfKabecAccesoriosComponent implements OnInit {
     if (opcion === 'vista') {
       pdf.create().open();
     } else if (opcion === 'crear') {
-      console.log("Di click en generar");
       pdf.create().download("Accesorio_"+ responsable.replace(' ', '') + '.pdf');
     }
   }

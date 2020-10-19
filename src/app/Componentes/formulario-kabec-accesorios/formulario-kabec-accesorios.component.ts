@@ -5,22 +5,20 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
+import { Asignacion_accesorios } from 'src/app/Models/asignacion/asignacion_accesorios.interface';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { accesoriosID } from '../agregar-responsivas/agregar-responsivas.component';
-import { PdfKabecAccesoriosComponent } from '../formatos_pdf/pdf-kabec-accesorios/pdf-kabec-accesorios.component';
+import { letra, PdfKabecAccesoriosComponent } from '../formatos_pdf/pdf-kabec-accesorios/pdf-kabec-accesorios.component';
 import { DataService } from '../list/data.service';
 
-const idEestatusAsignada = '1';
-const idEstatusNoAsignada = '2';
+const idEestatusAsignada = 1;
+const idEstatusNoAsignada = 2;
 let total = 0;
 
-let datosAsignacion: Asignacion = {
-  id_asignacion: '',
+let datosAsignacion: Asignacion_accesorios = {
   nombre_consultor: '',
   fecha_asignacion: '',
   costo: 0,
-  id_dequipo: 0,
-  id_estatus: 0,
   letra: '',
   usuario: ''
 };
@@ -66,7 +64,6 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
 
   ngOnInit() {
     this.idAccesorios = accesoriosID;
-    console.log(this.idAccesorios);
     this.datosRespForm = this.formBuilder.group({
       responsable: ['', Validators.required],
       comentarios: [''],
@@ -104,13 +101,10 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
       accesoriosID.map(accesorio => {
         const costoAccesorio = accesorio.costo
         datosAsignacion = {
-          id_asignacion: '',
           nombre_consultor: nombre,
-          id_dequipo: accesorio.id_accesorio,
-          costo: Number(accesorio.costo),
-          letra: String(costoTotal),
+          costo: Number(costoTotal),
+          letra: costoTotal,
           fecha_asignacion: fecha,
-          id_estatus: 0,
           usuario: '',
         }
         datosAsignacionC.push(datosAsignacion)
@@ -118,45 +112,42 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
       if (accion === 'vista') {
         this.uno.prototype.generarPDF(accion, accesoriosID, nombreDia, datosAsignacionC, costoTotal);
       } else if (accion === 'crear') {
-        let datosActualizar = [];
-        datosActualizar.map(obj => {
-          this.ServiceConsulta.getAccesorio(obj.idAccesorios).subscribe(
+        this.idAccesorios.map(obj => {
+          let id = obj.idAccesorios;
+          this.ServiceConsulta.getAccesorio(id).subscribe(
             response => {
+              console.log(response.body);              
               datosAccesorioG = response.body;
               datosAccesorioG.descripcion = comentarios;
-              this.ServiceConsulta.updateAccesorio(datosAccesorioG, Number(obj.idAccesorios)).subscribe(
+              this.ServiceConsulta.updateAccesorio(datosAccesorioG, idEestatusAsignada).subscribe(
                 responseDE => {
+                  let accesorioId = responseDE.body.id_accesorio;
+                  console.log(responseDE.status);                  
                   if (responseDE.status === 200) {
-                    this.ServiceConsulta.crearAsignacion(obj.idAccesorios, idEestatusAsignada, datosAsignacion).subscribe(
+                    this.ServiceConsulta.crearAsignacionAcc(idEestatusAsignada, datosAsignacion).subscribe(
                       responseA => {
-                        if (responseA.status === 200){
-                          console.log('asignacion correcta');
+                        let asignacionId = responseA.body.id_asignacion;
+                        console.log(responseA.status);
+                        if (responseA.status === 200) {
+                          this.ServiceConsulta.crearAccesorioN(asignacionId, accesorioId).subscribe(
+                            responseAA => {
+                                console.log("Asignación Correcta");
+                            }
+                          )
+                        } else {
+                          this.ServiceConsulta.updateAccesorio(datosAccesorioG, idEstatusNoAsignada).subscribe();
                         }
-                      },
-                        errorA => {
-                          if (errorA.status === 500) {
-                            console.log('Error en el Servicio');
-                          }
-                        }
+                      }
                     )
-                  }
-                },
-                errorDE => {
-                  if (errorDE.status === 500) {
-                    console.log('Error en el Servicio');
                   }
                 }
               );
-            },
-            error => {
-              console.log(error);
-              if (error.status === 500) {
-                console.log('Error en el Servicio');
-              }
             }
           );
         })
         this.uno.prototype.generarPDF(accion, accesoriosID, nombreDia, datosAsignacionC, costoTotal);
+        this.mensajeResponsivaGenerada();
+        setTimeout(() => { this.router.navigate(['IndexResponsiva']); }, 3000);
       }
     }
   }

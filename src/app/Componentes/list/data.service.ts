@@ -7,6 +7,9 @@ import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
 import { Software } from 'src/app/Models/Software/software.interface';
+import { AccesorioN } from 'src/app/Models/asignacion/accesorioN.interface';
+import { Asignacion_accesorios } from 'src/app/Models/asignacion/asignacion_accesorios.interface';
+import { ObserversModule } from '@angular/cdk/observers';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +25,8 @@ private urlAPISoft = 'http://localhost:8088/software';
 private urlAPIEstatus = 'http://localhost:8088/estatus';
 private urlApiEquSoft = 'http://localhost:8088/equipoSoftware';
 private urlAPIHist = 'http://localhost:8088/historico';
+private urlApiAccN = 'http://localhost:8088/accesoriosN';
+private urlApiAsigAcc = 'http://localhost:8088/asignacionAccesorios';
 
   constructor(private http: HttpClient,
     ) { }
@@ -135,5 +140,25 @@ private urlAPIHist = 'http://localhost:8088/historico';
   getSoftware(idsoftwre: number): Observable <any> {
     const url = this.urlAPISoft + '/get/' + idsoftwre;
     return this.http.get(url, {observe : 'response'});
+  }
+
+  crearAccesorioN(id_asignacion: number, id_accesorio: number): Observable <any> {
+    const url = this.urlApiAccN + '/post/' + id_asignacion +','+ id_accesorio;
+    return this.http.post(url, {observe: 'response'} );
+  }
+
+  getAllAccesorioN(): Observable <any> {
+    const url = this.urlApiAccN + '/get';
+    return this.http.get(url, {observe: 'response'});
+  }
+
+  crearAsignacionAcc(estatusId: number, datosAsigancion: Asignacion_accesorios): Observable <any> {
+    const url = this.urlApiAsigAcc + '/post/' + estatusId;
+    return this.http.post(url, datosAsigancion, {observe: 'response'} );
+  }
+
+  getAllAsignacionAcc(): Observable <any> {
+    const url = this.urlApiAsigAcc + '/get';
+    return this.http.get(url, {observe: 'response'});
   }
 }

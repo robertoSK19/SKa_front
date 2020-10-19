@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { Router } from '@angular/router';
-import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp, accesoriosID } from '../agregar-responsivas/agregar-responsivas.component';
+import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp, accesoriosID} from '../agregar-responsivas/agregar-responsivas.component';
 import { DataService } from '../list/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Accesorios } from '../../Models/accesorios/accesorios.interface';
@@ -147,22 +147,6 @@ export class FormularioKabecComponent implements OnInit {
         if (response.status === 200) {
           this.datosRespForm.controls.discoDS.setValue(response.body.disco_duro_solido);
           this.datosRespForm.controls.comentarios.setValue(response.body.comentarios);
-          this.ServiceConsulta.getAccesorioEquipo(Number(response.body.mequipo.id_equipo)).subscribe(
-            responseAE => {
-              if (responseAE.status === 200) {
-                accesorioEquipo = responseAE.body;
-              } else if (responseAE.status === 204) {
-                this.mensajeErrorObtencionDatos();
-              }
-            },
-            errorAE => {
-              if (errorAE.status === 500) {
-                this.mensaje500();
-              } else if (errorAE.status === 400) {
-                this.mensaje400();
-              }
-            }
-          );
         } else if (response.status === 204) {
           console.log('Equipo no encontrado');
         }
@@ -174,7 +158,7 @@ export class FormularioKabecComponent implements OnInit {
         }
       }
     );
-    /* this.ServiceConsulta.getAccesorioEquipo(Number(datosResponsiva.idEquipo)).subscribe(
+    this.ServiceConsulta.getAccesorioEquipo(Number(datosResponsiva.idEquipo)).subscribe(
       responseAE => {
         if (responseAE.status === 200 || responseAE.status === 204) {
           accesorioEquipo = responseAE.body;
@@ -189,7 +173,7 @@ export class FormularioKabecComponent implements OnInit {
           this.mensaje400();
         }
       }
-    ); */
+    );
   }
 
   accesoriosCheck(accID: string, accNom: string, accMarca: string, accModelo: string, accSerie: string, accStatusId: string, accProducto: string) {
@@ -216,7 +200,7 @@ export class FormularioKabecComponent implements OnInit {
 
     if (accesor.length !== 0) {
       console.log(accesor.findIndex(x => x.accId === acceId));
-      if ((accesor.findIndex(x => x.accId === acceId)) === -1) {
+      if((accesor.findIndex(x => x.accId === acceId)) === -1){
         accesor.push(objAcc);
       } else {
         var index: number = accesor.findIndex(x => x.accId === acceId)
@@ -253,9 +237,9 @@ export class FormularioKabecComponent implements OnInit {
           console.log('no selecciono un dispositivo');
         } else {
           console.log('selecciono al menos uno');
-          /* for (let accesorio of accesor) {
-             console.log(accesorio.accId);
-           }*/
+         /* for (let accesorio of accesor) {
+            console.log(accesorio.accId);
+          }*/
           datosAsignacion = {
             id_asignacion: '',
             id_dequipo: equipo,
@@ -278,7 +262,7 @@ export class FormularioKabecComponent implements OnInit {
               this.datosDEquipo = response.body;
               datosDEquipoG = response.body;
               if (accion === 'vista') {
-                this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
+                this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
               }
             },
             error => {
@@ -332,7 +316,7 @@ export class FormularioKabecComponent implements OnInit {
           id_asignacion: '',
           id_dequipo: equipo,
           nombre_consultor: nombre,
-          costo: Number(costoNum),
+          costo: Number(costoNum) ,
           letra: this.uno.prototype.costoLetra(costoEquipo),
           fecha_asignacion: fecha,
           id_estatus: 0,
@@ -372,7 +356,7 @@ export class FormularioKabecComponent implements OnInit {
                           console.log('asignacion correcta');
                           this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
                           this.mensajeResponsivaGenerada();
-                          setTimeout(() => { this.router.navigate(['IndexResponsiva']); }, 3000);
+                          setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
                         } else {
                           this.mensajeErrorResponsiva();
                         }
@@ -415,7 +399,7 @@ export class FormularioKabecComponent implements OnInit {
 
   cancelar() {
     this.mensajeCancelar();
-    setTimeout(() => { this.router.navigate(['AgregarResponsiva']); }, 1000);
+    setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
 
   }
 
@@ -435,7 +419,6 @@ export class FormularioKabecComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.accesorios = response.body;
-          console.log(response.body)
           const accesoriosDisp = this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
         } else {
@@ -456,7 +439,7 @@ export class FormularioKabecComponent implements OnInit {
   validarRecurso() {
     datosResponsiva = EquipoResp;
     datosResponsivaAccesorio = AccesorioResp;
-
+    
     if (datosResponsivaAccesorio.idAcceosrio.length !== 0) {
       this.ifAccesorio = false;
       this.cargaAccesorio();
@@ -471,15 +454,17 @@ export class FormularioKabecComponent implements OnInit {
   cargaAccesorio() {
     console.log(datosResponsivaAccesorio)
     this.datosRespAccForm.controls.id_accesorio.setValue
-      (datosResponsivaAccesorio.idAcceosrio);
+    (datosResponsivaAccesorio.idAcceosrio);
     this.datosRespAccForm.controls.id_accesorio.disable();
+    console.log(accesoriosID);
+    
     this.ServiceConsulta.getAccesorio(datosResponsivaAccesorio.idAcceosrio).subscribe(
       response => {
         if (response.status === 200) {
           this.datosAccesorios = response.body;
           datosAccesorioG = response.body;
           console.log(this.datosAccesorios);
-        } else if (response.status === 204) {
+        } else if (response.status === 204 ) {
           console.log('Accesorio no encontrado');
         }
       },
@@ -497,7 +482,7 @@ export class FormularioKabecComponent implements OnInit {
     const accesorio = this.datosRespAccForm.controls.id_accesorio.value;
     const costoAcc = datosAccesorioG.costo;
     const fecha = this.datepipe.transform(date, 'yyyy-MM-dd');
-    if (responsableAcc === '') {
+    if ( responsableAcc === '' ) {
       this.mensajeDatosVacios();
     } else {
       datosAsignacion = {
@@ -518,7 +503,7 @@ export class FormularioKabecComponent implements OnInit {
       this.ServiceConsulta.updateAccesorio(datosAccesorioG, Number(idEestatusAsignada)).subscribe(
         response => {
           console.log(response.body)
-          if (response.status === 200) {
+          if (response.status === 200 ) {
             this.softwares = response.body;
           } else {
             console.log('otra respuesta', response);
@@ -535,12 +520,12 @@ export class FormularioKabecComponent implements OnInit {
           }
         }
       );
-      /*       if (opcion === 'vista') {
-      
-            } else if (opcion === 'crear') {
-      
-            } */
-    }
+/*       if (opcion === 'vista') {
+
+      } else if (opcion === 'crear') {
+
+      } */
+  }
   }
   tipoLicenciaSO(tipo: any) {
     console.log(tipo);
@@ -564,12 +549,8 @@ export class FormularioKabecComponent implements OnInit {
   }
   getSoftwares() {
     this.ServiceConsulta.getAllSoftware().subscribe(
-
       response => {
         console.log(response);
-
-        console.log(accesoriosID);
-
         if (response.status === 200) {
           this.softwares = response.body;
         } else {
