@@ -37,10 +37,10 @@
                             <input type="text" class=" form-control form-control-sm" value={{id.costo}} disabled
                                 style="text-align:center; width: 25%;">
                         </div>
-                        <div>
+                        <div *ngFor="let item of totalCosto">
                             <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red;margin-top: 15px;'></i>
                                 Total de Costo de Accesorios:</h6>
-                            <input type="text" class=" form-control form-control-sm" id="total" disabled value=""
+                            <input type="text" class=" form-control form-control-sm" id="total" disabled value="{{item.nombre}}"
                                 style="text-align:center; width: 25%;">
                         </div>
                         <div>

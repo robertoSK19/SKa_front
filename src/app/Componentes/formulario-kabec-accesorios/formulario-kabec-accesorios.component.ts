@@ -53,6 +53,9 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
 
   idAccesorios: any[];
   datosRespForm: FormGroup;
+  totalCosto: any[] = [
+    {nombre: ''}
+  ]
   constructor(
     private formBuilder: FormBuilder,
     protected servicioConUser: ServiciosService,
@@ -73,7 +76,8 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
     accesoriosID.map(x => {
       total = x.costo + total;
     })
-    document.getElementById("total").value = total;
+    this.totalCosto[0].nombre = total;
+    console.log(this.totalCosto);
   }
 
   usuarioLogeado() {
