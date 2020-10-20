@@ -69,6 +69,7 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
       comentarios: [''],
       costoTotal: ['', Validators.required]
     });
+    total = 0;
     accesoriosID.map(x => {
       total = x.costo + total;
     })

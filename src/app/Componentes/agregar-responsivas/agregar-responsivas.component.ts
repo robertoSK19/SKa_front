@@ -79,6 +79,7 @@ export class AgregarResponsivasComponent implements OnInit {
     this.listaEquiposDisponibles();
     this.tipoResponsiva = new FormControl('');
     this.tipoRecurso = new FormControl('');
+    accesoriosID = [];
   }
 
   usuarioLogeado() {

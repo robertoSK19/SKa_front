@@ -215,25 +215,25 @@ export class IndexResponsivasComponent implements OnInit {
   }
 
   filtroAcc(parametro: any){
-    const valor = parametro;
-    if (valor.lenght < 3) {
+    const valorAcc = parametro;
+    if (valorAcc.lenght < 3) {
       this.responsivasAccesorios = this.responsivasBackupAcc;
     } else {
       const responsivasNoNull = this.responsivasAccesorios.filter(item => item.id_accesorio.serie !== null);
       switch (this.tipofiltro) {
         case this.filtros[0]:
           console.log('responsable');
-          const filtroResponsable = responsivasNoNull.filter(item => item.id_asignacion.nombre_consultor.toLowerCase().startsWith(valor.toLowerCase()));
+          const filtroResponsable = responsivasNoNull.filter(item => item.id_asignacion.nombre_consultor.toLowerCase().startsWith(valorAcc.toLowerCase()));
           this.responsivasAccesorios = filtroResponsable;
           break;
         case this.filtros[1]:
           console.log('id');
-          const filtroId = this.responsivasAccesorios.filter(item => item.id_accesorio.id_accesorio === Number(valor));
+          const filtroId = this.responsivasAccesorios.filter(item => item.id_accesorio.id_accesorio === Number(valorAcc));
           this.responsivasAccesorios =filtroId;
           break;
         case this.filtros[2]:
           console.log('serie');
-          const filtroNserie = responsivasNoNull.filter(item => item.id_accesorio.serie.toLowerCase().startsWith(valor.toLowerCase()));
+          const filtroNserie = responsivasNoNull.filter(item => item.id_accesorio.serie.toLowerCase().startsWith(valorAcc.toLowerCase()));
           this.responsivasAccesorios = filtroNserie;
           break;          
       }
