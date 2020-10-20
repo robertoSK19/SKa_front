@@ -61,6 +61,7 @@
             <tr>
                 <th class="sticky-top" scope="col">ID</th>
                 <th class="sticky-top" scope="col">Nombre del Equipo</th>
+                <th class="sticky-top" scope="col">Tipo</th>
                 <th class="sticky-top" scope="col">Marca</th>
                 <th class="sticky-top" scope="col">Modelo</th>
                 <th class="sticky-top" scope="col">No. Serie</th>
@@ -72,6 +73,7 @@
             <tr *ngFor="let equipo of equipos">
                 <td>{{equipo.id_dequipo}}</td>
                 <td>{{equipo.mequipo.nombre_equipo}}</td>
+                <td>{{equipo.mequipo.tipo_computadora}}</td>
                 <td>{{equipo.mequipo.marca}}</td>
                 <td>{{equipo.mequipo.modelo}}</td>
                 <td>{{equipo.mequipo.numero_serie}}</td>

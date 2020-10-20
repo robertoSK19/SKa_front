@@ -37,7 +37,7 @@ export class AgregarSoftwareComponent implements OnInit {
 
   tipoLicenciaE: any[] = [
     { nombre: 'Original' },
-    { nombre: 'Generico' },
+    { nombre: 'Genérico' },
   ];
 
   tipoSoftwareE: any[] = [
@@ -102,8 +102,13 @@ export class AgregarSoftwareComponent implements OnInit {
     console.log(nombreForm, noSerieForm, versionForm, inicialForm, finalForm, tipoSoftForm, tipoLicenciaForm, facturaForm);
 
     if (nombreForm !== '' && versionForm !== '') {
+      if (facturaBase === undefined || facturaBase === null) {
+        facturaBase = null;
+      } else {
+        facturaBase = btoa(facturaBase);
+      }
       console.log('datos correctos');
-      facturaBase = btoa(facturaBase);
+      // facturaBase = btoa(facturaBase);
       this.datosSoftware = {
         id_software: '',
         nombre_software: nombreForm,

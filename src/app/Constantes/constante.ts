@@ -20,7 +20,7 @@ export const tiposPbit: any[] = [
 ];
 export const tipoLicencia: any[] = [
     'Original',
-    'Genérica'
+    'Genérico'
 ];
 export const tipoFiltroResponsibas: any[] = [
     'Responsable',

@@ -9,6 +9,13 @@ import { DatePipe } from '@angular/common';
 })
 export class CrearPDFSuraComponent implements OnInit {
 
+  MouseMarMod = '';
+  MouseSerie = '';
+  TecladoMarMod = '';
+  TecladoSerie = '';
+  MonitorMarMod = '';
+  MonitorSerie = '';
+
   constructor(
     public fechaform: DatePipe,
   ) {}
@@ -16,7 +23,7 @@ export class CrearPDFSuraComponent implements OnInit {
   ngOnInit() {
   }
 
-  async generarPDFSura(opcion: string, accesorioEquipo: any, fecha: string, datos?: any, nombre ?: string, costo?: string, ) {
+  async generarPDFSura(opcion: string, accesorioEquipo: any, fecha: string, datos?: any, nombre ?: string, costo?: string, accesoriosPC?: any[]) {
     const pdfSura = new PdfMakeWrapper();
     // Constantes
     const TxtMM = 'Marca / Modelo: ';
@@ -44,13 +51,18 @@ export class CrearPDFSuraComponent implements OnInit {
     const marcaElimninador = datosAccesorioEquipo.marca;
     const modeloEliminador = datosAccesorioEquipo.modelo;
     const numSerieEliminador = datosAccesorioEquipo.serie;
+    let ifEscritorio = false;
 
     if (datosEquipo.mequipo.tipo_computadora === 'LAPTOP') {
       checkLaptop = imagenCheck;
       checkEscritorio = imagenUnCheck;
     } else if (datosEquipo.mequipo.tipo_computadora === 'ESCRITORIO') {
-       checkLaptop = imagenUnCheck;
-       checkEscritorio = imagenCheck;
+      checkLaptop = imagenUnCheck;
+      checkEscritorio = imagenCheck;
+      ifEscritorio = true;
+      this.datosMouse(accesoriosPC);
+      this.datosPantalla(accesoriosPC);
+      this.datosTeclado(accesoriosPC);
     }
 
     pdfSura.pageMargins([ 75, 60, 75, 60 ]);
@@ -127,50 +139,96 @@ export class CrearPDFSuraComponent implements OnInit {
           ],
         ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
     ]);
-    // tabla con los datos de accesorio
-    pdfSura.add(
-      [
-        new Table([
-          [ new Cell( new Txt('fila').end ).color('white').end],
-        ]).layout('noBorders').end,
-        new Table ([
-          [new Cell(new Txt('Eliminador de Corriente').end).end,
-           new Cell(new Txt('Pantalla').end).end
-          ]
-        ]).widths(['50%', '50%']).fontSize(9).alignment('left').end,
-        new Table ([
-          [ new Cell(new Txt([TxtMM, new Txt(marcaElimninador + '-' + modeloEliminador).fontSize(11).background(colorCamposSura).end]).end).end,
-            new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
-          ],
-        ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
-        new Table ([
-          [ new Cell(new Txt([TxtSerie, new Txt(numSerieEliminador).fontSize(11).background(colorCamposSura).end]).end).end,
-            new Cell(new Txt([TxtSerie, new Txt(' ').fontSize(11).background(colorCamposSura).end]).end).end,
-          ],
-        ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
-    ]);
     // tabla con los datos de accesorios
-    pdfSura.add(
-      [
-        new Table([
-          [ new Cell( new Txt('fila').end ).color('white').end],
-        ]).layout('noBorders').end,
-        new Table ([
-          [new Cell(new Txt('Teclado').end).end,
-           new Cell(new Txt('Mouse').end).end
-          ]
-        ]).widths(['50%', '50%']).fontSize(9).alignment('left').end,
-        new Table ([
-          [ new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
-            new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
-          ],
-        ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
-        new Table ([
-          [ new Cell(new Txt([TxtSerie, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
-            new Cell(new Txt([TxtSerie, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
-          ],
-        ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
-    ]);
+    if (ifEscritorio === false) {
+      pdfSura.add( // tabla con los datos del eliminador
+        [
+          new Table([
+            [ new Cell( new Txt('fila').end ).color('white').end],
+          ]).layout('noBorders').end,
+          new Table ([
+            [new Cell(new Txt('Eliminador de Corriente').end).end,
+             new Cell(new Txt('Pantalla').end).end
+            ]
+          ]).widths(['50%', '50%']).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtMM, new Txt(marcaElimninador + '-' + modeloEliminador).fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtSerie, new Txt(numSerieEliminador).fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtSerie, new Txt(' ').fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+      ]);
+      // tabla con los datos de accesorios
+      pdfSura.add(
+        [
+          new Table([
+            [ new Cell( new Txt('fila').end ).color('white').end],
+          ]).layout('noBorders').end,
+          new Table ([
+            [new Cell(new Txt('Teclado').end).end,
+             new Cell(new Txt('Mouse').end).end
+            ]
+          ]).widths(['50%', '50%']).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtSerie, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtSerie, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+      ]);
+    } else if (ifEscritorio === true) {
+      pdfSura.add( // tabla con los datos del eliminador
+        [
+          new Table([
+            [ new Cell( new Txt('fila').end ).color('white').end],
+          ]).layout('noBorders').end,
+          new Table ([
+            [new Cell(new Txt('Eliminador de Corriente').end).end,
+             new Cell(new Txt('Pantalla').end).end
+            ]
+          ]).widths(['50%', '50%']).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtMM, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtMM, new Txt(this.MonitorMarMod).fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtSerie, new Txt('   ').fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtSerie, new Txt(this.MonitorSerie).fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+      ]);
+      // tabla con los datos de accesorios
+      pdfSura.add(
+        [
+          new Table([
+            [ new Cell( new Txt('fila').end ).color('white').end],
+          ]).layout('noBorders').end,
+          new Table ([
+            [new Cell(new Txt('Teclado').end).end,
+             new Cell(new Txt('Mouse').end).end
+            ]
+          ]).widths(['50%', '50%']).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtMM, new Txt(this.TecladoMarMod).fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtMM, new Txt(this.MouseMarMod).fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+          new Table ([
+            [ new Cell(new Txt([TxtSerie, new Txt(this.TecladoSerie).fontSize(11).background(colorCamposSura).end]).end).end,
+              new Cell(new Txt([TxtSerie, new Txt(this.MouseSerie).fontSize(11).background(colorCamposSura).end]).end).end,
+            ],
+          ]).widths(['50%', '50%' ]).margin([0, -1 , 0 , 0]).fontSize(9).alignment('left').end,
+      ]);
+    }
     // Tabla con los datos de Software
     pdfSura.add(
       [
@@ -271,6 +329,31 @@ export class CrearPDFSuraComponent implements OnInit {
       pdfSura.create().open();
     } else if (opcion === 'crear') {
       pdfSura.create().download(idEquipo + responsable.replace(' ', '') + Sura + '.pdf');
+    }
+  }
+
+  datosMouse(datos: any[]) {
+    for (const campo of datos) {
+      if (campo.producto.toLowerCase().includes('mouse')) {
+        this.MouseMarMod = campo.marca + '/' + campo.modelo;
+        this.MouseSerie = campo.numero_serie;
+      }
+    }
+  }
+  datosTeclado(datos: any[]) {
+    for (const campo of datos) {
+      if (campo.producto.toLowerCase().includes('teclado')) {
+        this.TecladoMarMod = campo.marca + '/' + campo.modelo;
+        this.TecladoSerie = campo.numero_serie;
+      }
+    }
+  }
+  datosPantalla(datos: any[]) {
+    for (const campo of datos) {
+      if (campo.producto.toLowerCase().includes('monitor')) {
+        this.MonitorMarMod = campo.marca + '/' + campo.modelo;
+        this.MonitorSerie = campo.numero_serie;
+      }
     }
   }
 }

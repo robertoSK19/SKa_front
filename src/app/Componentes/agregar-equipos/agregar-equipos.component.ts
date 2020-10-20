@@ -50,12 +50,11 @@ export class AgregarEquiposComponent implements OnInit {
   softSO: any[];
   softOf: any[];
   softExtra: any[];
-  aux = null;
+  aux: any;
   tiposEquipos: any[];
   tiposProcesadorBits: any[];
   opciones: any[] = [
-    'Nuevo',
-    'Stock'
+    'Nuevo'
   ];
   public equipo: Equipos = {
     id_equipo: '',
@@ -108,8 +107,11 @@ export class AgregarEquiposComponent implements OnInit {
   public equipoSoftware: EquipoSoftware = {
     id_equipo: null,
     id_software: null,
+    id_historico: null,
   };
   public tiposDiscos: any[];
+  idHistorico = '';
+  listaHistorico: any[];
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,
@@ -238,6 +240,7 @@ export class AgregarEquiposComponent implements OnInit {
 */
     this.AccesoriosPc = [];
     const date = new Date();
+    this.listaHistorico = [];
 
     const nombre = this.datosEquipoForm.controls.nombre_equipo.value;
     const marcaE = this.datosEquipoForm.controls.marca.value;
@@ -264,6 +267,7 @@ export class AgregarEquiposComponent implements OnInit {
     const generacionProcesador = this.datosEquipoForm.controls.generacion_procesador.value;
     const idSoftware = SO.id_software;
     const regExp    = new RegExp( /^\d{0,2}$/ );
+    let datosHistorico: any;
     if (regExp.test(ramE) === false) {
       this.ifNumero = true;
       console.log(this.ifNumero, this.ifLongitud);
@@ -286,6 +290,11 @@ export class AgregarEquiposComponent implements OnInit {
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
       && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' && generacionProcesador !== '' &&
       fechaCompra !== '' &&  this.ifFechaCorrecta === true) {
+        if (this.aux === undefined) {
+          this.aux = null;
+        } else {
+          this.aux = btoa(this.aux);
+        }
         if (regExp.test(ramE) === false) {
           this.ifNumero = true;
           console.log(this.ifNumero, this.ifLongitud);
@@ -296,7 +305,6 @@ export class AgregarEquiposComponent implements OnInit {
           this.ifLongitud = false;
           this.ifNumero = false;
           console.log(this.ifNumero, this.ifLongitud);
-          this.aux = btoa(this.aux);
           console.log('Datos correctos');
           this.equipo = {
           id_equipo: this.equipo.id_equipo,
@@ -313,7 +321,7 @@ export class AgregarEquiposComponent implements OnInit {
           cuenta_usuario_contraseña: cuentaPass,
           tipo_computadora: tipoEquipo,
           fecha_fabricacion: fecha,
-          nombre_sistema_operativo: SO.nombre_software,
+          nombre_sistema_operativo: SO.nombre_software + ' ' + SO.version,
           tipo_sistema_operativo: vSO,
           direccion_mac: mac,
           email_gnp: correo,
@@ -457,22 +465,6 @@ export class AgregarEquiposComponent implements OnInit {
               if (this.ifEscritorio  === false ) {
                 this.mouse.id_equipo = responseCE.body.id_equipo;
                 this.teclado.id_equipo = responseCE.body.id_equipo;
-                /* this.AccesoriosPc.push(this.mouse);
-                this.AccesoriosPc.push(this.teclado);
-                for (const ac of this.AccesoriosPc) {
-                  this.dataSvc.crearAccesorio(ac, idEstatusAsignado).subscribe(
-                    responseAc => {
-                      if (responseAc.status === 200) {
-                        console.log('codigo 200', responseAc.id_accesorio);
-                      }
-                    },
-                    errorAc => {
-                      if (errorAc === 500) {
-                        console.log('codigo 500 AccePC' );
-                      }
-                    }
-                  );
-                } */
                 this.dataSvc.crearAccesorio(this.mouse, idEstatusAsignado).subscribe(
                   responseAcM => {
                     if (responseAcM.status === 200) {
@@ -513,9 +505,37 @@ export class AgregarEquiposComponent implements OnInit {
               );
               this.equipoSoftware = {
                 id_equipo: responseCE.body,
-                id_software: this.software
+                id_software: idSoftware,
+                id_historico: datosHistorico,
               };
-              this.dataSvc.crearEquipoSoftware(responseCE.body.id_equipo, idSoftware, this.equipoSoftware).subscribe(
+              console.log(responseCE.body.id_equipo, idSoftware, this.equipoSoftware, Number(this.idHistorico));
+              console.log(datosHistorico);
+              this.dataSvc.getAllHistorico().subscribe(
+                responseH => {
+                  this.listaHistorico = responseH.body;
+                  datosHistorico = this.listaHistorico.pop();
+                  this.idHistorico = datosHistorico.id_historico;
+                  console.log(datosHistorico);
+                  console.log(this.idHistorico);
+                  this.dataSvc.crearEquipoSoftware(responseCE.body.id_equipo, idSoftware, this.equipoSoftware, Number(this.idHistorico)).subscribe(
+                    responseES => {
+                      if (responseES.status === 200 ) {
+                        console.log('codigo 200');
+                      } else {
+                        console.log('error respuesta', responseES);
+                      }
+                    },
+                    errorES => {
+                      if (errorES.status === 500) {
+                        console.log(500);
+                      } else {
+                        console.log('error', errorES);
+                      }
+                    }
+                  );
+                }
+              );
+             /*  this.dataSvc.crearEquipoSoftware(responseCE.body.id_equipo, idSoftware, this.equipoSoftware, Number(this.idHistorico)).subscribe(
                 responseES => {
                   if (responseES.status === 200 ) {
                     console.log('codigo 200');
@@ -530,7 +550,7 @@ export class AgregarEquiposComponent implements OnInit {
                     console.log('error', errorES);
                   }
                 }
-              );
+              ); */
             }
           },
           errorCE => {
@@ -694,19 +714,5 @@ export class AgregarEquiposComponent implements OnInit {
       }
     ); */
   }
-  
-    /* console.log(valor.length)
-    do{
-      if(i === 1){
-        division = Number(valor) / Math.pow(10,valor.length-i);
-        residuio = Number(valor) % Math.pow(10,valor.length-i);
-      } else {
-        division = Number(division) / Math.pow(10,div.length-i);
-        residuio = Number(residuio) % Math.pow(10,div.length-i);
-      }
-      div = division.toString();
-      console.log(division, residuio);
-      i++;
-    }while(div.length !==3); */
-    //}
+
 }

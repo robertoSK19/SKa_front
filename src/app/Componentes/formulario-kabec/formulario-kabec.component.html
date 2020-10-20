@@ -57,7 +57,9 @@
             </div>
             <br>
             <br>
+            <form [formGroup]="datosNuevoSO">
             <div class="row">
+                
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Tipo Sistema Operativo:</h6>
@@ -76,9 +78,9 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Nombre y versión del sistema operativo:</h6>
                         <mat-form-field class="col-sm" >
-                            <mat-select style='font-size:14px'>
-                                <mat-option *ngFor="let software of softwares" [value]="software" >
-                                    {{software.nombre_software}}
+                            <mat-select style='font-size:14px' form formControlName="datosSoftware">
+                                <mat-option *ngFor="let softwareSO of softSO" [value]="softwareSO"  >
+                                    {{softwareSO.nombre_software}} {{softwareSO.version}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -88,7 +90,7 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Fecha Inicio Vigencia:</h6>
                     <mat-form-field >
-                        <input matInput [matDatepicker]="pickerFI" style="font-size:13px; margin-top: 0;" >
+                        <input matInput [matDatepicker]="pickerFI" style="font-size:13px; margin-top: 0;" formControlName="fecha_inicio_vigencia">
                         <mat-datepicker-toggle matSuffix [for]="pickerFI"></mat-datepicker-toggle>
                         <mat-datepicker #pickerFI></mat-datepicker>
                     </mat-form-field>
@@ -97,7 +99,7 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Fecha Termino Vigencia:</h6>
                     <mat-form-field >
-                        <input matInput [matDatepicker]="pickerFF" style="font-size:13px; margin-top: 0;" >
+                        <input matInput [matDatepicker]="pickerFF" style="font-size:13px; margin-top: 0;" formControlName="fecha_termino_vigencia">
                         <mat-datepicker-toggle matSuffix [for]="pickerFF"></mat-datepicker-toggle>
                         <mat-datepicker #pickerFF></mat-datepicker>
                     </mat-form-field>
@@ -106,9 +108,12 @@
                 </div>
                 <div class="col-sm" [hidden]="!ifOriginalSO">
                 </div>
+            
             </div>
+            </form>
             <br>
             <br>
+            <form [formGroup]="datosOfimatica">
             <div class="row">
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -128,9 +133,9 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Nombre y versión de la Ofimática:</h6>
                         <mat-form-field class="col-sm" >
-                            <mat-select style='font-size:14px'>
-                                <mat-option *ngFor="let software of softwares" [value]="software" >
-                                    {{software.nombre_software}}
+                            <mat-select style='font-size:14px' formControlName="datosSoftware">
+                                <mat-option *ngFor="let softwareOf of softOf" [value]="softwareOf" >
+                                    {{softwareOf.nombre_software}} {{softwareOf.version}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -140,7 +145,7 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Fecha Inicio Vigencia:</h6>
                     <mat-form-field >
-                        <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" >
+                        <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" formControlName="fecha_inicio_vigencia">
                         <mat-datepicker-toggle matSuffix [for]="pickerFIOf"></mat-datepicker-toggle>
                         <mat-datepicker #pickerFIOf></mat-datepicker>
                     </mat-form-field>
@@ -149,7 +154,7 @@
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Fecha Termino Vigencia:</h6>
                     <mat-form-field >
-                        <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" >
+                        <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" formControlName="fecha_termino_vigencia">
                         <mat-datepicker-toggle matSuffix [for]="pickerFFOf"></mat-datepicker-toggle>
                         <mat-datepicker #pickerFFOf></mat-datepicker>
                     </mat-form-field>
@@ -159,6 +164,7 @@
                 <div class="col-sm" [hidden]="!ifOriginalOF">
                 </div>
             </div>
+            </form>
             <br>
             <div class="row">
                 <div class="col-sm">
