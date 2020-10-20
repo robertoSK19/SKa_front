@@ -26,6 +26,7 @@ export class EditarAccesoriosComponent implements OnInit {
 
   datosAccesoriosForm: FormGroup;
   Estatus: any[];
+  EstatusVal: any[];
   EstatusBack: any[];
   ifAsignado = false;
 
@@ -253,7 +254,11 @@ export class EditarAccesoriosComponent implements OnInit {
       idEstatus = 4;
     }else if (estatusForm === "Vendido"){
       idEstatus = 5;
-    }
+    }else if (estatusForm === "Dañado"){
+      idEstatus = 7;
+    }else if (estatusForm === "Baja"){
+      idEstatus = 8;
+    } 
     if (nombreForm !== null && marcaForm !== null && modeloForm !== null && /*productoForm !== null &&*/ hechoEnForm !== null &&
       nombreForm !== '' && marcaForm !== '' && modeloForm !== '' && /* productoForm !== '' &&*/ hechoEnForm !== '' &&
       costoForm !== null && costoForm !== '') {
@@ -364,11 +369,13 @@ export class EditarAccesoriosComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.Estatus = response.body;
+          this.EstatusVal = response.body;
           if (opcion === 'mostrar') {
             const estatusEquiposDisp = this.Estatus.filter(item => item.id_estatus !== 6);
             this.Estatus = estatusEquiposDisp;
           } else {
-            const estatusfiltro = this.Estatus.filter(item => item.id_estatus !== 1 && item.id_estatus !== 6);
+            // const estatusfiltro = this.Estatus.filter(item => item.id_estatus !== 1 && item.id_estatus !== 6);
+            const estatusfiltro = this.Estatus.filter(item => item.id_estatus !== 6);
             this.Estatus = estatusfiltro;
           }
           this.EstatusBack = response.body;
