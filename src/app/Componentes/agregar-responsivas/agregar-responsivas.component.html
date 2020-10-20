@@ -121,15 +121,17 @@
         </thead>
         <tbody>
             <tr *ngFor="let accesorio of accesorios">
-                <td>{{accesorio.id_accesorio}}</td>
                 <td>{{accesorio.nombre_accesorio}}</td>
+                <td>{{accesorio.producto}}</td>
                 <td>{{accesorio.marca}}</td>
                 <td>{{accesorio.modelo}}</td>
                 <td>{{accesorio.serie}}</td>
                 <td>{{accesorio.id_estatus.nombre_estatus}}</td>
                 <td><input id="male" type="checkbox" value="male" name="gender" 
                     (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(accesorio) : null"
+                    (change)="$event ? accesorioCheck(accesorio.id_accesorio, accesorio.nombre_accesorio,
+                        accesorio.capacidad, accesorio.costo, accesorio.marca, accesorio.modelo, accesorio.producto,
+                            accesorio.ram_bus, accesorio.ram_ranura, accesorio.serie, accesorio.tipo_disco_duro) : null"
                     [checked]="selection.isSelected(accesorio)"
                     >
                 </td>

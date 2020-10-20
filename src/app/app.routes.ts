@@ -19,6 +19,7 @@ import { IndexSoftwareComponent } from './Componentes/index-software/index-softw
 import { EditarSoftwareComponent } from './Componentes/editar-software/editar-software.component';
 import { FormularioSuraComponent } from './Componentes/formulario-sura/formulario-sura.component';
 import { AgregarSoftwareComponent } from './Componentes/agregar-software/agregar-software.component';
+import { FormularioKabecAccesoriosComponent } from './Componentes/formulario-kabec-accesorios/formulario-kabec-accesorios.component';
 import { FacturasComponent } from './Componentes/facturas/facturas.component';
 
 
@@ -35,6 +36,7 @@ export const APP_ROUTES: Routes = [
 { path: 'IndexResponsiva',  component: IndexResponsivasComponent },
 { path: 'AgregarResponsiva', component: AgregarResponsivasComponent},
 { path: 'FormularioKabec', component: FormularioKabecComponent},
+{ path: 'FormularioKabecAccesorio', component: FormularioKabecAccesoriosComponent},
 { path: 'IndexUsuario', component: IndexUsuariosComponent},
 { path: 'AgregarUsuario', component: AgregarUsuariosComponent},
 { path: 'EditarUsuario', component: EditarUsuariosComponent},

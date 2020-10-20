@@ -2,8 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormGroupName } from '@angular/forms';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { Router } from '@angular/router';
+<<<<<<< HEAD
 import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva,
   AccesorioResp} from '../agregar-responsivas/agregar-responsivas.component';
+=======
+import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp, accesoriosID} from '../agregar-responsivas/agregar-responsivas.component';
+>>>>>>> 0343f19de1a8ad4386f003be58658b5d11e98469
 import { DataService } from '../list/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Accesorios } from '../../Models/accesorios/accesorios.interface';
@@ -171,22 +175,6 @@ export class FormularioKabecComponent implements OnInit {
         if (response.status === 200) {
           this.datosRespForm.controls.discoDS.setValue(response.body.disco_duro_solido);
           this.datosRespForm.controls.comentarios.setValue(response.body.comentarios);
-          this.ServiceConsulta.getAccesorioEquipo(Number(response.body.mequipo.id_equipo)).subscribe(
-            responseAE => {
-              if (responseAE.status === 200) {
-                accesorioEquipo = responseAE.body;
-              } else if (responseAE.status === 204) {
-                this.mensajeErrorObtencionDatos();
-              }
-            },
-            errorAE => {
-              if (errorAE.status === 500) {
-                this.mensaje500();
-              } else if (errorAE.status === 400) {
-                this.mensaje400();
-              }
-            }
-          );
         } else if (response.status === 204) {
           console.log('Equipo no encontrado');
         }
@@ -198,11 +186,11 @@ export class FormularioKabecComponent implements OnInit {
         }
       }
     );
-    /* this.ServiceConsulta.getAccesorioEquipo(Number(datosResponsiva.idEquipo)).subscribe(
+    this.ServiceConsulta.getAccesorioEquipo(Number(datosResponsiva.idEquipo)).subscribe(
       responseAE => {
-        if (responseAE.status === 200) {
+        if (responseAE.status === 200 || responseAE.status === 204) {
           accesorioEquipo = responseAE.body;
-        } else if (responseAE.status === 204) {
+        } else {
           this.mensajeErrorObtencionDatos();
         }
       },
@@ -213,7 +201,7 @@ export class FormularioKabecComponent implements OnInit {
           this.mensaje400();
         }
       }
-    ); */
+    );
   }
 
   accesoriosCheck(accID: string, accNom: string, accMarca: string, accModelo: string, accSerie: string,
@@ -477,7 +465,10 @@ export class FormularioKabecComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.accesorios = response.body;
+<<<<<<< HEAD
           console.log(response.body);
+=======
+>>>>>>> 0343f19de1a8ad4386f003be58658b5d11e98469
           const accesoriosDisp = this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
         } else {
@@ -515,6 +506,8 @@ export class FormularioKabecComponent implements OnInit {
     this.datosRespAccForm.controls.id_accesorio.setValue
     (datosResponsivaAccesorio.idAcceosrio);
     this.datosRespAccForm.controls.id_accesorio.disable();
+    console.log(accesoriosID);
+    
     this.ServiceConsulta.getAccesorio(datosResponsivaAccesorio.idAcceosrio).subscribe(
       response => {
         if (response.status === 200) {
