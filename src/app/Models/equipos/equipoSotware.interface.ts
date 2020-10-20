@@ -4,4 +4,5 @@ import { Equipos } from './equipos.interface';
 export interface EquipoSoftware {
     id_equipo: Equipos;
     id_software: Software;
+    id_historico?: any;
 }

@@ -126,7 +126,7 @@
                         <mat-form-field class="col-sm" >
                             <mat-select  formControlName="nombre_SO" style='font-size:14px'>
                                 <mat-option *ngFor="let software of softSO" [value]="software" >
-                                    {{software.nombre_software}}
+                                    {{software.nombre_software}} {{software.version}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -183,8 +183,8 @@
                     <h6 style="margin-bottom: 0;"> <i class='fas' style='font-size:10px;color:red;'></i>
                          Fecha de termino de Garantia:</h6>
                     <mat-form-field >
-                        <input matInput [matDatepicker]="pickerFG" style="font-size:13px; margin-top: 0;" formControlName="fecha_garantia">
-                        <mat-datepicker-toggle matSuffix [for]="pickerFG"></mat-datepicker-toggle>
+                        <input matInput [matDatepicker]="pickerFG"  disabled style="font-size:13px; margin-top: 0;" formControlName="fecha_garantia">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFG" disabled></mat-datepicker-toggle>
                         <mat-datepicker #pickerFG></mat-datepicker>
                       </mat-form-field>
                 </div>

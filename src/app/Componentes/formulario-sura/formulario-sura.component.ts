@@ -70,6 +70,7 @@ export class FormularioSuraComponent implements OnInit {
   datosDEquipo: any[];
   ifAccesorio = true;
   datosAccesorios: any[];
+  accesoriosPC: any[];
   constructor(
     private formBuilder: FormBuilder,
     protected servicioConUser: ServiciosService,
@@ -161,13 +162,20 @@ export class FormularioSuraComponent implements OnInit {
     const equipo = this.datosRespForm.controls.id_equipo.value;
     const nombre = this.datosRespForm.controls.responsable.value;
     const costoEquipo = this.datosRespForm.controls.costo.value;
-    const costoNum = costoEquipo.replace(',', '');
+   // const costoNum = costoEquipo.replace(',', '');
     const comentarios = this.datosRespForm.controls.comentarios.value;
     const disco = this.datosRespForm.controls.discoDS.value;
     if (nombre === '' && costoEquipo === '') {
       console.log('no lleno todos los datos');
       this.mensajeDatosVacios();
+    } else if (nombre !== ''  && costoEquipo === '') {
+      // console.log('falta costo');
+      this.mensajeFaltaCosto();
+    } else if (nombre === ''  && costoEquipo !== '') {
+      // console.log('falta respomsable');
+      this.mensajeFaltaResponsable();
     } else {
+      const costoNum = costoEquipo.replace(',', '');
       if (this.mostrarAccesorios === true) { // si selecciona otro accesorio
         if (this.selection.selected.length === 0) {
           console.log('no selecciono un dispositivo');
@@ -197,13 +205,14 @@ export class FormularioSuraComponent implements OnInit {
           id_equipo: equipo,
           id_estatus: 1,
         };
+        
         this.ServiceConsulta.getDEquipo(equipo).subscribe(
           response => {
             this.datosDEquipo = response.body;
             datosDEquipoG = response.body;
             if (accion === 'vista') {
               this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
-              this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo,);
+              this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo, this.accesoriosPC);
             }
           },
           error => {
@@ -224,7 +233,7 @@ export class FormularioSuraComponent implements OnInit {
                         if (responseA.status === 200) {
                           console.log('asignacion correcta');
                           this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
-                          this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo);
+                          this.pdfSura.prototype.generarPDFSura(accion, accesorioEquipo, fechaSura, datosDEquipoG, nombre, costoEquipo, this.accesoriosPC);
                           this.mensajeResponsivaGenerada();
                           setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
                         } else {
@@ -284,12 +293,15 @@ export class FormularioSuraComponent implements OnInit {
   }
 
   getAllAccesorios() {
+    this.accesoriosPC = [];
     this.ServiceConsulta.getAllAccesorios().subscribe(
       response => {
         if (response.status === 200) {
           this.accesorios = response.body;
           const accesoriosDisp =  this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
+          this.accesoriosPC = response.body.filter (item => item.id_equipo === datosResponsiva.idEquipo);
+          console.log(this.accesoriosPC);
         } else {
           console.log('Error de servicio');
         }
@@ -408,5 +420,11 @@ export class FormularioSuraComponent implements OnInit {
   }
   mensajeErrorResponsiva() {
     this.toastr.error('La responsiva no pudo generarse', 'Fallo Generacion');
+  }
+  mensajeFaltaCosto() {
+    this.toastr.warning('Llene el campo de Costo', 'Faltan datos');
+  }
+  mensajeFaltaResponsable() {
+    this.toastr.warning('Llene el campo de Responsable', 'Faltan datos');
   }
 }

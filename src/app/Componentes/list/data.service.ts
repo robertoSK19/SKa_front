@@ -120,8 +120,9 @@ private urlApiAsigAcc = 'http://localhost:8088/asignacionAccesorios';
     const url = this.urlAPIEstatus + '/get';
     return this.http.get(url, {observe: 'response'});
   }
-  crearEquipoSoftware(equipo: number, software: number, equipoSoft: EquipoSoftware): Observable <any> {
-    const url = this.urlApiEquSoft + '/post/' + equipo + ',' + software;
+  crearEquipoSoftware(equipo: number, software: number, equipoSoft: EquipoSoftware, historico?: number): Observable <any> {
+    const url = this.urlApiEquSoft + '/post/' + equipo + ',' + software + ',' + historico;
+    console.log(url);
     return this.http.post(url, equipoSoft, { observe: 'response' });
   }
   getAllHistorico(): Observable <any> {

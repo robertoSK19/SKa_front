@@ -53,6 +53,7 @@ export class EditarEquiposComponent implements OnInit {
   aux: any;
   ifFactura = false;
   ifLongitud = 2;
+  selectSoftware: any;
 
   public equipo: Equipos = {
     id_equipo: '',
@@ -236,15 +237,18 @@ export class EditarEquiposComponent implements OnInit {
             this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
             this.datosEquipoForm.controls.tipo_disco_duro.setValue(this.equipo.tipo_disco_duro);
             this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
-            this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
             this.datosEquipoForm.controls.lugar_compra.setValue(this.equipo.lugar_compra);
-            this.datosEquipoForm.controls.fecha_compra.setValue(this.equipo.fecha_compra);
             this.datosEquipoForm.controls.tamaño_pantalla.setValue(this.equipo.tamaño_pantalla);
+            const fechaCompra = this.convertirFecha(this.equipo.fecha_compra);
+            this.datosEquipoForm.controls.fecha_compra.setValue(fechaCompra);
+            const fechaGarantia = this.convertirFecha(this.equipo.fecha_garantia_termino);
+            this.datosEquipoForm.controls.fecha_garantia.setValue(fechaGarantia);
             if (this.equipo.tipo_computadora !== tipoLaptop) {
               this.ifLaptop = true;
             } else {
               this.ifLaptop = false;
             }
+            console.log(this.ifLaptop)
             if ( this.equipo.factura !== null) {
               this.ifFactura = true;
             } else {
@@ -313,9 +317,11 @@ export class EditarEquiposComponent implements OnInit {
             this.datosEquipoForm.controls.correo.setValue(this.equipo.email_gnp);
             this.datosEquipoForm.controls.tipo_disco_duro.setValue(this.equipo.tipo_disco_duro);
             this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
-            this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
             this.datosEquipoForm.controls.lugar_compra.setValue(this.equipo.lugar_compra);
-            this.datosEquipoForm.controls.fecha_compra.setValue(this.equipo.fecha_compra);
+            const fechaCompra = this.convertirFecha(this.equipo.fecha_compra);
+            this.datosEquipoForm.controls.fecha_compra.setValue(fechaCompra);
+            const fechaGarantia = this.convertirFecha(this.equipo.fecha_garantia_termino);
+            this.datosEquipoForm.controls.fecha_garantia.setValue(fechaGarantia);
             this.datosEquipoForm.controls.tamaño_pantalla.setValue(this.equipo.tamaño_pantalla);
             if (this.equipo.tipo_computadora !== tipoLaptop) {
               this.ifLaptop = true;
@@ -529,7 +535,7 @@ export class EditarEquiposComponent implements OnInit {
 
   }
   cancelar() {
-    this.dataSvc.getDEquipo(datosEquipo.idEquipo).subscribe(
+    this.dataSvc.getDEquipo(this.datosDEquipo.id_dequipo).subscribe(
       response => {
         this.datosEquipoForm.controls.estatus.setValue(response.body.estatusRecurso.id_estatus);
       },
@@ -668,9 +674,13 @@ export class EditarEquiposComponent implements OnInit {
   }
   convertirFecha(fecha: string): any {
     let valores: any[];
-    valores = fecha.split('-');
-    const miFechaPasada = new Date(Number(valores[0]), (Number(valores[1])) - 1, Number(valores[2]));
-    return miFechaPasada;
+    if (fecha ===  null) {
+      return '';
+    } else {
+      valores = fecha.split('-');
+      const miFechaPasada = new Date(Number(valores[0]), (Number(valores[1])) - 1, Number(valores[2]));
+      return miFechaPasada;
+    }
   }
   getSoftware() {
     this.dataSvc.getAllSoftware().subscribe(
@@ -678,13 +688,11 @@ export class EditarEquiposComponent implements OnInit {
         if (response.status === 200) {
           console.log(response)
           this.Softwares = response.body;
-          this.softSO = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('windows') === true
-          || so.nombre_software.toLowerCase().includes('mac os') === true);
-          this.softOf = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('office') === true);
-          this.softExtra = this.Softwares.filter(so => so.nombre_software.toLowerCase().includes('office') === false
-           || so.nombre_software.toLowerCase().includes('mac os') === false
-           || so.nombre_software.toLowerCase().includes('office') === false );
-           console.log(this.softSO);
+          this.softSO = this.Softwares.filter(so => so.tipo_software.toLowerCase() === 'sistema operativo');
+          this.softOf = this.Softwares.filter(so => so.tipo_software.toLowerCase() === 'ofimatica');
+          this.softExtra = this.Softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica' 
+          && so.tipo_software.toLowerCase() !== 'sistema operativo');
+          console.log(this.softSO);
         } else {
           this.mensaje500();
         }
@@ -712,8 +720,14 @@ fileEvent(valor: Event): any  {
   const extension = pathSplitted.pop();
   reader.onload = () => {
       this.aux = reader.result;
-      //console.log(this.aux);
+      // console.log(this.aux);
   };
+}
+selecionSoftware() {
+  console.log(this.selectSoftware);
+}
+selectSoftware2(datosSoftware: any) {
+  console.log(datosSoftware);
 }
   mensaje200Actulizacion() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

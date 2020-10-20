@@ -22,7 +22,7 @@ export class CrearPDFComponent implements OnInit {
   async generarPDF(opcion: string, accesorioEquipo: any, diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string, datosCargador?: any) {
     const datosMap = datos;
     const responsable = nombre;
-    const costoEquipo = costo;
+    const costoEquipo = this.costoFormato(costo);
     const datosAccesorioEquipo = accesorioEquipo;
     const pdf = new PdfMakeWrapper();
     const fecha = this.obtenerFecha(diaSemana);
@@ -30,9 +30,14 @@ export class CrearPDFComponent implements OnInit {
     let valorLetra = this.costoLetra(costo);
     valorLetra = valorLetra.toUpperCase().trim();
     const discoSolido = SSD;
-    console.log(datosAccesorioEquipo);
+    // console.log(datosAccesorioEquipo);
     const datosEliminador = datosCargador;
-
+    let ifEscritorio = false;
+    if (datos.mequipo.tipo_computadora === 'ESCRITORIO') {
+      ifEscritorio = true;
+    } else {
+      ifEscritorio = false;
+    }
     function validarOtros(array) {
       
       if (array.length > 0 && checkAccesorios === true) {
@@ -113,7 +118,8 @@ export class CrearPDFComponent implements OnInit {
           [new Cell(new Txt('Procesador:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.procesador).fontSize(9).end).end],
           [new Cell(new Txt('Sistema Operativo:').fontSize(9).end).end,
-          new Cell(new Txt(datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end).end],
+          new Cell(new Txt(datosMap.mequipo.nombre_sistema_operativo + ' ' + 
+          datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end).end],
           [new Cell(new Txt('Disco Duro:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.disco_duro).fontSize(9).end).end],
           [new Cell(new Txt('Memoria RAM:').fontSize(9).end).end,
@@ -128,21 +134,27 @@ export class CrearPDFComponent implements OnInit {
         new Cell(new Txt(datosMap.mequipo.id_equipo).fontSize(9).alignment('center').relativePosition(0, 75).end).end
         ],
       ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
-      new Table([// lista de caracteristicas del eliminador
-        [ new Cell( new Txt(datosEliminador.producto).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
-        new Table([
-          [new Cell( new Txt('Marca:').fontSize(9).end ).end,
-          new Cell( new Txt(datosEliminador.marca).fontSize(9).end ).end],
-          [ new Cell( new Txt('Serie:').fontSize(9).end ).end,
-          new Cell( new Txt(datosEliminador.serie).fontSize(9).end ).end],
-          [new Cell( new Txt('Modelo:').fontSize(9).end ).end,
-          new Cell( new Txt(datosEliminador.modelo).fontSize(9).end ).end],
-      ]).margin([-5, -3, -5, -3] ).widths([ '25%', '75%' ]).end,
-      new Cell( new Txt(datosEliminador.id_equipo).fontSize(9).alignment('center').relativePosition(0, 15).end ).end
-    ],
-    ]).widths([ '20%', '45%', '35%' ]).margin([0, -1, 0 , 0]).end,
     ]
     );
+    if (ifEscritorio === false){
+      pdf.add(
+        new Table([// lista de caracteristicas del eliminador
+          [ new Cell( new Txt(datosEliminador.producto).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
+          new Table([
+            [new Cell( new Txt('Marca:').fontSize(9).end ).end,
+            new Cell( new Txt(datosEliminador.marca).fontSize(9).end ).end],
+            [ new Cell( new Txt('Serie:').fontSize(9).end ).end,
+            new Cell( new Txt(datosEliminador.serie).fontSize(9).end ).end],
+            [new Cell( new Txt('Modelo:').fontSize(9).end ).end,
+            new Cell( new Txt(datosEliminador.modelo).fontSize(9).end ).end],
+        ]).margin([-5, -3, -5, -3] ).widths([ '25%', '75%' ]).end,
+        new Cell( new Txt(datosEliminador.id_equipo).fontSize(9).alignment('center').relativePosition(0, 15).end ).end
+      ],
+      ]).widths([ '20%', '45%', '35%' ]).margin([0, -1, 0 , 0]).end,
+      );
+    } else {
+      console.log('escritorio')
+    }
     validarOtros(accesor);
     pdf.add( 
       [
@@ -510,6 +522,7 @@ export class CrearPDFComponent implements OnInit {
     this.diaSemana = this.datepipe.transform(new Date(), 'EEEE');
   }
   partesValor(valor: any): any[] {
+    valor = valor.replace(',', '');
     const lon = valor.length;
     const v1 = lon % 3;
     const v2 = lon / 3;
@@ -546,5 +559,17 @@ export class CrearPDFComponent implements OnInit {
       }
     // console.log(partes);
     return partes;
+  }
+  costoFormato(valor: string): string {
+    const partes = this.partesValor(valor);
+    let letra = '';
+    for (let pos = 0; pos < partes.length; pos++) {
+      if (pos === partes.length - 1) {
+        letra = letra + partes[pos];
+      } else {
+        letra = letra + partes[pos] + ',';
+      }
+    }
+    return letra;
   }
 }
