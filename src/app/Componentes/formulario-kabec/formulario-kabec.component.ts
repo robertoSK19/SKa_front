@@ -2,12 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormGroupName } from '@angular/forms';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { Router } from '@angular/router';
-<<<<<<< HEAD
-import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva,
-  AccesorioResp} from '../agregar-responsivas/agregar-responsivas.component';
-=======
 import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp, accesoriosID} from '../agregar-responsivas/agregar-responsivas.component';
->>>>>>> 0343f19de1a8ad4386f003be58658b5d11e98469
 import { DataService } from '../list/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Accesorios } from '../../Models/accesorios/accesorios.interface';
@@ -465,10 +460,6 @@ export class FormularioKabecComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.accesorios = response.body;
-<<<<<<< HEAD
-          console.log(response.body);
-=======
->>>>>>> 0343f19de1a8ad4386f003be58658b5d11e98469
           const accesoriosDisp = this.accesorios.filter(item => item.id_estatus.id_estatus === 2);
           this.accesorios = accesoriosDisp;
         } else {
