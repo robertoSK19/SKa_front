@@ -24,10 +24,22 @@
             [routerLink]="[ '/AgregarResponsiva' ]">GENERAR RESPONSIVA </button>
     </div>
 </div>
+
 <div class="row">
-
-
     <div class="col-sm-3">
+        <label>Tipo de Responsiva:</label>
+        <mat-form-field class="col-sm" >
+            <mat-select  (selectionChange)="selectResponsiva($event.value)"  style='font-size:14px;' placeholder="Seleccione Responsiva">
+                <mat-option *ngFor="let filtro of tipoResponsiva" [value]="filtro.nombre" >
+                    {{filtro.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-3 invisible" id="filtro">
         <label>Buscar por:</label>
         <mat-form-field class="col-sm" >
             <mat-select  (selectionChange)="filtroSelect($event.value)"  style='font-size:14px' placeholder="Seleccione un parametro">
@@ -37,11 +49,14 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 invisible" id="filtroEquipo">
         <label>Parametro:</label>
         <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtro($event)" [disabled]="sinFiltro">
     </div>
-
+    <div class="col-sm-3 invisible" id="filtroAccesorio">
+        <label>Parametro:</label>
+        <input type="text" class=" form-control form-control-sm" [ngModel]= "valor" (ngModelChange)="filtroAcc($event)" [disabled]="sinFiltro">
+    </div>
 </div>
 
 <br>
@@ -50,7 +65,7 @@
 <mat-spinner [hidden]="ifProgreso" class="mat-spinner circle centrar"></mat-spinner>
 <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-    <table class="table " [hidden]="ifResultados">
+    <table class="table invisible" id="equipo">
         <thead class="thead-dark">
             <tr>
                 <th class="sticky-top" scope="col">ID</th>
@@ -80,8 +95,36 @@
                 <!-- <td><i class='fas fa-edit' [routerLink]="[ '/EditarEquipo' ]" (click)="editarEquipo(equipo.mequipo.id_equipo, 'editar')" style='font-size:20px;color:purple'></i>
                 </td> -->
             </tr>
+        </tbody>
+    </table>
 
-
+    <table class="table invisible" id="accesorio">
+        <thead class="thead-dark">
+            <tr>
+                <th class="sticky-top" scope="col">ID</th>
+                <th class="sticky-top" scope="col">Persona Responsable</th>
+                <th class="sticky-top" scope="col">Accesorio</th>
+                <th class="sticky-top" scope="col">Capacidad</th>
+                <th class="sticky-top" scope="col">Marca</th>
+                <th class="sticky-top" scope="col">Numero de Serie</th>
+                <th class="sticky-top" scope="col">Estatus</th><!-- duda en que si deba de ir esta -->
+                <th class="sticky-top" scope="col">Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let responsiva of responsivasAccesorios">
+                <td>{{responsiva.id_asignacion.id_asignacion}}</td>
+                <td>{{responsiva.id_asignacion.nombre_consultor}}</td>
+                <td>{{responsiva.id_accesorio.producto}}</td>
+                <td>{{responsiva.id_accesorio.capacidad}}</td>
+                <td>{{responsiva.id_accesorio.marca}}</td>
+                <td>{{responsiva.id_accesorio.serie}}</td>
+                <td>{{responsiva.id_accesorio.id_estatus.nombre_estatus}}</td>
+                <td><input id="male" type="radio" value="male" name="gender" 
+                    (click)="$event.stopPropagation()"
+                    [disabled]="responsiva.id_accesorio.id_estatus.id_estatus===6">
+                </td>
+            </tr>
         </tbody>
     </table>
     

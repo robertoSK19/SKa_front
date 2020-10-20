@@ -18,16 +18,24 @@ const idEstatusNoAginada = 2;
 export class IndexResponsivasComponent implements OnInit {
 
   responsivas: any[];
+  responsivasAccesorios: any[];
   idResponsiva = '';
   idDEquipo = '';
   datosDEquipo: DEquipos;
   datosAsignacion: Asignacion;
-  ifProgreso = false;
+  ifProgreso = true;
   ifResultados = true;
   filtros: any[];
   tipofiltro = '';
   sinFiltro = true;
   responsivasBackup: any[];
+  responsivasBackupAcc: any[];
+
+  tipoResponsiva: any[] = [
+    { nombre: 'Accesorios' },
+    { nombre: 'Equipos' }
+  ];
+
   constructor(
     private router: Router,
     protected servicioConUser: ServiciosService,
@@ -37,7 +45,7 @@ export class IndexResponsivasComponent implements OnInit {
 
   ngOnInit() {
     this.usuarioLogeado();
-    this.getAllResponsivas();
+    // this.getAllResponsivas();
     this.filtros = tipoFiltroResponsibas;
   }
 
@@ -51,6 +59,7 @@ export class IndexResponsivasComponent implements OnInit {
       console.log('acceso correcto');
     }
   }
+
   getAllResponsivas() {
     // this.servicioResponsivas.getAllResponsivas().subscribe(
       this.servicioResponsivas.getAllAsignaciones().subscribe(
@@ -81,6 +90,37 @@ export class IndexResponsivasComponent implements OnInit {
       }
     );
   }
+
+  getAllResponsivasAccesorios() {
+      this.servicioResponsivas.getAllAccesorioN().subscribe(
+      response => {
+        console.log(response);
+        if (response.status === 200) {
+          this.responsivasAccesorios = response.body;
+          this.responsivasBackupAcc = response.body;
+          this.ifResultados = false;
+          this.ifProgreso = true;
+        } else {
+          this.ifResultados = false;
+          this.ifProgreso = true;
+          console.log('Error del servicio');
+        }
+      },
+      error => {
+        console.log(error);
+        if (error.status === 500) {
+          console.log('Error del Servidor');
+          this.ifResultados = false;
+          this.ifProgreso = true;
+        } else {
+          console.log('otro error');
+          this.ifResultados = false;
+          this.ifProgreso = true;
+        }
+      }
+    );
+  }
+
   seleccionarResponsiva(idResponsiva: string, idDEquipo: string) {
     this.idResponsiva = idResponsiva;
     this.idDEquipo = idDEquipo;
@@ -150,6 +190,56 @@ export class IndexResponsivasComponent implements OnInit {
     this.tipofiltro = value;
     this.sinFiltro = false;
   }
+
+  selectResponsiva(value: any) {
+    let a = document.getElementById("accesorio")
+    let b = document.getElementById("equipo")
+    let c = document.getElementById("filtroEquipo")
+    let d = document.getElementById("filtroAccesorio")
+    let e = document.getElementById("filtro")
+    if(value === "Accesorios")  {
+      a.className = "table visible";
+      b.className = "table invisible";
+      c.className = "col-sm-3 invisible"
+      d.className = "col-sm-3 invisible"
+      e.className = "col-sm-3 invisible"
+      this.getAllResponsivasAccesorios();
+    } else if(value === "Equipos") {
+      b.className = "table visible";
+      a.className = "table invisible";
+      c.className = "col-sm-3 visible"
+      d.className = "col-sm-3 invisible"
+      e.className = "col-sm-3 visible"
+      this.getAllResponsivas();
+    }
+  }
+
+  filtroAcc(parametro: any){
+    const valor = parametro;
+    if (valor.lenght < 3) {
+      this.responsivasAccesorios = this.responsivasBackupAcc;
+    } else {
+      const responsivasNoNull = this.responsivasAccesorios.filter(item => item.id_accesorio.serie !== null);
+      switch (this.tipofiltro) {
+        case this.filtros[0]:
+          console.log('responsable');
+          const filtroResponsable = responsivasNoNull.filter(item => item.id_asignacion.nombre_consultor.toLowerCase().startsWith(valor.toLowerCase()));
+          this.responsivasAccesorios = filtroResponsable;
+          break;
+        case this.filtros[1]:
+          console.log('id');
+          const filtroId = this.responsivasAccesorios.filter(item => item.id_accesorio.id_accesorio === Number(valor));
+          this.responsivasAccesorios =filtroId;
+          break;
+        case this.filtros[2]:
+          console.log('serie');
+          const filtroNserie = responsivasNoNull.filter(item => item.id_accesorio.serie.toLowerCase().startsWith(valor.toLowerCase()));
+          this.responsivasAccesorios = filtroNserie;
+          break;          
+      }
+    }
+  }
+
   filtro(parametro: any) {
     const valor = parametro;
     if (valor.length < 3 ) {
@@ -175,7 +265,6 @@ export class IndexResponsivasComponent implements OnInit {
           break;
       }
     }
-
   }
   mensaja204() {
     this.toastr.error('No se pudo cancelar la Responsiva', 'Error en la actualizacion');
