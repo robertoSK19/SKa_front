@@ -25,6 +25,8 @@ let datosResponsivaAccesorio: DatosAccesorioResponsiva = {
 
 export let accesor = [];
 export let checkAccesorios = false;
+let accesorAsig = [];
+let equipoID = 0;
 
 let datosAsignacion: Asignacion = {
   id_asignacion: '',
@@ -36,11 +38,22 @@ let datosAsignacion: Asignacion = {
   letra: '',
   usuario: ''
 };
-let datosAaccesorio: Aaccesorio = {
-  id_aaccesorio: '',
-  id_asignacion: '',
-  id_accesorio: ''
-};
+
+let accesorioAsig: Accesorios = {
+  id_accesorio: '',
+  nombre_accesorio: '',
+  marca: '',
+  modelo: '',
+  producto: '',
+  hecho_en: '',
+  serie: '',
+  costo: 0,
+  descripcion: '',
+  capacidad: '',
+  tipo_disco_duro: '',
+  ram_bus: '',
+  ram_ranura: '',
+}
 
 
 let datosDEquipoG: any[];
@@ -73,6 +86,13 @@ export class FormularioKabecComponent implements OnInit {
   acceSerie = '';
   acceIdEstatus = '';
   acceProducto = '';
+  accHecho = ''; 
+  accCosto = 0;
+  accDescrip = '';
+  accCapacidad = '';
+  accTipoDD = '';
+  accBus = '';
+  accRanura = '';
   datosRespForm: FormGroup;
   datosRespAccForm: FormGroup;
   mostrarAccesorios = false;
@@ -207,7 +227,8 @@ export class FormularioKabecComponent implements OnInit {
   }
 
   accesoriosCheck(accID: string, accNom: string, accMarca: string, accModelo: string, accSerie: string,
-                  accStatusId: string, accProducto: string) {
+                  accStatusId: string, accProducto: string, accHecho: string, accCosto: number, accDescrip: string,
+                  accCapacidad: string, accTipoDD: string, accBus: string, accRanura: string) {
     this.acceId = accID;
     this.acceNom = accNom;
     this.acceMarca = accMarca;
@@ -215,9 +236,15 @@ export class FormularioKabecComponent implements OnInit {
     this.acceSerie = accSerie;
     this.acceIdEstatus = accStatusId;
     this.acceProducto = accProducto;
+    this.accHecho = accHecho;
+    this.accCosto = accCosto;
+    this.accDescrip = accDescrip;
+    this.accCapacidad = accCapacidad;
+    this.accTipoDD = accTipoDD;
+    this.accBus = accBus;
+    this.accRanura = accRanura;
 
     const acceId = this.acceId;
-    const arrayFiltrado = [];
 
     const objAcc = {
       accId: acceId,
@@ -229,19 +256,39 @@ export class FormularioKabecComponent implements OnInit {
       accProducto: this.acceProducto
     };
 
+    const objAccAsignar = {
+      id_accesorio: acceId,
+      nombre_accesorio: this.acceNom,
+      marca: this.acceMarca,
+      modelo: this.acceModelo,
+      producto: this.acceProducto,
+      hecho_en: this.accHecho,
+      serie: this.acceSerie,
+      costo: accCosto,
+      id_equipo: equipoID,
+      descripcion: this.datosRespForm.controls.comentarios.value,
+      capacidad: accCapacidad,
+      tipo_disco_duro: accTipoDD,
+      ram_bus: accBus,
+      ram_ranura: accRanura
+    };
+
     if (accesor.length !== 0) {
-      console.log(accesor.findIndex(x => x.accId === acceId));
       if ((accesor.findIndex(x => x.accId === acceId)) === -1) {
         accesor.push(objAcc);
+        accesorAsig.push(objAccAsignar);
       } else {
         const index: number = accesor.findIndex(x => x.accId === acceId);
         accesor.splice(index, 1);
+        let indexs: number = accesorAsig.findIndex(x => x.id_accesorio === acceId);
+        accesorAsig.splice(indexs, 1);
       }
     } else {
       accesor.push(objAcc);
+      accesorAsig.push(objAccAsignar);
     }
-    console.log('Accesorios');
     console.log(accesor);
+    console.log(accesorAsig);
   }
 
   generarResponsiva(opcion: string) {
@@ -259,6 +306,7 @@ export class FormularioKabecComponent implements OnInit {
 //    const costoNum = costoEquipo.replace(',', '');
     const comentarios = this.datosRespForm.controls.comentarios.value;
     const disco = this.datosRespForm.controls.discoDS.value;
+    equipoID = parseInt(equipo);
     if (nombre === '' && costoEquipo === '') {
       console.log('no lleno todos los datos');
       this.mensajeDatosVacios();
@@ -405,6 +453,23 @@ export class FormularioKabecComponent implements OnInit {
             response => {
               datosDEquipoG2 = response.body;
               datosDEquipoG2.comentarios = comentarios;
+              accesorAsig.map((x =>{
+                accesorioAsig.id_accesorio = x.id_accesorio;
+                accesorioAsig.nombre_accesorio = x.nombre_accesorio;
+                accesorioAsig.marca = x.marca;
+                accesorioAsig.modelo = x.modelo;
+                accesorioAsig.producto = x.producto;
+                accesorioAsig.hecho_en = x.hecho_en;
+                accesorioAsig.serie = x.serie;
+                accesorioAsig.costo = x.costo;
+                accesorioAsig.id_equipo = x.id_equipo;
+                accesorioAsig.descripcion = x.descripcion;
+                accesorioAsig.capacidad = x.capacidad;
+                accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
+                accesorioAsig.ram_bus = x.ram_bus;
+                accesorioAsig.ram_ranura = x.ram_ranura;
+                this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEestatusAsignada));
+              }))
               this.ServiceConsulta.updateDEquipo(Number(idEestatusAsignada), datosDEquipoG2).subscribe(
                 responseDE => {
                   if (responseDE.status === 200) {
@@ -430,6 +495,23 @@ export class FormularioKabecComponent implements OnInit {
                           console.log('Error en el Servicio');
                           // en caso de que no se cree la asginacion
                           this.mensajeErrorResponsiva();
+                          accesorAsig.map((x =>{
+                            accesorioAsig.id_accesorio = x.id_accesorio;
+                            accesorioAsig.nombre_accesorio = x.nombre_accesorio;
+                            accesorioAsig.marca = x.marca;
+                            accesorioAsig.modelo = x.modelo;
+                            accesorioAsig.producto = x.producto;
+                            accesorioAsig.hecho_en = x.hecho_en;
+                            accesorioAsig.serie = x.serie;
+                            accesorioAsig.costo = x.costo;
+                            accesorioAsig.id_equipo = null;
+                            accesorioAsig.descripcion = x.descripcion;
+                            accesorioAsig.capacidad = x.capacidad;
+                            accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
+                            accesorioAsig.ram_bus = x.ram_bus;
+                            accesorioAsig.ram_ranura = x.ram_ranura;
+                            this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEstatusNoAsignada));
+                          }))
                           this.ServiceConsulta.updateDEquipo(Number(idEstatusNoAsignada), datosDEquipoG2).subscribe();
                         }
                       }
@@ -559,11 +641,6 @@ export class FormularioKabecComponent implements OnInit {
         id_estatus: 0,
         usuario: '',
       };
-      datosAaccesorio = {
-        id_aaccesorio: '',
-        id_accesorio: accesorio,
-        id_asignacion: '',
-      };
       this.ServiceConsulta.updateAccesorio(datosAccesorioG, Number(idEestatusAsignada)).subscribe(
         response => {
           console.log(response.body);
@@ -584,11 +661,6 @@ export class FormularioKabecComponent implements OnInit {
           }
         }
       );
-/*       if (opcion === 'vista') {
-
-      } else if (opcion === 'crear') {
-
-      } */
   }
   }
   tipoLicenciaSO(tipo: any) {
