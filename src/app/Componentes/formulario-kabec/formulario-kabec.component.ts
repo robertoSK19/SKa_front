@@ -693,9 +693,6 @@ export class FormularioKabecComponent implements OnInit {
         console.log(response);
         if (response.status === 200) {
           this.softwares = response.body;
-          this.softAV = this.softwares.filter(so => so.tipo_software.toLowerCase() === 'antivirus');
-          /* this.softExtra = this.softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
-          && so.tipo_software.toLowerCase() !== 'sistema operativo'); */
         } else {
           console.log('otra respuesta', response);
           this.mensajeErrorObtencionDatos();
