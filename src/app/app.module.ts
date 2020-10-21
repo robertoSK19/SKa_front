@@ -52,6 +52,8 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { FormularioKabecAccesoriosComponent } from './Componentes/formulario-kabec-accesorios/formulario-kabec-accesorios.component';
 import { PdfKabecAccesoriosComponent } from './Componentes/formatos_pdf/pdf-kabec-accesorios/pdf-kabec-accesorios.component';
 import { FacturasComponent } from './Componentes/facturas/facturas.component';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 // Set the fonts to use
