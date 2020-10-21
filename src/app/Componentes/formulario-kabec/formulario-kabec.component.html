@@ -199,7 +199,9 @@
                             <td><input id="male" type="checkbox" value="male" name="gender"
                                 (click)="$event.stopPropagation()"
                                 (change)="$event  ? accesoriosCheck(accesorio.id_accesorio, accesorio.nombre_accesorio,
-                                accesorio.marca,accesorio.modelo, accesorio.serie, accesorio.id_estatus.nombre_estatus, accesorio.producto) : null"
+                                accesorio.marca,accesorio.modelo, accesorio.serie, accesorio.id_estatus.nombre_estatus, accesorio.producto,
+                                accesorio.hecho_en, accesorio.costo, accesorio.descripcion, accesorio.capacidad, accesorio.tipo_disco_duro,
+                                accesorio.ram_bus, accesorio.ram_ranura) : null"
                                 [checked]="selection.isSelected(accesorio)"
                                 >
                             </td>
