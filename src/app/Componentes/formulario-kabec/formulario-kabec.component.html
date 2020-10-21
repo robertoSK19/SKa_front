@@ -167,6 +167,74 @@
             </form>
             <br>
             <div class="row">
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary btn-block" (click)="addCamposSoftware()">Agregar Software</button>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary btn-block" (click)="valores()">valores</button>
+                </div>
+            </div>
+            <br>
+            <br>
+            <mat-list>
+                <mat-list-item  style="margin-bottom:8%" *ngFor="let control of skills.controls; index as i">
+                    <p></p>
+                    <i class='fas fa-eye' (click)="eliminarSoftware(i)" style='font-size:20px;color:purple'></i>
+                  <div mat-line>
+                    <div class="row">
+                        <div class="col-sm">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Tipo de Ofimática:</h6>
+                                <mat-radio-group
+                                aria-labelledby="example-radio-group-label"
+                                class="example-radio-group"
+                                (change)="tipoLicencia($event.value, i)"
+                                >
+                                <mat-radio-button class="example-radio-button" style="font-size:16px;"  *ngFor="let licencia of tiposLicencias" [value]="licencia">
+                                  {{licencia}}
+                                </mat-radio-button>
+                              </mat-radio-group>
+                        </div>
+                        <div class="col-sm" style='font-size:10px'>
+                            <div class="dropdown">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Nombre y versión del Software:</h6>
+                                <mat-form-field class="col-sm" >
+                                    <mat-select style='font-size:14px' [formControl]="skills.controls[i]">
+                                        <mat-option *ngFor="let softwareEx of softExtra" [value]="softwareEx" >
+                                            {{softwareEx.nombre_software}} {{softwareEx.version}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm" [hidden]="CheckSoftware[i]==='Genérico' || CheckSoftware[i]===undefined">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Fecha Inicio Vigencia:</h6>
+                            <mat-form-field >
+                                <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" >
+                                <mat-datepicker-toggle matSuffix [for]="pickerFIOf"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerFIOf></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm" [hidden]="CheckSoftware[i]==='Genérico' || CheckSoftware[i]===undefined">
+                            <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                Fecha Termino Vigencia:</h6>
+                            <mat-form-field >
+                                <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" >
+                                <mat-datepicker-toggle matSuffix [for]="pickerFFOf"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerFFOf></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm" [hidden]="CheckSoftware[i]==='Original'">
+                        </div>
+                        <div class="col-sm" [hidden]="CheckSoftware[i]==='Original'">
+                        </div>
+                    </div>
+                  </div>
+                </mat-list-item>
+            </mat-list>
+            <div class="row">
                 <div class="col-sm">
                     <h6> <i class='fas' style='font-size:10px;color:red'></i>
                         Agregar Accesorio: 
@@ -174,6 +242,8 @@
                     </h6>
                 </div>
             </div>
+
+
             <div class="table-wrapper-scroll-y my-custom-scrollbar" style='font-size:13px' [hidden]="!mostrarAccesorios">
 
                 <table class="table ">

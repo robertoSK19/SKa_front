@@ -130,6 +130,7 @@ export class FacturasComponent implements OnInit {
   opcionesFactura(id: string, opcion: string) {
     console.log(id);
     let equipoF: any;
+    equipoF = null;
     equipoF = this.resultados.filter(item => item.id_equipo ===  Number(id));
     // console.log(equipoF[0].factura);
     const bytes = atob(equipoF[0].factura);

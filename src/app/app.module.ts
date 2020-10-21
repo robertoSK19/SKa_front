@@ -110,6 +110,8 @@ PdfMakeWrapper.setFonts(pdfFonts);
     MatCheckboxModule,
     ToastrModule.forRoot(), // ToastrModule added
     MatProgressSpinnerModule,
+    MatListModule,
+    MatDividerModule
   ],
   providers: [CookieService, DatePipe,{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }],
   bootstrap: [AppComponent]
