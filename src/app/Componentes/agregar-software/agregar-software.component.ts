@@ -159,7 +159,7 @@ export class AgregarSoftwareComponent implements OnInit {
       a.className = 'visible';
       b.className = 'visible';
       c.className = 'invisible';
-    } else if (tipo === "Generico") {
+    } else if (tipo === "Genérico") {
       a.className = 'visible';
       b.className = 'invisible';
       c.className = 'visible';
