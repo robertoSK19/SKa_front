@@ -19,7 +19,8 @@ export class CrearPDFComponent implements OnInit {
   ngOnInit() {
   }
 
-  async generarPDF(opcion: string, accesorioEquipo: any, diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string, datosCargador?: any) {
+  async generarPDF(opcion: string, accesorioEquipo: any,
+                   diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string, datosCargador?: any, ) {
     const datosMap = datos;
     const responsable = nombre;
     const costoEquipo = this.costoFormato(costo);
@@ -39,9 +40,9 @@ export class CrearPDFComponent implements OnInit {
       ifEscritorio = false;
     }
     function validarOtros(array) {
-      
+
       if (array.length > 0 && checkAccesorios === true) {
-        datosAccesorioEquipo.map(function (obj) {
+        datosAccesorioEquipo.map(function(obj) {
           pdf.add(
             [
               new Table([// lista de caracteristicas del eliminador
@@ -58,10 +59,10 @@ export class CrearPDFComponent implements OnInit {
                 ],
               ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end
             ]
-          )
-        })
+          );
+        });
       } else {
-        console.log("No hay accesorios");
+        console.log('No hay accesorios');
       }
     }
 
@@ -118,8 +119,7 @@ export class CrearPDFComponent implements OnInit {
           [new Cell(new Txt('Procesador:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.procesador).fontSize(9).end).end],
           [new Cell(new Txt('Sistema Operativo:').fontSize(9).end).end,
-          new Cell(new Txt(datosMap.mequipo.nombre_sistema_operativo + ' ' + 
-          datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end).end],
+          new Cell(new Txt(datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end).end],
           [new Cell(new Txt('Disco Duro:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.disco_duro).fontSize(9).end).end],
           [new Cell(new Txt('Memoria RAM:').fontSize(9).end).end,
@@ -136,7 +136,7 @@ export class CrearPDFComponent implements OnInit {
       ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
     ]
     );
-    if (ifEscritorio === false){
+    if (ifEscritorio === false) {
       pdf.add(
         new Table([// lista de caracteristicas del eliminador
           [ new Cell( new Txt(datosEliminador.producto).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
@@ -153,10 +153,10 @@ export class CrearPDFComponent implements OnInit {
       ]).widths([ '20%', '45%', '35%' ]).margin([0, -1, 0 , 0]).end,
       );
     } else {
-      console.log('escritorio')
+      console.log('escritorio');
     }
     validarOtros(accesor);
-    pdf.add( 
+    pdf.add(
       [
       new Table([// lista de caracteristicas para accesorios extras
         [new Cell(new Txt('Otros').fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
@@ -463,7 +463,7 @@ export class CrearPDFComponent implements OnInit {
         case 9:
           aux2 = 'nueve'; break;
       }
-       aux3 = aux1 + ' y ' + aux2;
+      aux3 = aux1 + ' y ' + aux2;
     } else {
       switch (aux4) {
         case '0':

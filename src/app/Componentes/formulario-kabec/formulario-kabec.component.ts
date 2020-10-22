@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormGroupName } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormGroupName, FormArray, FormControl } from '@angular/forms';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { Router } from '@angular/router';
 import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp, accesoriosID} from '../agregar-responsivas/agregar-responsivas.component';
@@ -121,7 +121,11 @@ export class FormularioKabecComponent implements OnInit {
   nuevoSistema: Software;
   nuevoOffice: Software;
   ArregloSoftware: Software[];
-  
+  CheckSoftware: string[];
+  datosSoftware: FormGroup;
+  skills = new FormArray([]);
+  ifSONuevo = false;
+  ifOfNuevo = false;
   constructor(
     private formBuilder: FormBuilder,
     protected servicioConUser: ServiciosService,
@@ -165,6 +169,8 @@ export class FormularioKabecComponent implements OnInit {
     // this.cargaIdEquipo(datosResponsiva.idEquipo);
     this.validarRecurso();
     // this.getAllAccesorios();
+    this.CheckSoftware = [];
+    this.ArregloSoftware = [];
   }
 
   usuarioLogeado() {
@@ -188,6 +194,7 @@ export class FormularioKabecComponent implements OnInit {
     this.ServiceConsulta.getDEquipo(datosResponsiva.idEquipo).subscribe(
       response => {
         if (response.status === 200) {
+          datosDEquipoG = response.body;
           this.datosRespForm.controls.discoDS.setValue(response.body.disco_duro_solido);
           this.datosRespForm.controls.comentarios.setValue(response.body.comentarios);
         } else if (response.status === 204) {
@@ -271,7 +278,7 @@ export class FormularioKabecComponent implements OnInit {
         accesor.push(objAcc);
         accesorAsig.push(objAccAsignar);
       } else {
-        let index: number = accesor.findIndex(x => x.accId === acceId);
+        const index: number = accesor.findIndex(x => x.accId === acceId);
         accesor.splice(index, 1);
         let indexs: number = accesorAsig.findIndex(x => x.id_accesorio === acceId);
         accesorAsig.splice(indexs, 1);
@@ -392,8 +399,8 @@ export class FormularioKabecComponent implements OnInit {
           }
         }
       } else if (this.mostrarAccesorios === false || this.mostrarAccesorios === undefined) {*/ // si no selecciona otro accesorio
-        this.datosNuevoSOyOF();
-        datosAsignacion = {
+//      this.datosNuevoSOyOF();
+      datosAsignacion = {
           id_asignacion: '',
           id_dequipo: equipo,
           nombre_consultor: nombre,
@@ -403,19 +410,33 @@ export class FormularioKabecComponent implements OnInit {
           id_estatus: 0,
           usuario: '',
         };
-        datosDEquipo = {
+      datosDEquipo = {
           id_dequipo: equipo,
           disco_duro_solido: disco,
           fecha_actualizacion_estatus: new Date(),
           id_equipo: equipo,
           id_estatus: 1,
         };
-        this.ServiceConsulta.getDEquipo(equipo).subscribe(
+      if (accion === 'vista') {
+        if (this.nuevoSO === false && this.nuevoOf === false) {
+          this.mensajeSinNOyOf();
+        } else if (this.nuevoSO === true && this.nuevoOf === true) {
+          this.datosNuevoSOyOF();
+          if (this.ifOfNuevo === true && this.ifSONuevo === true){
+            if (accesor.length === 0) {
+              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
+            } else {
+              this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
+            }
+          }
+        }
+      }
+/*       this.ServiceConsulta.getDEquipo(equipo).subscribe(
           response => {
             this.datosDEquipo = response.body;
             datosDEquipoG = response.body;
             if (accion === 'vista') {
-              if (accesor.length === 0){
+              if (accesor.length === 0) {
               this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
               } else {
                 this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
@@ -426,8 +447,8 @@ export class FormularioKabecComponent implements OnInit {
             console.log(error);
             this.mensajeErrorVistaPrevia();
           }
-        );
-        if (accion === 'crear') {
+        ); */
+      if (accion === 'crear') {
           this.ServiceConsulta.getDEquipo(equipo).subscribe(
             response => {
               datosDEquipoG2 = response.body;
@@ -456,10 +477,12 @@ export class FormularioKabecComponent implements OnInit {
                       responseA => {
                         if (responseA.status === 200) {
                           console.log('asignacion correcta');
-                          if (accesor.length === 0){
-                            this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
+                          if (accesor.length === 0) {
+                            this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia,
+                              datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
                             } else {
-                              this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
+                              this.uno.prototype.generarPDF(accion, accesor, nombreDia,
+                                datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
                             }
                           this.mensajeResponsivaGenerada();
                           setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
@@ -580,7 +603,7 @@ export class FormularioKabecComponent implements OnInit {
     (datosResponsivaAccesorio.idAcceosrio);
     this.datosRespAccForm.controls.id_accesorio.disable();
     console.log(accesoriosID);
-    
+
     this.ServiceConsulta.getAccesorio(datosResponsivaAccesorio.idAcceosrio).subscribe(
       response => {
         if (response.status === 200) {
@@ -670,9 +693,6 @@ export class FormularioKabecComponent implements OnInit {
         console.log(response);
         if (response.status === 200) {
           this.softwares = response.body;
-          this.softAV = this.softwares.filter(so => so.tipo_software.toLowerCase() === 'antivirus');
-          this.softExtra = this.softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
-          && so.tipo_software.toLowerCase() !== 'sistema operativo' && so.tipo_software.toLowerCase() !== 'antivirus');
         } else {
           console.log('otra respuesta', response);
           this.mensajeErrorObtencionDatos();
@@ -690,7 +710,7 @@ export class FormularioKabecComponent implements OnInit {
     );
   }
   datosNuevoSOyOF() {
-    console.log('nuevo softwares')
+    console.log('nuevo softwares');
     if (this.nuevoSO === true ) {
       const fechaI =  this.datosNuevoSO.controls.fecha_inicio_vigencia.value;
       const fechaT =  this.datosNuevoSO.controls.fecha_termino_vigencia.value;
@@ -698,19 +718,23 @@ export class FormularioKabecComponent implements OnInit {
  //        console.log('es original');
         if (fechaI === '' && fechaT === '' && this.datosNuevoSO.controls.datosSoftware.value === null) {
           this.mensajeFaltaDatosSO();
+          this.ifSONuevo = false;
         } else if (fechaI !== '' && fechaT !== '' && this.datosNuevoSO.controls.datosSoftware.value !== null) {
           this.nuevoSistema = this.datosNuevoSO.controls.datosSoftware.value;
           this.nuevoSistema.vigencia_inicial = fechaI;
           this.nuevoSistema.vigencia_final = fechaT;
           console.log('datos del SO');
+          this.ifSONuevo =  true;
         }
       } else if (this.ifOriginalSO === true && this.ifGenericoSO === false) {
    //     console.log('es generico')
         if (this.datosNuevoSO.controls.datosSoftware.value === null) {
           this.mensajeFaltaDatosSO();
+          this.ifSONuevo = false;
         } else {
           this.nuevoSistema = this.datosNuevoSO.controls.datosSoftware.value;
           console.log('datos del SO');
+          this.ifSONuevo =  true;
         }
       }
     }
@@ -721,22 +745,58 @@ export class FormularioKabecComponent implements OnInit {
         //        console.log('es original');
         if (fechaIOf === '' && fechaTOf === '' && this.datosOfimatica.controls.datosSoftware.value === null) {
           this.mensajeFaltaDatosOf();
+          this.ifOfNuevo =  false;
         } else if (fechaIOf !== '' && fechaTOf !== '' && this.datosOfimatica.controls.datosSoftware.value !== null) {
           this.nuevoOffice = this.datosOfimatica.controls.datosSoftware.value;
           this.nuevoOffice.vigencia_inicial = fechaIOf;
           this.nuevoOffice.vigencia_final = fechaTOf;
           console.log('datos del OF');
+          this.ifOfNuevo =  true;
         }
       } else if (this.ifOriginalOF === true && this.ifGenericoOF === false) {
           //     console.log('es generico')
         if (this.datosOfimatica.controls.datosSoftware.value === null) {
           this.mensajeFaltaDatosOf();
+          this.ifOfNuevo =  false;
         } else {
           console.log('datos de la OF');
           this.nuevoOffice = this.datosOfimatica.controls.datosSoftware.value;
+          this.ifOfNuevo =  true;
         }
       }
     }
+  }
+  addCamposSoftware() {
+    this.skills.push(new FormControl(''));
+    this.CheckSoftware.push();
+    this.ArregloSoftware.push();
+  }
+  valores() {
+    let soft: Software;
+    for (let ind = 0; ind < this.skills.controls.length; ind ++) {
+      soft = this.skills.controls[ind].value;
+      this.ArregloSoftware[ind] = soft;
+    }
+    console.log(this.ArregloSoftware);
+  }
+  eliminarSoftware(indice: any) {
+    console.log(this.skills.controls);
+    console.log(this.ArregloSoftware);
+    console.log(this.CheckSoftware);
+    console.log(indice);
+    this.skills.controls.splice(indice, 1);
+    this.ArregloSoftware.splice(indice, 1);
+    this.CheckSoftware.splice(indice, 1);
+    console.log(this.skills.controls);
+    console.log(this.ArregloSoftware);
+    console.log(this.CheckSoftware);
+  }
+  tipoLicencia(tipo: any, valor: any) {
+    console.log(tipo);
+    console.log(valor);
+    this.CheckSoftware[valor] = tipo;
+    this.softExtra = this.softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
+          && so.tipo_software.toLowerCase() !== 'sistema operativo');
   }
 
 
@@ -781,6 +841,8 @@ export class FormularioKabecComponent implements OnInit {
   }
   mensajeFaltaDatosOf() {
     this.toastr.warning('Llene los campos con (*)', 'Faltan datos del la Ofimática');
+  }mensajeSinNOyOf() {
+    this.toastr.warning('No selecciono un Software de Sistema Operativo y/o de Ofimática', 'Faltan datos');
   }
 
 }

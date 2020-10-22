@@ -221,6 +221,7 @@ export class FacturasComponent implements OnInit {
   }
 
   opcionesFactura(id: string, opcion: string) {
+<<<<<<< HEAD
     if (sumitValor === "Equipos") {
       console.log(id);
       let equipoF: any;
@@ -263,6 +264,29 @@ export class FacturasComponent implements OnInit {
         downloadLink.download = fileName;
         downloadLink.click();
       }
+=======
+    console.log(id);
+    let equipoF: any;
+    equipoF = null;
+    equipoF = this.resultados.filter(item => item.id_equipo ===  Number(id));
+    // console.log(equipoF[0].factura);
+    const bytes = atob(equipoF[0].factura);
+    if (opcion === 'mostrar') {
+      const partes = bytes.split(',');
+      const byteArray = new Uint8Array(atob(partes[1]).split('').map(char => char.charCodeAt(0)));
+      const archivo = new Blob([byteArray], {type: 'application/pdf'});
+      const url = window.URL.createObjectURL(archivo);
+      // i.e. display the PDF content via iframe
+      this.ifFactura = false;
+      document.querySelector('iframe').src = url;
+    } else {
+      const datosFile = bytes;
+      const downloadLink = document.createElement('a');
+      const fileName = 'factura_' + equipoF[0].numero_serie_cmd + '.pdf';
+      downloadLink.href = datosFile;
+      downloadLink.download = fileName;
+      downloadLink.click();
+>>>>>>> 7cdb29b7ccc0fa98796982c50c418dda779352a6
     }
   }
 
