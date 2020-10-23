@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card" [hidden]="!ifAccesorio">
 
     <div class="card-body">
         <blockquote class="blockquote mb-0">
@@ -37,7 +37,7 @@
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Costo de Equipo:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="costo" >
+                    <input type="text" class=" form-control form-control-sm" formControlName="costo" placeholder="Ejemplo:1,000,000">
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas' style='font-size:10px;color:red'></i>
@@ -57,6 +57,180 @@
             </div>
             <br>
             <br>
+            <form [formGroup]="datosNuevoSO">
+                <div class="row">
+                    
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Tipo Sistema Operativo:</h6>
+                            <mat-radio-group
+                            aria-labelledby="example-radio-group-label"
+                            class="example-radio-group"
+                            (change)="tipoLicenciaSO($event.value)"
+                            >
+                            <mat-radio-button class="example-radio-button" style="font-size:16px;"  *ngFor="let licencia of tiposLicencias" [value]="licencia">
+                              {{licencia}}
+                            </mat-radio-button>
+                          </mat-radio-group>
+                    </div>
+                    <div class="col-sm" style='font-size:10px'>
+                        <div class="dropdown">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Nombre y versión del sistema operativo:</h6>
+                            <mat-form-field class="col-sm" >
+                                <mat-select style='font-size:14px' form formControlName="datosSoftware">
+                                    <mat-option *ngFor="let softwareSO of softSO" [value]="softwareSO"  >
+                                        {{softwareSO.nombre_software}} {{softwareSO.version}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm" [hidden]="ifOriginalSO">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Fecha Inicio Vigencia:</h6>
+                        <mat-form-field >
+                            <input matInput [matDatepicker]="pickerFI" style="font-size:13px; margin-top: 0;" formControlName="fecha_inicio_vigencia">
+                            <mat-datepicker-toggle matSuffix [for]="pickerFI"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerFI></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm" [hidden]="ifOriginalSO">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Fecha Termino Vigencia:</h6>
+                        <mat-form-field >
+                            <input matInput [matDatepicker]="pickerFF" style="font-size:13px; margin-top: 0;" formControlName="fecha_termino_vigencia">
+                            <mat-datepicker-toggle matSuffix [for]="pickerFF"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerFF></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm" [hidden]="!ifOriginalSO">
+                    </div>
+                    <div class="col-sm" [hidden]="!ifOriginalSO">
+                    </div>
+                
+                </div>
+                </form>
+                <br>
+                <br>
+                <form [formGroup]="datosOfimatica">
+                <div class="row">
+                    <div class="col-sm">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Tipo de Ofimática:</h6>
+                            <mat-radio-group
+                            aria-labelledby="example-radio-group-label"
+                            class="example-radio-group"
+                            (change)="tipoLicenciaOF($event.value)"
+                            >
+                            <mat-radio-button class="example-radio-button" style="font-size:16px;"  *ngFor="let licencia of tiposLicencias" [value]="licencia">
+                              {{licencia}}
+                            </mat-radio-button>
+                          </mat-radio-group>
+                    </div>
+                    <div class="col-sm" style='font-size:10px'>
+                        <div class="dropdown">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Nombre y versión de la Ofimática:</h6>
+                            <mat-form-field class="col-sm" >
+                                <mat-select style='font-size:14px' formControlName="datosSoftware">
+                                    <mat-option *ngFor="let softwareOf of softOf" [value]="softwareOf" >
+                                        {{softwareOf.nombre_software}} {{softwareOf.version}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm" [hidden]="ifOriginalOF">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Fecha Inicio Vigencia:</h6>
+                        <mat-form-field >
+                            <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" formControlName="fecha_inicio_vigencia">
+                            <mat-datepicker-toggle matSuffix [for]="pickerFIOf"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerFIOf></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm" [hidden]="ifOriginalOF">
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Fecha Termino Vigencia:</h6>
+                        <mat-form-field >
+                            <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" formControlName="fecha_termino_vigencia">
+                            <mat-datepicker-toggle matSuffix [for]="pickerFFOf"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerFFOf></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm" [hidden]="!ifOriginalOF">
+                    </div>
+                    <div class="col-sm" [hidden]="!ifOriginalOF">
+                    </div>
+                </div>
+                </form>
+                <br>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-outline-primary btn-block" (click)="addCamposSoftware()">Agregar Software</button>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <mat-list>
+                    <mat-list-item  style="margin-bottom:8%" *ngFor="let control of skills.controls; index as i">
+                        <p></p>
+                        <i class='fas fa-times' (click)="eliminarSoftware(i)" style='font-size:20px;color:purple'></i>
+                      <div mat-line>
+                        <div class="row">
+                            <div class="col-sm">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Tipo de Ofimática:</h6>
+                                    <mat-radio-group
+                                    aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group"
+                                    (change)="tipoLicencia($event.value, i)"
+                                    >
+                                    <mat-radio-button class="example-radio-button" style="font-size:16px;"  *ngFor="let licencia of tiposLicencias" [value]="licencia">
+                                      {{licencia}}
+                                    </mat-radio-button>
+                                  </mat-radio-group>
+                            </div>
+                            <div class="col-sm" style='font-size:10px'>
+                                <div class="dropdown">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Nombre y versión del Software:</h6>
+                                    <mat-form-field class="col-sm" >
+                                        <mat-select style='font-size:14px' [formControl]="skills.controls[i]">
+                                            <mat-option *ngFor="let softwareEx of softExtra" [value]="softwareEx" >
+                                                {{softwareEx.nombre_software}} {{softwareEx.version}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-sm" [hidden]="CheckSoftware[i]==='Genérico' || CheckSoftware[i]===undefined">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Fecha Inicio Vigencia:</h6>
+                                <mat-form-field >
+                                    <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" [formControl]="FechaInicio.controls[i]">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerFIOf"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerFIOf></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm" [hidden]="CheckSoftware[i]==='Genérico' || CheckSoftware[i]===undefined">
+                                <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                                    Fecha Termino Vigencia:</h6>
+                                <mat-form-field >
+                                    <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" [formControl]="FechaFin.controls[i]">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerFFOf"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerFFOf></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm" [hidden]="CheckSoftware[i]==='Original'">
+                            </div>
+                            <div class="col-sm" [hidden]="CheckSoftware[i]==='Original'">
+                            </div>
+                        </div>
+                      </div>
+                    </mat-list-item>
+                </mat-list>
             <div class="row">
                 <div class="col-sm">
                     <h6> <i class='fas' style='font-size:10px;color:red'></i>
@@ -65,6 +239,8 @@
                     </h6>
                 </div>
             </div>
+
+
             <div class="table-wrapper-scroll-y my-custom-scrollbar" style='font-size:13px' [hidden]="!mostrarAccesorios">
 
                 <table class="table ">
@@ -89,13 +265,14 @@
                             <td>{{accesorio.id_estatus.nombre_estatus}}</td>
                             <td><input id="male" type="checkbox" value="male" name="gender"
                                 (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(accesorio) : null"
+                                (change)="$event ?  accesoriosCheck(accesorio.id_accesorio, accesorio.nombre_accesorio,
+                                accesorio.marca,accesorio.modelo, accesorio.serie, accesorio.id_estatus.nombre_estatus, accesorio.producto,
+                                accesorio.hecho_en, accesorio.costo, accesorio.descripcion, accesorio.capacidad, accesorio.tipo_disco_duro,
+                                accesorio.ram_bus, accesorio.ram_ranura) : null"
                                 [checked]="selection.isSelected(accesorio)"
                                 >
                             </td>
                         </tr>
-            
-            
                     </tbody>
                 </table>
             </div>
@@ -115,6 +292,50 @@
                 </div>
                 <div class="col-sm-3 ">
                     <button type="button" class="btn btn-success btn-block" (click)='generarResponsiva("crear")'>Generar</button>
+                </div>
+            </div>
+            </form>
+        </blockquote>
+    </div>
+</div>
+
+<div class="card" [hidden]="ifAccesorio">
+
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <form [formGroup]="datosRespAccForm">
+
+            <div class="row">
+                <div class="col-sm">
+
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Id Accesorio:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="id_accesorio" >
+                </div>
+
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Responsable del Equipo:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="responsable">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-3">
+
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesorio("vista")'>Vista Previa</button>
+                </div>
+                <div class="col-sm-3 ">
+                    <button type="button" class="btn btn-success btn-block" (click)='generarResponsivaAccesorio("crear")'>Generar</button>
                 </div>
             </div>
             </form>

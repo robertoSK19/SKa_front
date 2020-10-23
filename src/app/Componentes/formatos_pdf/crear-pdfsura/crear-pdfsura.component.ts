@@ -23,7 +23,8 @@ export class CrearPDFSuraComponent implements OnInit {
   ngOnInit() {
   }
 
-  async generarPDFSura(opcion: string, accesorioEquipo: any, fecha: string, datos?: any, nombre ?: string, costo?: string, accesoriosPC?: any[]) {
+  async generarPDFSura(opcion: string, accesorioEquipo: any, fecha: string, datos?: any, nombre ?: string,
+                       costo?: string, accesoriosPC?: any[], SoftSOyOF?: any, SoftwareExtra?: any) {
     const pdfSura = new PdfMakeWrapper();
     // Constantes
     const TxtMM = 'Marca / Modelo: ';
@@ -52,7 +53,8 @@ export class CrearPDFSuraComponent implements OnInit {
     const modeloEliminador = datosAccesorioEquipo.modelo;
     const numSerieEliminador = datosAccesorioEquipo.serie;
     let ifEscritorio = false;
-
+    const nombreSO = SoftSOyOF[0].nombre_software + ' ' + SoftSOyOF[0].version;
+    const nombreOfimatica =  SoftSOyOF[1].nombre_software + ' ' + SoftSOyOF[1].version;
     if (datosEquipo.mequipo.tipo_computadora === 'LAPTOP') {
       checkLaptop = imagenCheck;
       checkEscritorio = imagenUnCheck;
@@ -240,7 +242,7 @@ export class CrearPDFSuraComponent implements OnInit {
           [ new Cell(new Txt('Sistema Operativo').end).end,
             new Cell(
               new Txt(['Versión : ',
-                new Txt('WINDOWS 7 PRO').fontSize(11).background(colorCamposSura).end,
+                new Txt(nombreSO).fontSize(11).background(colorCamposSura).end,
                 new Txt(', Service Pack ').end,
                 new Txt('   ').fontSize(11).background(colorCamposSura).end,
               ]).end).end,
@@ -250,7 +252,7 @@ export class CrearPDFSuraComponent implements OnInit {
           [ new Cell(new Txt('Office: ').end).end,
             new Cell(
               new Txt([TxtSerie,
-                new Txt('OFFCE 365 PROPLUS - es - es').fontSize(11).background(colorCamposSura).end,
+                new Txt(nombreOfimatica).fontSize(11).background(colorCamposSura).end,
                 new Txt(', Service Pack ').end,
                 new Txt('1').fontSize(11).background(colorCamposSura).end,
               ]).end).end,

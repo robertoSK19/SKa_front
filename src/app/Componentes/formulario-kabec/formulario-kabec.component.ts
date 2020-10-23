@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormGroupName, FormArray, FormControl } from '@angular/forms';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { Router } from '@angular/router';
-import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva, AccesorioResp, accesoriosID} from '../agregar-responsivas/agregar-responsivas.component';
+import { EquipoResp, DatosEquipoResponsiva, DatosAccesorioResponsiva,
+  AccesorioResp, accesoriosID} from '../agregar-responsivas/agregar-responsivas.component';
 import { DataService } from '../list/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Accesorios } from '../../Models/accesorios/accesorios.interface';
@@ -14,6 +15,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Aaccesorio } from 'src/app/Models/accesorios/aaccesorio.interface';
 import { tipoLicencia } from '../../Constantes/constante';
 import { Software } from '../../Models/Software/software.interface';
+import { Equipos } from 'src/app/Models/equipos/equipos.interface';
+import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
+import { accesorSura } from '../formulario-sura/formulario-sura.component';
 const idEestatusAsignada = '1';
 const idEstatusNoAsignada = '2';
 let datosResponsiva: DatosEquipoResponsiva = {
@@ -25,6 +29,14 @@ let datosResponsivaAccesorio: DatosAccesorioResponsiva = {
 
 export let accesor = [];
 export let checkAccesorios = false;
+export interface DatosResponsiva {
+  opcion: string;
+  nombre: string;
+  costo: string;
+  SSD: string;
+  diaSemana: string;
+}
+let datosPResponsiva: DatosResponsiva;
 let accesorAsig = [];
 let equipoID = 0;
 
@@ -53,13 +65,14 @@ let accesorioAsig: Accesorios = {
   tipo_disco_duro: '',
   ram_bus: '',
   ram_ranura: '',
-}
+};
 
 
 let datosDEquipoG: any[];
 let datosDEquipoG2: DEquipos;
 let datosAccesorioG: Accesorios;
 let accesorioEquipo: any;
+let auxMequipo: Equipos;
 
 let datosDEquipo: DEquipos = {
   id_equipo: 0,
@@ -124,8 +137,21 @@ export class FormularioKabecComponent implements OnInit {
   CheckSoftware: string[];
   datosSoftware: FormGroup;
   skills = new FormArray([]);
+  FechaInicio = new FormArray([]);
+  FechaFin = new FormArray([]);
   ifSONuevo = false;
   ifOfNuevo = false;
+  SOyOf: Software[];
+  listaHistorico: any[];
+  idHistorico = '';
+  equipoSoftware: EquipoSoftware = {
+    id_equipo: null,
+    id_software: null,
+    id_historico: null,
+  };
+  NoSoftwareExtra = false;
+  datosSoftExLlenos =  false;
+  SoftExtraCorrecto =  false;
   constructor(
     private formBuilder: FormBuilder,
     protected servicioConUser: ServiciosService,
@@ -171,6 +197,8 @@ export class FormularioKabecComponent implements OnInit {
     // this.getAllAccesorios();
     this.CheckSoftware = [];
     this.ArregloSoftware = [];
+    accesor = [];
+    checkAccesorios = false;
   }
 
   usuarioLogeado() {
@@ -195,6 +223,8 @@ export class FormularioKabecComponent implements OnInit {
       response => {
         if (response.status === 200) {
           datosDEquipoG = response.body;
+          datosDEquipoG2 = response.body;
+          auxMequipo = response.body.mequipo;
           this.datosRespForm.controls.discoDS.setValue(response.body.disco_duro_solido);
           this.datosRespForm.controls.comentarios.setValue(response.body.comentarios);
         } else if (response.status === 204) {
@@ -295,115 +325,31 @@ export class FormularioKabecComponent implements OnInit {
     const date = new Date();
     const accion = opcion;
     const activaAcc = this.datosRespForm.controls.opcionAccesorio.value;
-    console.log(this.datosRespForm.controls.id_equipo.value);
-    console.log(this.datosRespForm.controls.responsable.value);
-    console.log(this.datosRespForm.controls.costo.value);
     const fecha = this.datepipe.transform(date, 'yyyy-MM-dd');
     const nombreDia = this.datepipe.transform(date, 'EEEE');
     const equipo = this.datosRespForm.controls.id_equipo.value;
-    const nombre = this.datosRespForm.controls.responsable.value;
+    const nombreR = this.datosRespForm.controls.responsable.value;
     const costoEquipo = this.datosRespForm.controls.costo.value;
-//    const costoNum = costoEquipo.replace(',', '');
     const comentarios = this.datosRespForm.controls.comentarios.value;
     const disco = this.datosRespForm.controls.discoDS.value;
-    equipoID = parseInt(equipo);
-    if (nombre === '' && costoEquipo === '') {
-      console.log('no lleno todos los datos');
+    let datosHistorico: any;
+    equipoID = parseInt(equipo, 10);
+    if (nombreR === '' && costoEquipo === '') {
+      // console.log('no lleno todos los datos');
       this.mensajeDatosVacios();
-    } else if (nombre !== ''  && costoEquipo === '') {
+    } else if (nombreR !== ''  && costoEquipo === '') {
       // console.log('falta costo');
       this.mensajeFaltaCosto();
-    } else if (nombre === ''  && costoEquipo !== '') {
+    } else if (nombreR === ''  && costoEquipo !== '') {
       //  console.log('falta respomsable');
       this.mensajeFaltaResponsable();
     } else {
       const costoNum = costoEquipo.replace(',', '');
-      /* if (this.mostrarAccesorios === true) { // si selecciona otro accesorio
-        if (accesor.length === 0) {
-          console.log('no selecciono un dispositivo');
-        } else {
-          console.log('selecciono al menos uno');
-         /* for (let accesorio of accesor) {
-            console.log(accesorio.accId);
-          }*/
-       /*   datosAsignacion = {
-            id_asignacion: '',
-            id_dequipo: equipo,
-            nombre_consultor: nombre,
-            costo: Number(costoNum),
-            letra: costoEquipo,
-            fecha_asignacion: fecha,
-            id_estatus: 0,
-            usuario: '',
-          };
-          datosDEquipo = {
-            id_dequipo: equipo,
-            disco_duro_solido: disco,
-            fecha_actualizacion_estatus: new Date(),
-            id_equipo: equipo,
-            id_estatus: 1,
-          };
-          this.ServiceConsulta.getDEquipo(equipo).subscribe(
-            response => {
-              this.datosDEquipo = response.body;
-              datosDEquipoG = response.body;
-              if (accion === 'vista') {
-                this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
-              }
-            },
-            error => {
-              console.log(error);
-              this.mensajeErrorVistaPrevia();
-            }
-          );
-          if (accion === 'crear') {
-            this.ServiceConsulta.getDEquipo(equipo).subscribe(
-              response => {
-                datosDEquipoG2 = response.body;
-                datosDEquipoG2.comentarios = comentarios;
-                this.ServiceConsulta.updateDEquipo(Number(idEestatusAsignada), datosDEquipoG2).subscribe(
-                  responseDE => {
-                    if (responseDE.status === 200) {
-                      this.ServiceConsulta.crearAsignacion(equipo, idEestatusAsignada, datosAsignacion).subscribe(
-                        responseA => {
-                          if (responseA.status === 200) {
-                            console.log('asignacion correcta');
-                            this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre,
-                              costoEquipo, disco, accesorioEquipo);
-                          }
-                        },
-                        errorA => {
-                          if (errorA.status === 500) {
-                            console.log('Error en el Servicio');
-                            // en caso de que no se cree la asginacion
-                            this.ServiceConsulta.updateDEquipo(Number(idEstatusNoAsignada), datosDEquipoG2).subscribe();
-                          }
-                        }
-                      );
-                    }
-                  },
-                  errorDE => {
-                    if (errorDE.status === 500) {
-                      console.log('Error en el Servicio');
-                    }
-                  }
-                );
-              },
-              error => {
-                console.log(error);
-                if (error.status === 500) {
-                  console.log('Error en el Servicio');
-                }
-              }
-            );
-          }
-        }
-      } else if (this.mostrarAccesorios === false || this.mostrarAccesorios === undefined) {*/ // si no selecciona otro accesorio
-//      this.datosNuevoSOyOF();
+
       datosAsignacion = {
           id_asignacion: '',
           id_dequipo: equipo,
-          nombre_consultor: nombre,
+          nombre_consultor: nombreR,
           costo: Number(costoNum) ,
           letra: this.uno.prototype.costoLetra(costoEquipo),
           fecha_asignacion: fecha,
@@ -417,133 +363,187 @@ export class FormularioKabecComponent implements OnInit {
           id_equipo: equipo,
           id_estatus: 1,
         };
+      datosPResponsiva = {
+        opcion: accion,
+        diaSemana: nombreDia,
+        nombre: nombreR,
+        SSD: disco,
+        costo: costoEquipo,
+      };
+      console.log(this.skills.controls.length);
       if (accion === 'vista') {
         if (this.nuevoSO === false && this.nuevoOf === false) {
           this.mensajeSinNOyOf();
         } else if (this.nuevoSO === true && this.nuevoOf === true) {
           this.datosNuevoSOyOF();
-          if (this.ifOfNuevo === true && this.ifSONuevo === true){
-            if (accesor.length === 0) {
-              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
-            } else {
-              this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
+          if (this.ifOfNuevo === true && this.ifSONuevo === true) {
+            if (this.skills.controls.length === 0) {
+              // console.log('sin software addicional');
+              if (accesor.length === 0) {
+                this.uno.prototype.generarPDF(accesorioEquipo, datosDEquipoG, datosPResponsiva, accesorioEquipo, this.SOyOf);
+              } else {
+                this.uno.prototype.generarPDF(accesor, datosDEquipoG, datosPResponsiva, accesorioEquipo, this.SOyOf);
+              }
+            } else if (this.skills.controls.length !== 0) {
+              // console.log('software addicional');
+              this.valores();
+              if (this.SoftExtraCorrecto === true) {
+                // console.log('datos llenados');
+                if (accesor.length === 0) {
+                  this.uno.prototype.generarPDF(accesorioEquipo, datosDEquipoG, datosPResponsiva, accesorioEquipo,
+                     this.SOyOf, this.ArregloSoftware);
+                } else {
+                  this.uno.prototype.generarPDF(accesor, datosDEquipoG, datosPResponsiva, accesorioEquipo,
+                     this.SOyOf, this.ArregloSoftware);
+                }
+              }
             }
           }
         }
       }
-/*       this.ServiceConsulta.getDEquipo(equipo).subscribe(
-          response => {
-            this.datosDEquipo = response.body;
-            datosDEquipoG = response.body;
-            if (accion === 'vista') {
-              if (accesor.length === 0) {
-              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
-              } else {
-                this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
-              }
-            }
-          },
-          error => {
-            console.log(error);
-            this.mensajeErrorVistaPrevia();
-          }
-        ); */
       if (accion === 'crear') {
-          this.ServiceConsulta.getDEquipo(equipo).subscribe(
-            response => {
-              datosDEquipoG2 = response.body;
-              datosDEquipoG2.comentarios = comentarios;
-              accesorAsig.map((x =>{
-                accesorioAsig.id_accesorio = x.id_accesorio;
-                accesorioAsig.nombre_accesorio = x.nombre_accesorio;
-                accesorioAsig.marca = x.marca;
-                accesorioAsig.modelo = x.modelo;
-                accesorioAsig.producto = x.producto;
-                accesorioAsig.hecho_en = x.hecho_en;
-                accesorioAsig.serie = x.serie;
-                accesorioAsig.costo = x.costo;
-                accesorioAsig.id_equipo = x.id_equipo;
-                accesorioAsig.descripcion = x.descripcion;
-                accesorioAsig.capacidad = x.capacidad;
-                accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
-                accesorioAsig.ram_bus = x.ram_bus;
-                accesorioAsig.ram_ranura = x.ram_ranura;
-                this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEestatusAsignada));
-              }))
-              this.ServiceConsulta.updateDEquipo(Number(idEestatusAsignada), datosDEquipoG2).subscribe(
-                responseDE => {
-                  if (responseDE.status === 200) {
-                    this.ServiceConsulta.crearAsignacion(equipo, idEestatusAsignada, datosAsignacion).subscribe(
-                      responseA => {
-                        if (responseA.status === 200) {
-                          console.log('asignacion correcta');
-                          if (accesor.length === 0) {
-                            this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia,
-                              datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
-                            } else {
-                              this.uno.prototype.generarPDF(accion, accesor, nombreDia,
-                                datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
+        accesorAsig.map((x => {
+          accesorioAsig.id_accesorio = x.id_accesorio;
+          accesorioAsig.nombre_accesorio = x.nombre_accesorio;
+          accesorioAsig.marca = x.marca;
+          accesorioAsig.modelo = x.modelo;
+          accesorioAsig.producto = x.producto;
+          accesorioAsig.hecho_en = x.hecho_en;
+          accesorioAsig.serie = x.serie;
+          accesorioAsig.costo = x.costo;
+          accesorioAsig.id_equipo = x.id_equipo;
+          accesorioAsig.descripcion = x.descripcion;
+          accesorioAsig.capacidad = x.capacidad;
+          accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
+          accesorioAsig.ram_bus = x.ram_bus;
+          accesorioAsig.ram_ranura = x.ram_ranura;
+          this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEestatusAsignada));
+        }));
+        if (this.nuevoSO === false && this.nuevoOf === false) {
+          this.mensajeSinNOyOf();
+        } else if (this.nuevoSO === true && this.nuevoOf === true) {
+          this.datosNuevoSOyOF();
+          if (this.ifOfNuevo === true && this.ifSONuevo === true) {
+            datosDEquipoG2.comentarios = comentarios;
+            auxMequipo.nombre_sistema_operativo =  this.SOyOf[0].nombre_software + ' ' + this.SOyOf[0].version;
+            this.ServiceConsulta.updateDEquipo(Number(idEestatusAsignada), datosDEquipoG2).subscribe(
+              responseDE => {
+                if (responseDE.status === 200) {
+                  // console.log(auxMequipo)
+                  this.ServiceConsulta.updateEquipo(auxMequipo).subscribe();
+                  this.ServiceConsulta.crearAsignacion(equipo, idEestatusAsignada, datosAsignacion).subscribe(
+                    responseA => {
+                      if (responseA.status === 200) {
+                          this.ServiceConsulta.getAllHistorico().subscribe(
+                            responseH => {
+                              this.listaHistorico = responseH.body;
+                              datosHistorico = this.listaHistorico.pop();
+                              this.idHistorico = datosHistorico.id_historico;
+                              for (const soft of this.SOyOf) {
+                                let idSoftware: any;
+                                idSoftware = soft.id_software;
+                                console.log(Number(auxMequipo.id_equipo), idSoftware, this.equipoSoftware, Number(this.idHistorico));
+                                this.equipoSoftware = {
+                                  id_equipo: auxMequipo,
+                                  id_software: idSoftware,
+                                  id_historico: datosHistorico,
+                                };
+                                this.ServiceConsulta.crearEquipoSoftware(Number(auxMequipo.id_equipo),
+                                idSoftware, this.equipoSoftware, Number(this.idHistorico)).subscribe();
+                              }
                             }
+                          );
+                          console.log('asignacion correcta');
                           this.mensajeResponsivaGenerada();
-                          setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
-                        } else {
-                          this.mensajeErrorResponsiva();
-                        }
-                      },
-                      errorA => {
-                        if (errorA.status === 500) {
-                          console.log('Error en el Servicio');
-                          // en caso de que no se cree la asginacion
-                          this.mensajeErrorResponsiva();
-                          accesorAsig.map((x =>{
-                            accesorioAsig.id_accesorio = x.id_accesorio;
-                            accesorioAsig.nombre_accesorio = x.nombre_accesorio;
-                            accesorioAsig.marca = x.marca;
-                            accesorioAsig.modelo = x.modelo;
-                            accesorioAsig.producto = x.producto;
-                            accesorioAsig.hecho_en = x.hecho_en;
-                            accesorioAsig.serie = x.serie;
-                            accesorioAsig.costo = x.costo;
-                            accesorioAsig.id_equipo = null;
-                            accesorioAsig.descripcion = x.descripcion;
-                            accesorioAsig.capacidad = x.capacidad;
-                            accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
-                            accesorioAsig.ram_bus = x.ram_bus;
-                            accesorioAsig.ram_ranura = x.ram_ranura;
-                            this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEstatusNoAsignada));
-                          }))
-                          this.ServiceConsulta.updateDEquipo(Number(idEstatusNoAsignada), datosDEquipoG2).subscribe();
-                        }
+                          if (this.skills.controls.length === 0) {
+                            if (accesor.length === 0) {
+                              this.uno.prototype.generarPDF(accesorioEquipo, datosDEquipoG, datosPResponsiva, accesorioEquipo, this.SOyOf);
+                            } else {
+                              this.uno.prototype.generarPDF(accesor, datosDEquipoG, datosPResponsiva, accesorioEquipo, this.SOyOf);
+                            }
+                            setTimeout( () => {this.router.navigate(['IndexResponsiva']); }, 3000 );
+                          } else if (this.skills.controls.length !== 0) {
+                            this.valores();
+                            if (this.SoftExtraCorrecto === true) {
+                              // console.log('datos llenados');
+                              this.ServiceConsulta.getAllHistorico().subscribe(
+                                responseH => {
+                                  this.listaHistorico = responseH.body;
+                                  datosHistorico = this.listaHistorico.pop();
+                                  this.idHistorico = datosHistorico.id_historico;
+                                  for (const softEx of this.ArregloSoftware) {
+                                    let idSoftware: any;
+                                    idSoftware = softEx.id_software;
+                                    console.log(Number(auxMequipo.id_equipo), idSoftware, this.equipoSoftware, Number(this.idHistorico));
+                                    this.equipoSoftware = {
+                                      id_equipo: auxMequipo,
+                                      id_software: idSoftware,
+                                      id_historico: datosHistorico,
+                                    };
+                                    this.ServiceConsulta.crearEquipoSoftware(Number(auxMequipo.id_equipo),
+                                    idSoftware, this.equipoSoftware, Number(this.idHistorico)).subscribe();
+                                  }
+                                }
+                              );
+                              if (accesor.length === 0) {
+                                this.uno.prototype.generarPDF(accesorioEquipo, datosDEquipoG, datosPResponsiva,
+                                   accesorioEquipo, this.SOyOf, this.ArregloSoftware);
+                              } else {
+                                this.uno.prototype.generarPDF(accesor, datosDEquipoG, datosPResponsiva, accesorioEquipo,
+                                   this.SOyOf, this.ArregloSoftware);
+                              }
+                            }
+                          }
+                      } else {
+                        this.mensajeErrorResponsiva();
                       }
-                    );
-                  }
-                },
-                errorDE => {
-                  if (errorDE.status === 500) {
-                    console.log('Error en el Servicio');
-                    this.mensaje500();
-                  } else {
-                    this.mensajeErrorResponsiva();
-                  }
+                    },
+                    errorA => {
+                      if (errorA.status === 500) {
+                        console.log('Error en el Servicio');
+                        // en caso de que no se cree la asginacion
+                        this.mensajeErrorResponsiva();
+                        accesorAsig.map((x =>{
+                          accesorioAsig.id_accesorio = x.id_accesorio;
+                          accesorioAsig.nombre_accesorio = x.nombre_accesorio;
+                          accesorioAsig.marca = x.marca;
+                          accesorioAsig.modelo = x.modelo;
+                          accesorioAsig.producto = x.producto;
+                          accesorioAsig.hecho_en = x.hecho_en;
+                          accesorioAsig.serie = x.serie;
+                          accesorioAsig.costo = x.costo;
+                          accesorioAsig.id_equipo = null;
+                          accesorioAsig.descripcion = x.descripcion;
+                          accesorioAsig.capacidad = x.capacidad;
+                          accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
+                          accesorioAsig.ram_bus = x.ram_bus;
+                          accesorioAsig.ram_ranura = x.ram_ranura;
+                          this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEstatusNoAsignada));
+                        }))
+                        this.ServiceConsulta.updateDEquipo(Number(idEstatusNoAsignada), datosDEquipoG2).subscribe();
+                      }
+                    }
+                  );
                 }
-              );
-            },
-            error => {
-              console.log(error);
-              if (error.status === 500) {
-                console.log('Error en el Servicio');
-                this.mensaje500();
-              } else {
-                this.mensajeErrorResponsiva();
+              },
+              errorDE => {
+                if (errorDE.status === 500) {
+                  console.log('Error en el Servicio');
+                  this.mensaje500();
+                } else {
+                  this.mensajeErrorResponsiva();
+                }
               }
-            }
-          );
-       // }
+            );
+          }
+        }
       }
     }
   }
 
   cancelar() {
+    accesor = [];
+    checkAccesorios = false;
     this.mensajeCancelar();
     setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
 
@@ -661,7 +661,7 @@ export class FormularioKabecComponent implements OnInit {
           }
         }
       );
-  }
+    }
   }
   tipoLicenciaSO(tipo: any) {
     console.log(tipo);
@@ -710,6 +710,7 @@ export class FormularioKabecComponent implements OnInit {
     );
   }
   datosNuevoSOyOF() {
+    this.SOyOf = [];
     console.log('nuevo softwares');
     if (this.nuevoSO === true ) {
       const fechaI =  this.datosNuevoSO.controls.fecha_inicio_vigencia.value;
@@ -725,6 +726,7 @@ export class FormularioKabecComponent implements OnInit {
           this.nuevoSistema.vigencia_final = fechaT;
           console.log('datos del SO');
           this.ifSONuevo =  true;
+          this.SOyOf[0] = this.nuevoSistema;
         }
       } else if (this.ifOriginalSO === true && this.ifGenericoSO === false) {
    //     console.log('es generico')
@@ -735,6 +737,7 @@ export class FormularioKabecComponent implements OnInit {
           this.nuevoSistema = this.datosNuevoSO.controls.datosSoftware.value;
           console.log('datos del SO');
           this.ifSONuevo =  true;
+          this.SOyOf[0] = this.nuevoSistema;
         }
       }
     }
@@ -752,6 +755,7 @@ export class FormularioKabecComponent implements OnInit {
           this.nuevoOffice.vigencia_final = fechaTOf;
           console.log('datos del OF');
           this.ifOfNuevo =  true;
+          this.SOyOf[1] = this.nuevoOffice;
         }
       } else if (this.ifOriginalOF === true && this.ifGenericoOF === false) {
           //     console.log('es generico')
@@ -762,38 +766,98 @@ export class FormularioKabecComponent implements OnInit {
           console.log('datos de la OF');
           this.nuevoOffice = this.datosOfimatica.controls.datosSoftware.value;
           this.ifOfNuevo =  true;
+          this.SOyOf[1] = this.nuevoOffice;
         }
       }
     }
   }
   addCamposSoftware() {
-    this.skills.push(new FormControl(''));
+    this.skills.push(new FormControl(null));
+    this.FechaInicio.push(new FormControl(''));
+    this.FechaFin.push(new FormControl(''));
     this.CheckSoftware.push();
     this.ArregloSoftware.push();
   }
   valores() {
     let soft: Software;
-    for (let ind = 0; ind < this.skills.controls.length; ind ++) {
+    soft = null;
+    for (let ind = 0; ind < this.skills.controls.length; ind++) {
       soft = this.skills.controls[ind].value;
-      this.ArregloSoftware[ind] = soft;
+      if (soft === null) {
+        // this.mensajeFaltanDatosSoftEx();
+        break;
+      } else {
+        // console.log(soft)
+        if (this.CheckSoftware[ind] === 'Original') {
+          if (this.FechaInicio.controls[ind].value === '' && this.FechaFin.controls[ind].value === '') {
+            // this.mensajeDatosVacios();
+            this.datosSoftExLlenos = false;
+            break;
+          } else if (this.FechaInicio.controls[ind].value !== null && this.FechaFin.controls[ind].value !== null) {
+            // console.log('original');
+            soft.vigencia_inicial = this.datepipe.transform(this.FechaInicio.controls[ind].value, 'yyyy-MM-dd');
+            soft.vigencia_final = this.datepipe.transform(this.FechaFin.controls[ind].value, 'yyyy-MM-dd');
+            this.datosSoftExLlenos = true;
+          }
+        } else if (this.CheckSoftware[ind] === 'Genérico') {
+          // console.log('generico');
+          this.datosSoftExLlenos = true;
+        }
+        this.ArregloSoftware[ind] = soft;
+      }
+      console.log(this.ArregloSoftware);
+      for (const datossoft of this.skills.controls) {
+        // console.log(datossoft.value)
+        if (datossoft.value === null && datossoft.value === []) {
+          console.log(null)
+          this.NoSoftwareExtra = false;
+          // this.mensajeFaltanDatosSoftEx();
+          break;
+        }
+        this.NoSoftwareExtra = true;
+        // console.log('termino loop')
+      }
     }
-    console.log(this.ArregloSoftware);
+    this.validaDatos();
   }
+
+  validaDatos() {
+    // console.log(this.NoSoftwareExtra, this.datosSoftExLlenos)
+    if (this.NoSoftwareExtra === false && this.datosSoftExLlenos === false) {
+      console.log('sin datos')
+      this.SoftExtraCorrecto =  false;
+      this.mensajeDatosVacios();
+    } else if (this.NoSoftwareExtra === true && this.datosSoftExLlenos === false) {
+      console.log('faltan fechas');
+      this.SoftExtraCorrecto =  false;
+      this.mensajeDatosVacios();
+    } else if (this.NoSoftwareExtra === false && this.datosSoftExLlenos === true) {
+      console.log('faltan datos');
+      this.SoftExtraCorrecto =  false;
+      this.mensajeDatosVacios();
+    } else if (this.NoSoftwareExtra === true && this.datosSoftExLlenos === true) {
+      this.SoftExtraCorrecto =  true;
+      console.log('ok');
+    }
+  }
+
   eliminarSoftware(indice: any) {
-    console.log(this.skills.controls);
-    console.log(this.ArregloSoftware);
-    console.log(this.CheckSoftware);
-    console.log(indice);
     this.skills.controls.splice(indice, 1);
     this.ArregloSoftware.splice(indice, 1);
     this.CheckSoftware.splice(indice, 1);
-    console.log(this.skills.controls);
-    console.log(this.ArregloSoftware);
-    console.log(this.CheckSoftware);
+    this.FechaInicio.controls.splice(indice, 1);
+    this.FechaFin.controls.splice(indice, 1);
+    if (this.ArregloSoftware.length === 0 ) {
+      this.ArregloSoftware = [];
+      this.skills.controls = [];
+    }
+    this.NoSoftwareExtra = false;
+    this.SoftExtraCorrecto = false;
+    this.datosSoftExLlenos = false;
   }
   tipoLicencia(tipo: any, valor: any) {
-    console.log(tipo);
-    console.log(valor);
+    // console.log(tipo);
+    // console.log(valor);
     this.CheckSoftware[valor] = tipo;
     this.softExtra = this.softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
           && so.tipo_software.toLowerCase() !== 'sistema operativo');
@@ -841,8 +905,11 @@ export class FormularioKabecComponent implements OnInit {
   }
   mensajeFaltaDatosOf() {
     this.toastr.warning('Llene los campos con (*)', 'Faltan datos del la Ofimática');
-  }mensajeSinNOyOf() {
+  }
+  mensajeSinNOyOf() {
     this.toastr.warning('No selecciono un Software de Sistema Operativo y/o de Ofimática', 'Faltan datos');
   }
-
+  mensajeFaltanDatosSoftEx() {
+    this.toastr.warning('No selecciono un software adicional', 'Faltan datos');
+  }
 }
