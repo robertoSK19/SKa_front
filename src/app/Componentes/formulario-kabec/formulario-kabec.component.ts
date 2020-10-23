@@ -403,6 +403,7 @@ export class FormularioKabecComponent implements OnInit {
       }
       if (accion === 'crear') {
         accesorAsig.map((x => {
+          console.log(x)
           accesorioAsig.id_accesorio = x.id_accesorio;
           accesorioAsig.nombre_accesorio = x.nombre_accesorio;
           accesorioAsig.marca = x.marca;
