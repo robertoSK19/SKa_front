@@ -17,17 +17,17 @@ import { accesoriosID } from '../agregar-responsivas/agregar-responsivas.compone
 })
 export class DataService {
 // private urlAPI = 'https://jsonplaceholder.typicode.com/todos';
-private urlAPI = 'http://localhost:8081/DEquipos';
-private urlAPIEq = 'http://localhost:8081/equipos';
-private urlAPIAc = 'http://localhost:8081/accesorios';
-private urlAPIRes = 'http://localhost:8081/responsiva';
-private urlAPIAsig = 'http://localhost:8081/asignacion';
-private urlAPISoft = 'http://localhost:8081/software';
-private urlAPIEstatus = 'http://localhost:8081/estatus';
-private urlApiEquSoft = 'http://localhost:8081/equipoSoftware';
-private urlAPIHist = 'http://localhost:8081/historico';
-private urlApiAccN = 'http://localhost:8081/accesoriosN';
-private urlApiAsigAcc = 'http://localhost:8081/asignacionAccesorios';
+private urlAPI = 'http://localhost:8088/DEquipos';
+private urlAPIEq = 'http://localhost:8088/equipos';
+private urlAPIAc = 'http://localhost:8088/accesorios';
+private urlAPIRes = 'http://localhost:8088/responsiva';
+private urlAPIAsig = 'http://localhost:8088/asignacion';
+private urlAPISoft = 'http://localhost:8088/software';
+private urlAPIEstatus = 'http://localhost:8088/estatus';
+private urlApiEquSoft = 'http://localhost:8088/equipoSoftware';
+private urlAPIHist = 'http://localhost:8088/historico';
+private urlApiAccN = 'http://localhost:8088/accesoriosN';
+private urlApiAsigAcc = 'http://localhost:8088/asignacionAccesorios';
 
   constructor(private http: HttpClient,
     ) { }
