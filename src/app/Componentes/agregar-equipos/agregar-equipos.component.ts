@@ -273,7 +273,7 @@ export class AgregarEquiposComponent implements OnInit {
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
       && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' &&
-      fechaCompra !== '' &&  this.ifFechaCorrecta === true) {
+      this.ifFechaCorrecta === true) {
         if (this.aux === undefined) {
           this.aux = null;
         } else {
@@ -365,16 +365,16 @@ export class AgregarEquiposComponent implements OnInit {
           const productoAcM = this.datosMouseForm.controls.productoA.value;
           const hechoEnAcM = this.datosMouseForm.controls.hechoEnA.value;
           const numeroSerieAcM = this.datosMouseForm.controls.numeroSerieA.value;
-          const descripcionAcM = this.datosAccesorioForm.controls.descripcionA.value;
+          const descripcionAcM = this.datosMouseForm.controls.descripcionA.value;
           const costoM = this.datosMouseForm.controls.costo.value;
           const marcaAcT = this.datosTecladoForm.controls.marcaAT.value;
           const modeloAcT = this.datosTecladoForm.controls.modeloAT.value;
           const productoAcT = this.datosTecladoForm.controls.productoAT.value;
           const hechoEnAcT = this.datosTecladoForm.controls.hechoEnAT.value;
           const numeroSerieAcT = this.datosTecladoForm.controls.numeroSerieAT.value;
-          const costoT = this.datosMouseForm.controls.costo.value;
-          const descripcionAcT = this.datosAccesorioForm.controls.descripcionAT.value;
-          if (marcaAcM !== '' && modeloAcM !== '' && productoAcM !== '' && hechoEnAcM !== '' && numeroSerieAcM !== '' && costoM !== '') {
+          const costoT = this.datosTecladoForm.controls.costo.value;
+          const descripcionAcT = this.datosTecladoForm.controls.descripcionAT.value;
+          if (marcaAcM !== '' && modeloAcM !== '' && hechoEnAcM !== '' && numeroSerieAcM !== '') {
             this.mouse = {
               id_accesorio: '',
               nombre_accesorio: '',
@@ -395,7 +395,7 @@ export class AgregarEquiposComponent implements OnInit {
           } else {
             this.mensajeDatosVaciosAccesorio();
           }
-          if (marcaAcT !== '' && modeloAcT !== '' && productoAcT !== '' && hechoEnAcT !== '' && numeroSerieAcT !== '' && costoT !== '') {
+          if (marcaAcT !== '' && modeloAcT !== '' && hechoEnAcT !== '' && numeroSerieAcT !== '') {
             this.teclado = {
               id_accesorio: '',
               nombre_accesorio: '',
