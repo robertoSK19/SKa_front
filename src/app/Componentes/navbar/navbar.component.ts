@@ -79,7 +79,7 @@ export class NavbarComponent implements OnInit {
     }
   }
   token2 = true;
-  activaMenu(tokenValor: boolean) {
+  activaMenu(tokenValor?: boolean) {
     // console.log(token);
     if (tokenValor === true) {
       this.router.navigate(['Login']);

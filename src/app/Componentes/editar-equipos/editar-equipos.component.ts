@@ -54,7 +54,7 @@ export class EditarEquiposComponent implements OnInit {
   ifFactura = false;
   ifLongitud = 2;
   selectSoftware: any;
-
+  ifNumero: true;
   public equipo: Equipos = {
     id_equipo: '',
     nombre_equipo: '',
