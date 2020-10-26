@@ -170,13 +170,16 @@
                 <div class="col-sm-2">
                     <button type="button" class="btn btn-outline-primary btn-block" (click)="addCamposSoftware()">Agregar Software</button>
                 </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-primary btn-block" (click)="valores()">valores</button>
+                </div>
             </div>
             <br>
             <br>
             <mat-list>
                 <mat-list-item  style="margin-bottom:8%" *ngFor="let control of skills.controls; index as i">
                     <p></p>
-                    <i class='fas fa-times' (click)="eliminarSoftware(i)" style='font-size:20px;color:purple'></i>
+                    <i class='fas fa-eye' (click)="eliminarSoftware(i)" style='font-size:20px;color:purple'></i>
                   <div mat-line>
                     <div class="row">
                         <div class="col-sm">
@@ -209,7 +212,7 @@
                             <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                                 Fecha Inicio Vigencia:</h6>
                             <mat-form-field >
-                                <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" [formControl]="FechaInicio.controls[i]">
+                                <input matInput [matDatepicker]="pickerFIOf" style="font-size:13px; margin-top: 0;" >
                                 <mat-datepicker-toggle matSuffix [for]="pickerFIOf"></mat-datepicker-toggle>
                                 <mat-datepicker #pickerFIOf></mat-datepicker>
                             </mat-form-field>
@@ -218,7 +221,7 @@
                             <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                                 Fecha Termino Vigencia:</h6>
                             <mat-form-field >
-                                <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" [formControl]="FechaFin.controls[i]">
+                                <input matInput [matDatepicker]="pickerFFOf" style="font-size:13px; margin-top: 0;" >
                                 <mat-datepicker-toggle matSuffix [for]="pickerFFOf"></mat-datepicker-toggle>
                                 <mat-datepicker #pickerFFOf></mat-datepicker>
                             </mat-form-field>
