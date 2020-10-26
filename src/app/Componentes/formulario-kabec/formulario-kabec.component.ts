@@ -418,18 +418,21 @@ export class FormularioKabecComponent implements OnInit {
           id_estatus: 1,
         };
       if (accion === 'vista') {
-        if (this.nuevoSO === false && this.nuevoOf === false) {
-          this.mensajeSinNOyOf();
-        } else if (this.nuevoSO === true && this.nuevoOf === true) {
-          this.datosNuevoSOyOF();
-          if (this.ifOfNuevo === true && this.ifSONuevo === true){
+        ///////////////////////////////////////////////////
+        // if (this.nuevoSO === false && this.nuevoOf === false) { 
+        //   this.mensajeSinNOyOf();
+        // } else if (this.nuevoSO === true && this.nuevoOf === true) {
+        //   this.datosNuevoSOyOF();
+        //   if (this.ifOfNuevo === true && this.ifSONuevo === true){
             if (accesor.length === 0) {
-              this.uno.prototype.generarPDF(accion, accesorioEquipo, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
+              console.log(accesorioAsig);              
+              this.uno.prototype.generarPDF(accion, accesorioAsig, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo);
             } else {
               this.uno.prototype.generarPDF(accion, accesor, nombreDia, datosDEquipoG, nombre, costoEquipo, disco, accesorioEquipo );
             }
-          }
-        }
+        //   }
+        // }
+        ///////////////////////////////////////////////////
       }
 /*       this.ServiceConsulta.getDEquipo(equipo).subscribe(
           response => {
@@ -462,13 +465,18 @@ export class FormularioKabecComponent implements OnInit {
                 accesorioAsig.hecho_en = x.hecho_en;
                 accesorioAsig.serie = x.serie;
                 accesorioAsig.costo = x.costo;
-                accesorioAsig.id_equipo = x.id_equipo;
+                accesorioAsig.id_equipo = equipo;
                 accesorioAsig.descripcion = x.descripcion;
                 accesorioAsig.capacidad = x.capacidad;
                 accesorioAsig.tipo_disco_duro = x.tipo_disco_duro;
                 accesorioAsig.ram_bus = x.ram_bus;
                 accesorioAsig.ram_ranura = x.ram_ranura;
-                this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEestatusAsignada));
+                this.ServiceConsulta.updateAccesorio(accesorioAsig, Number(idEestatusAsignada)).subscribe(
+                  response => {
+                    console.log(response);                    
+                  }
+                );               
+                console.log("Actualizo Accesorio");                
               }))
               this.ServiceConsulta.updateDEquipo(Number(idEestatusAsignada), datosDEquipoG2).subscribe(
                 responseDE => {

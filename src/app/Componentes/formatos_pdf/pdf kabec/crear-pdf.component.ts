@@ -136,7 +136,7 @@ export class CrearPDFComponent implements OnInit {
       ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
     ]
     );
-    if (ifEscritorio === false) {
+    if (ifEscritorio === false && datosEliminador !== null) {
       pdf.add(
         new Table([// lista de caracteristicas del eliminador
           [ new Cell( new Txt(datosEliminador.producto).fontSize(9).alignment('center').bold().relativePosition(0, 15).end ).end,
@@ -250,7 +250,9 @@ export class CrearPDFComponent implements OnInit {
         await new Img('../assets/img/pie responsiva.png').build()
       ]
     );
+        
     if (opcion === 'vista') {
+      console.log("Generar");
       pdf.create().open();
     } else if (opcion === 'crear') {
       pdf.create().download(datosMap.mequipo.id_equipo + responsable.replace(' ', '') + '.pdf');
