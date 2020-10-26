@@ -1,0 +1,27 @@
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+.my-custom-scrollbar {
+    position: relative;
+    height: 300px;
+    overflow: auto;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}
+.mat-spinner::ng-deep circle {
+    stroke: #678812;
+}
+.centrar {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: 100px;
+}
+.example-radio-group {
+    display: flex;
+    margin: 15px 0;
+  }
+.example-radio-button {
+  margin: 5px;
+}

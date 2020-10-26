@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PdfMakeWrapper, Txt, Img, Cell, Table } from 'pdfmake-wrapper';
-import { accesor, checkAccesorios } from  '../../formulario-kabec/formulario-kabec.component';
-
+import { accesor, checkAccesorios } from '../../formulario-kabec/formulario-kabec.component';
+import { accesorSura, checkAccesoriosSura } from '../../formulario-sura/formulario-sura.component';
 
 @Component({
   selector: 'app-crear-pdf',
@@ -19,29 +19,35 @@ export class CrearPDFComponent implements OnInit {
   ngOnInit() {
   }
 
-  async generarPDF(opcion: string, accesorioEquipo: any,
-                   diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string, datosCargador?: any, ) {
+/*   async generarPDF(opcion: string, accesorioEquipo: any,
+                   diaSemana: string, datos?: any, nombre ?: string, costo?: string, SSD?: string, datosCargador?: any, ) { */
+    async generarPDF(accesorioEquipo: any, datos: any,
+                     datosRespon: any, datosCargador?: any, datosSOyOF?: any,
+                     SoftwareExtra?: any) {
     const datosMap = datos;
-    const responsable = nombre;
-    const costoEquipo = this.costoFormato(costo);
+    const responsable = datosRespon.nombre;
+    const costoEquipo = this.costoFormato(datosRespon.costo);
     const datosAccesorioEquipo = accesorioEquipo;
     const pdf = new PdfMakeWrapper();
-    const fecha = this.obtenerFecha(diaSemana);
+    const fecha = this.obtenerFecha(datosRespon.diaSemana);
     let discoDuroT = '';
-    let valorLetra = this.costoLetra(costo);
+    let valorLetra = this.costoLetra(datosRespon.costo);
     valorLetra = valorLetra.toUpperCase().trim();
-    const discoSolido = SSD;
+    const discoSolido = datosRespon.SSD;
     // console.log(datosAccesorioEquipo);
     const datosEliminador = datosCargador;
+    const SO = datosSOyOF[0].nombre_software + ' ' + datosSOyOF[0].version;
+    const OF = datosSOyOF[1].nombre_software + ' ' + datosSOyOF[1].version;
     let ifEscritorio = false;
+    console.log(accesor)
     if (datos.mequipo.tipo_computadora === 'ESCRITORIO') {
       ifEscritorio = true;
     } else {
       ifEscritorio = false;
     }
     function validarOtros(array) {
-
-      if (array.length > 0 && checkAccesorios === true) {
+      
+      if (array.length > 0 && (checkAccesorios === true || checkAccesoriosSura === true)) {
         datosAccesorioEquipo.map(function(obj) {
           pdf.add(
             [
@@ -119,13 +125,13 @@ export class CrearPDFComponent implements OnInit {
           [new Cell(new Txt('Procesador:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.procesador).fontSize(9).end).end],
           [new Cell(new Txt('Sistema Operativo:').fontSize(9).end).end,
-          new Cell(new Txt(datosMap.mequipo.nombre_sistema_operativo).fontSize(9).end).end],
+          new Cell(new Txt(SO).fontSize(9).end).end],
           [new Cell(new Txt('Disco Duro:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.disco_duro).fontSize(9).end).end],
           [new Cell(new Txt('Memoria RAM:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.ram).fontSize(9).end).end],
           [new Cell(new Txt('Office:').fontSize(9).end).end,
-          new Cell(new Txt('').fontSize(9).end).end],
+          new Cell(new Txt(OF).fontSize(9).end).end],
           [new Cell(new Txt('No. Serie:').fontSize(9).end).end,
           new Cell(new Txt(datosMap.mequipo.numero_serie).fontSize(9).end).end],
           [new Cell(new Txt('Tipo de Sistema:').fontSize(9).end).end,
@@ -155,24 +161,15 @@ export class CrearPDFComponent implements OnInit {
     } else {
       console.log('escritorio');
     }
-    validarOtros(accesor);
-    pdf.add(
-      [
-      new Table([// lista de caracteristicas para accesorios extras
-        [new Cell(new Txt('Otros').fontSize(9).alignment('center').bold().relativePosition(0, 15).end).end,
-        new Table([
-          [new Cell(new Txt('0').fontSize(9).end).end,
-          new Cell(new Txt('').fontSize(9).end).end],
-          [new Cell(new Txt('').fontSize(9).end).end,
-          new Cell(new Txt('0').fontSize(9).end).end],
-          [new Cell(new Txt('').fontSize(9).end).end,
-          new Cell(new Txt('0').fontSize(9).end).end],
-        ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).color('white').end,
-        new Cell(new Txt('').fontSize(9).alignment('center').relativePosition(0, 15).end).end
-        ],
-      ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
-      ]
-    );
+    console.log(accesorSura.length)
+    console.log(accesor.length)
+    if (accesor.length !== 0 && checkAccesorios === true) {
+      validarOtros(accesor);
+    }
+    if (accesorSura.length !== 0 && checkAccesoriosSura === true) {
+      validarOtros(accesorSura);
+    }
+    this.softwareEXtraNombre(SoftwareExtra, pdf);
     // seccion de leyendas
     pdf.add(
       [
@@ -250,11 +247,15 @@ export class CrearPDFComponent implements OnInit {
         await new Img('../assets/img/pie responsiva.png').build()
       ]
     );
+<<<<<<< HEAD
         
     if (opcion === 'vista') {
       console.log("Generar");
+=======
+    if (datosRespon.opcion === 'vista') {
+>>>>>>> 0fc5e41b60add10cf8d0ba296e8b2edf0728fc4b
       pdf.create().open();
-    } else if (opcion === 'crear') {
+    } else if (datosRespon.opcion === 'crear') {
       pdf.create().download(datosMap.mequipo.id_equipo + responsable.replace(' ', '') + '.pdf');
     }
   }
@@ -384,7 +385,7 @@ export class CrearPDFComponent implements OnInit {
       case 2: compl = 'mil '; break;
       case 3:
         if (valor === 1) {
-          compl = 'millon ';
+          compl = 'un millon ';
         } else {
           compl = 'millones ';
         }
@@ -432,7 +433,7 @@ export class CrearPDFComponent implements OnInit {
         case 4:
           aux1 = 'cuarenta'; break;
         case 5:
-          aux1 = 'ciencuenta'; break;
+          aux1 = 'cincuenta'; break;
         case 6:
           aux1 = 'sesenta'; break;
         case 7:
@@ -471,7 +472,7 @@ export class CrearPDFComponent implements OnInit {
         case '0':
           aux3 = ''; break;
         case '1':
-          if (nivel === 2 || nivel === 4 || nivel === 6 || nivel === 8) {
+          if (nivel === 2 || nivel === 4 || nivel === 6 || nivel === 3 || nivel === 8) {
             aux3 = '';
           } else {
             aux3 = 'uno';
@@ -573,5 +574,36 @@ export class CrearPDFComponent implements OnInit {
       }
     }
     return letra;
+  }
+  softwareEXtraNombre(softwares: any, pdf: any): any {
+    console.log(softwares);
+    let fechaI = '';
+    let fechaF = '';
+    console.log(softwares);
+    if (softwares !== undefined) {
+      for (const software of softwares) {
+        if (software.vigencia_inical !== null) {
+          fechaI = software.vigencia_inical;
+        }
+        if (software.vigencia_final !== null ) {
+          fechaF = software.vigencia_final;
+        }
+        pdf.add(
+          [
+          new Table([// lista de caracteristicas para software extras
+            [new Cell(new Txt('Otros').fontSize(9).alignment('center').relativePosition(0, 8).bold().end).end,
+            new Table([
+              [new Cell(new Txt('Software').fontSize(9).end).end,
+              new Cell(new Txt(software.nombre_software + ' ' + software.version).fontSize(9).end).end],
+              [new Cell(new Txt('No. Serie').fontSize(9).end).end,
+              new Cell(new Txt(software.no_serie).fontSize(9).end).end],
+            ]).margin([-5, -3, -5, -3]).widths(['25%', '75%']).end,
+            new Cell(new Txt('').fontSize(9).alignment('center').relativePosition(0, 15).end).end
+            ],
+          ]).widths(['20%', '45%', '35%']).margin([0, -1, 0, 0]).end,
+          ]
+        );
+      }
+    }
   }
 }

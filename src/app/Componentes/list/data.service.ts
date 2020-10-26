@@ -10,6 +10,7 @@ import { Software } from 'src/app/Models/Software/software.interface';
 import { AccesorioN } from 'src/app/Models/asignacion/accesorioN.interface';
 import { Asignacion_accesorios } from 'src/app/Models/asignacion/asignacion_accesorios.interface';
 import { ObserversModule } from '@angular/cdk/observers';
+import { accesoriosID } from '../agregar-responsivas/agregar-responsivas.component';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,10 @@ private urlApiAsigAcc = 'http://localhost:8088/asignacionAccesorios';
     return this.http.post(url, accesorio, {observe: 'response'});
   }
   updateAccesorio(accesorio: Accesorios, idEstatus: number): Observable <any> {
+    console.log(accesorio)
+    console.log(idEstatus)
     const url = this.urlAPIAc + '/actualizarDatos?estatus_id=' + idEstatus;
+    console.log(url)
     return this.http.put(url, accesorio, { observe: 'response'});
   }
   getAllResponsivas(): Observable <any> {
