@@ -85,6 +85,7 @@ export class AgregarEquiposComponent implements OnInit {
   };
   public dequipo: DEquipos;
   public Eliminador: Accesorios;
+  
   public mouse: Accesorios;
   public teclado: Accesorios;
   AccesoriosPc: Accesorios[];
@@ -220,27 +221,10 @@ export class AgregarEquiposComponent implements OnInit {
 
   }
   guardarDatos() {
-   /* console.log('guardar');
-    console.log(this.datosEquipoForm.controls.nombre_equipo.value);
-    console.log(this.datosEquipoForm.controls.modelo.value);
-    console.log(this.datosEquipoForm.controls.modelo_cmd.value);
-    console.log(this.datosEquipoForm.controls.numero_serie.value);
-    console.log(this.datosEquipoForm.controls.serie_cmd.value);
-    console.log(this.datosEquipoForm.controls.procesador.value);
-    console.log(this.datosEquipoForm.controls.ram.value);
-    console.log(this.datosEquipoForm.controls.disco_duro.value);
-    console.log(this.datosEquipoForm.controls.cuenta.value);
-    console.log(this.datosEquipoForm.controls.cuenta_pass.value);
-    console.log(this.datosEquipoForm.controls.tipo_equipo.value);
-    console.log(this.datepipe.transform(this.datosEquipoForm.controls.fecha_fabrica.value, 'yyyy-MM-dd'));
-    console.log(this.datosEquipoForm.controls.nombre_SO.value);
-    console.log(this.datosEquipoForm.controls.tipo_SO.value);
-    console.log(this.datosEquipoForm.controls.mac.value);
-    console.log(this.datosEquipoForm.controls.correo.value);
-*/
     this.AccesoriosPc = [];
     const date = new Date();
     this.listaHistorico = [];
+    this.Eliminador = null;
 
     const nombre = this.datosEquipoForm.controls.nombre_equipo.value;
     const marcaE = this.datosEquipoForm.controls.marca.value;
@@ -288,7 +272,7 @@ export class AgregarEquiposComponent implements OnInit {
     }
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
-      && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' && generacionProcesador !== '' &&
+      && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' &&
       fechaCompra !== '' &&  this.ifFechaCorrecta === true) {
         if (this.aux === undefined) {
           this.aux = null;
@@ -349,11 +333,11 @@ export class AgregarEquiposComponent implements OnInit {
           if ( this.ifLaptop === false ) {
           const marcaAc = this.datosAccesorioForm.controls.marcaA.value;
           const modeloAc = this.datosAccesorioForm.controls.modeloA.value;
-          const productoAc = this.datosAccesorioForm.controls.productoA.value;
           const hechoEnAc = this.datosAccesorioForm.controls.hechoEnA.value;
           const numeroSerieAc = this.datosAccesorioForm.controls.numeroSerieA.value;
           const descripcionAc = this.datosAccesorioForm.controls.descripcionA.value;
-          if (marcaAc !== '' && modeloAc !== '' && productoAc !== '' && hechoEnAc !== '' && numeroSerieAc !== '') {
+          const costoAc =  this.datosAccesorioForm.controls.costo.value;
+          if (marcaAc !== '' && modeloAc !== '' && hechoEnAc !== '' && numeroSerieAc !== '') {
             this.Eliminador = {
               id_accesorio: '',
               nombre_accesorio: '',
@@ -364,7 +348,7 @@ export class AgregarEquiposComponent implements OnInit {
               serie: numeroSerieAc,
               id_estatus: null,
               id_equipo: 0,
-              costo: 0,
+              costo: costoAc,
               descripcion: descripcionAc,
               capacidad: null,
               ram_bus: null,
@@ -517,6 +501,11 @@ export class AgregarEquiposComponent implements OnInit {
                   this.idHistorico = datosHistorico.id_historico;
                   console.log(datosHistorico);
                   console.log(this.idHistorico);
+                  this.equipoSoftware = {
+                    id_equipo: responseCE.body,
+                    id_software: idSoftware,
+                    id_historico: datosHistorico,
+                  };
                   this.dataSvc.crearEquipoSoftware(responseCE.body.id_equipo, idSoftware, this.equipoSoftware, Number(this.idHistorico)).subscribe(
                     responseES => {
                       if (responseES.status === 200 ) {
