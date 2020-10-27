@@ -119,9 +119,10 @@
                 <td>{{responsiva.id_accesorio.capacidad}}</td>
                 <td>{{responsiva.id_accesorio.marca}}</td>
                 <td>{{responsiva.id_accesorio.serie}}</td>
-                <td>{{responsiva.id_accesorio.id_estatus.nombre_estatus}}</td>
+                <td>{{responsiva.id_asignacion.estatusrecurso.nombre_estatus}}</td>
                 <td><input id="male" type="radio" value="male" name="gender" 
                     (click)="$event.stopPropagation()"
+                    (change)="$event ? seleccionarREsponsivaAccesorios(responsiva.id_asignacion.id_asignacion,responsiva.id_accesorio.id_accesorio) : null"
                     [disabled]="responsiva.id_accesorio.id_estatus.id_estatus===6">
                 </td>
             </tr>
@@ -134,7 +135,7 @@
     <div class="col-sm ">
     </div>
     <div class="col-sm-3 ">
-        <button type="button" class="btn btn-success btn-block" (click)="cancelarResponsiva()">Cancelar Responsiva</button>
+        <button type="button" class="btn btn-success btn-block" (click)="cancelarResponsivaAcce()">Cancelar Responsiva</button>
     </div>
 </div>
 <br>
