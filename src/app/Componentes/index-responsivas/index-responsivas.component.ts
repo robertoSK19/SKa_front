@@ -35,7 +35,8 @@ export class IndexResponsivasComponent implements OnInit {
   sinFiltro = true;
   responsivasBackup: any[];
   responsivasBackupAcc: any[];
-
+  valor: any;
+  valorAcc: any;
   tipoResponsiva: any[] = [
     { nombre: 'Accesorios' },
     { nombre: 'Equipos' }

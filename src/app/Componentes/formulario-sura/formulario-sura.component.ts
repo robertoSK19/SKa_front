@@ -964,6 +964,9 @@ export class FormularioSuraComponent implements OnInit {
     this.softExtra = this.softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
           && so.tipo_software.toLowerCase() !== 'sistema operativo');
   }
+  generarResponsivaAccesorio(valor?: any) {
+
+  }
   mensaje200() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');
   }

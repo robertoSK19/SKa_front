@@ -48,6 +48,7 @@ export class AgregarResponsivasComponent implements OnInit {
   ifAccesorio = true;
   idAccesorioResponsiva: any[];
   equiposBack: any[];
+  valor: any[];
 
   tiposResponsivasAce: any[] = [
     { nombre: 'Kabec' }
