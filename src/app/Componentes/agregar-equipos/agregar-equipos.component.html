@@ -109,7 +109,7 @@
             <br>
 
             <div class="row">
-                <div class="col-sm">
+                <!-- <div class="col-sm">
                     <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
                          Fecha de Fabricación:</h6>
                     <mat-form-field >
@@ -117,7 +117,7 @@
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
-                </div>
+                </div> -->
                 <div class="col-sm" style='font-size:10px'>
                     <div class="dropdown">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -148,8 +148,13 @@
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
-                         Dirección MAC:</h6>
+                         Dirección MAC Ethernet:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="mac">
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
+                         Dirección MAC Wifi:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="direccion_mac_w">
                 </div>
             </div>
 
@@ -194,6 +199,15 @@
 
             <div class="row">
                 <div class="col-sm">
+                    <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
+                         Fecha de Fabricación:</h6>
+                    <mat-form-field >
+                        <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_fabrica">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                </div>
+                <div class="col-sm">
                     <h6>Email GNP:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="correo">
                 </div>
@@ -211,8 +225,6 @@
                 <div class="col-sm" >
                     <h6 [hidden]="ifLaptop">Tamaño de la Pantalla:</h6>
                     <input  [hidden]="ifLaptop" type="text" class=" form-control form-control-sm" formControlName="tamaño_pantalla">
-                </div>
-                <div class="col-sm">
                 </div>
             </div>
             <br>

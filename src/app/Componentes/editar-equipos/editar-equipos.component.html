@@ -110,7 +110,7 @@
             <br>
 
             <div class="row">
-                <div class="col-sm" style='font-size:10px'>
+                <!-- <div class="col-sm" style='font-size:10px'>
                     <div class="dropdown">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                             Fecha de Fabricación:</h6>
@@ -120,7 +120,7 @@
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-sm" style='font-size:10px'>
                     <div class="dropdown">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -151,8 +151,13 @@
                 </div>
                 <div class="col-sm">
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
-                         Dirección MAC:</h6>
+                         Dirección MAC Ethernet:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="mac" >
+                </div>
+                <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red' ></i>
+                         Dirección MAC Wifi:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="direccion_mac_w" >
                 </div>
             </div>
 
@@ -197,17 +202,14 @@
             <div class="row">
                 <div class="col-sm" style='font-size:10px'>
                     <div class="dropdown">
-                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
-                            Estatus del Equipo:</h6>
-                        <mat-form-field class="col-sm" >
-                            <mat-select  formControlName="estatus" style='font-size:14px'>
-                                <mat-option *ngFor="let tipo of Estatus" [value]="tipo.id_estatus" >
-                                    {{tipo.nombre_estatus}}
-                                </mat-option>
-                            </mat-select>
-                         </mat-form-field>
+                        <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                            Fecha de Fabricación:</h6>
+                        <mat-form-field >
+                            <input matInput [matDatepicker]="picker" style="font-size:13px; margin-top: 0;" formControlName="fecha_fabrica">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
                     </div>
-
                 </div>
                 <div class="col-sm">
                     <h6>Email GNP:</h6>
@@ -232,6 +234,28 @@
                     <input  [hidden]="ifLaptop" type="text" class=" form-control form-control-sm" formControlName="tamaño_pantalla">
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-sm" style='font-size:10px'>
+                    <div class="dropdown">
+                        <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
+                            Estatus del Equipo:</h6>
+                        <mat-form-field class="col-sm" >
+                            <mat-select  formControlName="estatus" style='font-size:14px'>
+                                <mat-option *ngFor="let tipo of Estatus" [value]="tipo.id_estatus" >
+                                    {{tipo.nombre_estatus}}
+                                </mat-option>
+                            </mat-select>
+                         </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+                <div class="col-sm">
+                </div>
+            </div>
 
             <br>
 
@@ -240,9 +264,7 @@
                     <h6>Seleccionar Factura:</h6>
                     <input type="file" class="btn btn-block" (change)="fileEvent($event)">
                 </div>
-                <div class="col-sm">
-                    
-                </div>
+
             </div>
 <!--             <div class="row">
                 <div class="col-sm">

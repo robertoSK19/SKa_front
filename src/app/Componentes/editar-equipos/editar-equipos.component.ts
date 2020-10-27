@@ -14,6 +14,7 @@ import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
 import { tiposDisco, tiposEquipo, tiposPbit } from 'src/app/Constantes/constante';
 
 const estatusAsignado = 1;
+const estatusNoAsignado = 2;
 const tipoLaptop = 'LAPTOP';
 const tipoEscritorio = 'ESCRITORIO';
 const tipoServidor = 'SERVIDOR';
@@ -82,6 +83,7 @@ export class EditarEquiposComponent implements OnInit {
     lugar_compra: '',
     tamaño_pantalla: '',
     tipo_disco_duro: '',
+    direccion_mac_wifi: '',
   };
 
   public equipoReq: Equipos = {
@@ -111,6 +113,7 @@ export class EditarEquiposComponent implements OnInit {
     lugar_compra: '',
     tamaño_pantalla: '',
     tipo_disco_duro: '',
+    direccion_mac_wifi: '',
   };
   public software: Software = {
     id_software: '',
@@ -177,7 +180,7 @@ export class EditarEquiposComponent implements OnInit {
       tipo_SO: ['', Validators.required],
       mac: ['', Validators.required],
       correo: ['', Validators.required],
-      estatus: ['', Validators.required],
+      estatus: [null, Validators.required],
       checkOfimatica: ['', Validators.required],
       nombre_OF: ['', Validators.required],
       fecha_compra: ['', Validators.required],
@@ -186,6 +189,7 @@ export class EditarEquiposComponent implements OnInit {
       lugar_compra: ['', Validators.required],
       tamaño_pantalla: ['', Validators.required],
       tipo_disco_duro: ['', Validators.required],
+      direccion_mac_w: ['', Validators.required],
     });
 
   }
@@ -207,8 +211,31 @@ export class EditarEquiposComponent implements OnInit {
   }
   operacionesEquipos(idEquipo?: string) {
     // datosEquipo = EquipoAE;
-    this.getEstatus(datosEquipo.operacion);
+    // this.getEstatus(datosEquipo.operacion);
     this.getSoftware();
+    this.dataSvc.getAllEquipos().subscribe(
+      response => {
+        console.log(response);
+        if (response.status === 200 ) {
+          for (const auxDE of response.body) {
+            if (auxDE.mequipo.id_equipo === datosEquipo.idEquipo) {
+              this.datosDEquipo = auxDE;
+              console.log(this.datosDEquipo);
+              this.datosEquipoForm.controls.estatus.setValue(auxDE.estatusRecurso.id_estatus);
+              console.log(this.datosEquipoForm.controls.estatus.value)
+              if (auxDE.estatusRecurso.id_estatus === estatusNoAsignado) {
+                this.ifAsignado = false;
+              } else {
+                this.ifAsignado = true;
+              }
+            }
+          }
+        }
+      },
+      error => {
+        this.mensajeErrorEstatus();
+      }
+    );
     if (datosEquipo.operacion === 'editar') {
       console.log('soy editar');
       this.ifMostrar = true;
@@ -243,6 +270,7 @@ export class EditarEquiposComponent implements OnInit {
             this.datosEquipoForm.controls.fecha_compra.setValue(fechaCompra);
             const fechaGarantia = this.convertirFecha(this.equipo.fecha_garantia_termino);
             this.datosEquipoForm.controls.fecha_garantia.setValue(fechaGarantia);
+            this.datosEquipoForm.controls.direccion_mac_w.setValue(this.equipo.direccion_mac_wifi);
             if (this.equipo.tipo_computadora !== tipoLaptop) {
               this.ifLaptop = true;
             } else {
@@ -264,28 +292,6 @@ export class EditarEquiposComponent implements OnInit {
           if (error.status === 500) {
             console.log('Error del Servidor');
           }
-        }
-      );
-      this.dataSvc.getAllEquipos().subscribe(
-        response => {
-          console.log(response);
-          if (response.status === 200 ) {
-            for (const auxDE of response.body) {
-              if (auxDE.mequipo.id_equipo === datosEquipo.idEquipo) {
-                this.datosDEquipo = auxDE;
-                console.log(this.datosDEquipo);
-                this.datosEquipoForm.controls.estatus.setValue(auxDE.estatusRecurso.id_estatus);
-                if (auxDE.estatusRecurso.id_estatus === estatusAsignado) {
-                  this.ifAsignado = true;
-                } else {
-                  this.ifAsignado = false;
-                }
-              }
-            }
-          }
-        },
-        error => {
-          this.mensajeErrorEstatus();
         }
       );
     } else if (datosEquipo.operacion === 'mostrar') {
@@ -323,6 +329,7 @@ export class EditarEquiposComponent implements OnInit {
             const fechaGarantia = this.convertirFecha(this.equipo.fecha_garantia_termino);
             this.datosEquipoForm.controls.fecha_garantia.setValue(fechaGarantia);
             this.datosEquipoForm.controls.tamaño_pantalla.setValue(this.equipo.tamaño_pantalla);
+            this.datosEquipoForm.controls.direccion_mac_w.setValue(this.equipo.direccion_mac_wifi);
             if (this.equipo.tipo_computadora !== tipoLaptop) {
               this.ifLaptop = true;
             } else {
@@ -341,25 +348,8 @@ export class EditarEquiposComponent implements OnInit {
           }
         }
       );
-      this.dataSvc.getDEquipo(datosEquipo.idEquipo).subscribe(
-        response => {
-          console.log(response);
-          if (response.status === 200 ) {
-            this.datosDEquipo = response.body;
-            this.datosEquipoForm.controls.estatus.setValue(response.body.estatusRecurso.id_estatus);
-            if (response.body.estatusRecurso.id_estatus === estatusAsignado) {
-              this.ifAsignado = true;
-            } else {
-              this.ifAsignado = false;
-            }
-          }
-        },
-        error => {
-          this.mensajeErrorEstatus();
-        }
-      );
     }
-
+    this.getEstatus(datosEquipo.operacion);
   }
 
   guardarDatos() {
@@ -389,6 +379,7 @@ export class EditarEquiposComponent implements OnInit {
     const lugarCompra = this.datosEquipoForm.controls.lugar_compra.value;
     const fechaCompra = this.datepipe.transform(this.datosEquipoForm.controls.fecha_compra.value, 'yyyy-MM-dd');
     const tamañoPantalla = this.datosEquipoForm.controls.tamaño_pantalla.value;
+    const macWifi = this.datosEquipoForm.controls.direccion_mac_w.value;
     let  idSoftware = '';
     if (fecha > this.datepipe.transform(new Date(), 'yyyy-MM-dd')) {
       console.log('fecha errornea');
@@ -427,8 +418,9 @@ export class EditarEquiposComponent implements OnInit {
       && nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && ramE !== null && disco !== null && cuenta !== null && tipoEquipo !== null
       && ramE !== '' && disco !== '' && cuenta !== '' && tipoEquipo !== ''
-      && fecha !== null && SO !== null && vSO !== null && mac !== null
-      && fecha !== '' && SO !== '' && vSO !== '' && mac !== '' && this.ifFechaCorrecta === true  && this.ifOfimaticaOk === true) {
+      && fecha !== null && /*SO !== null &&*/ vSO !== null && mac !== null && macWifi !== null
+      && fecha !== '' && /*SO !== '' &&*/ vSO !== '' && mac !== '' && macWifi !== ''
+      && this.ifFechaCorrecta === true  && this.ifOfimaticaOk === true) {
         console.log(this.aux);
         if (this.aux === undefined) {
           this.aux = null;
@@ -436,7 +428,7 @@ export class EditarEquiposComponent implements OnInit {
           console.log(this.aux);
           this.aux = btoa(this.aux);
         }
-        
+
         console.log('Datos correctos');
         this.equipoReq = {
           id_equipo: this.equipo.id_equipo,
@@ -466,6 +458,7 @@ export class EditarEquiposComponent implements OnInit {
           tamaño_pantalla: tamañoPantalla,
           tipo_disco_duro: tipoDiscoDuro,
           factura: this.aux,
+          direccion_mac_wifi: macWifi,
         };
         this.datosDEquipoReq = {
           disco_duro_solido: this.datosDEquipo.disco_duro_solido,
@@ -529,7 +522,7 @@ export class EditarEquiposComponent implements OnInit {
           }
         );
     } else {
-      console.log('Datos imcompletos');
+      console.log('Datos incompletos');
       this.mensajeDatosVacios();
     }
 
@@ -567,6 +560,7 @@ export class EditarEquiposComponent implements OnInit {
         this.datosEquipoForm.controls.tipo_disco_duro.setValue(this.equipo.tipo_disco_duro);
         this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
         this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
+        this.datosEquipoForm.controls.direccion_mac_w.setValue(this.equipo.direccion_mac_wifi);
         this.mensajeCancelar();
         this.router.navigate(['IndexEquipo']);
       },
@@ -580,7 +574,7 @@ export class EditarEquiposComponent implements OnInit {
       this.ifMostrar = true;
       this.ifEditar = false;
       this.habilitaForm();
-      this.getEstatus('editar');
+      //this.getEstatus('editar');
       this.getSoftware();
     } else if (opcion === 'aceptar') {
       this.router.navigate(['IndexEquipo']);
@@ -622,6 +616,7 @@ export class EditarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.lugar_compra.disable();
     this.datosEquipoForm.controls.fecha_compra.disable();
     this.datosEquipoForm.controls.tamaño_pantalla.disable();
+    this.datosEquipoForm.controls.direccion_mac_w.disable();
   }
   habilitaForm() {
     this.datosEquipoForm.controls.nombre_equipo.enable();
@@ -649,13 +644,14 @@ export class EditarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.lugar_compra.enable();
     this.datosEquipoForm.controls.fecha_compra.enable();
     this.datosEquipoForm.controls.tamaño_pantalla.enable();
+    this.datosEquipoForm.controls.direccion_mac_w.enable();
   }
   getEstatus(opcion: string) {
     this.dataSvc.getAllEstatus().subscribe(
       response => {
         if (response.status === 200) {
           this.Estatus = response.body;
-          if (opcion === 'mostrar') {
+          if (this.ifAsignado === false) {
             const estatusEquiposDisp = this.Estatus.filter(item => item.id_estatus !== 6 );
             this.Estatus = estatusEquiposDisp;
           } else {
@@ -690,7 +686,7 @@ export class EditarEquiposComponent implements OnInit {
           this.Softwares = response.body;
           this.softSO = this.Softwares.filter(so => so.tipo_software.toLowerCase() === 'sistema operativo');
           this.softOf = this.Softwares.filter(so => so.tipo_software.toLowerCase() === 'ofimatica');
-          this.softExtra = this.Softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica' 
+          this.softExtra = this.Softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
           && so.tipo_software.toLowerCase() !== 'sistema operativo');
           console.log(this.softSO);
         } else {

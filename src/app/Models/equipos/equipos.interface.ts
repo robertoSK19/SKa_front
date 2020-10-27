@@ -26,4 +26,5 @@ export interface Equipos {
     id_historico_equipo?: number;
     id_equipo_software?: number;
     factura?: Blob;
+    direccion_mac_wifi: string;
 }

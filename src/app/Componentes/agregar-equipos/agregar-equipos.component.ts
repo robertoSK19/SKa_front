@@ -82,6 +82,7 @@ export class AgregarEquiposComponent implements OnInit {
     tamaño_pantalla: '',
     tipo_disco_duro: '',
     factura: null,
+    direccion_mac_wifi: '',
   };
   public dequipo: DEquipos;
   public Eliminador: Accesorios;
@@ -152,6 +153,7 @@ export class AgregarEquiposComponent implements OnInit {
       lugar_compra: ['', Validators.required],
       tamaño_pantalla: ['', Validators.required],
       tipo_disco_duro: ['', Validators.required],
+      direccion_mac_w: ['', Validators.required],
     });
     this.datosAccesorioForm = this.formBuilder.group({
       marcaA: ['', Validators.required],
@@ -250,6 +252,7 @@ export class AgregarEquiposComponent implements OnInit {
     const tamañoPantalla = this.datosEquipoForm.controls.tamaño_pantalla.value;
     const generacionProcesador = this.datosEquipoForm.controls.generacion_procesador.value;
     const idSoftware = SO.id_software;
+    const macWifi = this.datosEquipoForm.controls.direccion_mac_w.value;
     const regExp    = new RegExp( /^\d{0,2}$/ );
     let datosHistorico: any;
     if (regExp.test(ramE) === false) {
@@ -272,7 +275,7 @@ export class AgregarEquiposComponent implements OnInit {
     }
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
-      && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' &&
+      && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' && macWifi !== '' &&
       this.ifFechaCorrecta === true) {
         if (this.aux === undefined) {
           this.aux = null;
@@ -316,6 +319,7 @@ export class AgregarEquiposComponent implements OnInit {
           tamaño_pantalla: tamañoPantalla,
           tipo_disco_duro: tipoDD,
           factura: this.aux,
+          direccion_mac_wifi: macWifi,
         };
           this.software = {
           factura: SO.factura,
