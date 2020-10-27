@@ -344,10 +344,7 @@ export class FormularioKabecComponent implements OnInit {
       //  console.log('falta respomsable');
       this.mensajeFaltaResponsable();
     } else {
-<<<<<<< HEAD
 
-=======
->>>>>>> 08de44e02efc996f977565f3a018de5ba8aa839d
       const costoNum = costoEquipo.replace(',', '');
 
       datosAsignacion = {
