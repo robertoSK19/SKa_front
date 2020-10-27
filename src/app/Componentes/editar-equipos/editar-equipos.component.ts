@@ -210,6 +210,7 @@ export class EditarEquiposComponent implements OnInit {
     }
   }
   operacionesEquipos(idEquipo?: string) {
+    this.Estatus = [];
     // datosEquipo = EquipoAE;
     // this.getEstatus(datosEquipo.operacion);
     this.getSoftware();
@@ -228,6 +229,7 @@ export class EditarEquiposComponent implements OnInit {
               } else {
                 this.ifAsignado = true;
               }
+              this.getEstatus('test');
             }
           }
         }
@@ -349,7 +351,7 @@ export class EditarEquiposComponent implements OnInit {
         }
       );
     }
-    this.getEstatus(datosEquipo.operacion);
+    //this.getEstatus(datosEquipo.operacion);
   }
 
   guardarDatos() {
@@ -647,15 +649,16 @@ export class EditarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.direccion_mac_w.enable();
   }
   getEstatus(opcion: string) {
+    this.Estatus = [];
     this.dataSvc.getAllEstatus().subscribe(
       response => {
         if (response.status === 200) {
           this.Estatus = response.body;
           if (this.ifAsignado === false) {
-            const estatusEquiposDisp = this.Estatus.filter(item => item.id_estatus !== 6 );
+            const estatusEquiposDisp = this.Estatus.filter(item => item.id_estatus !== 1 && item.id_estatus !== 6 );
             this.Estatus = estatusEquiposDisp;
-          } else {
-            const estatusfiltro = this.Estatus.filter(item => item.id_estatus !== 1 && item.id_estatus !== 6 );
+          } else if (this.ifAsignado === true) {
+            const estatusfiltro = this.Estatus.filter(item => item.id_estatus !== 6 );
             this.Estatus = estatusfiltro;
           }
         } else {
