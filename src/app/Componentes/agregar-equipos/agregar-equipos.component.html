@@ -25,6 +25,11 @@
 
             <div class="row">
                 <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        No. Identificador:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="id_equipo">
+                </div>
+                <div class="col-sm">
 
                     <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                         Nombre del Equipo:</h6>
@@ -40,11 +45,6 @@
                     <h6> <i class='fas' style='font-size:10px;color:red'></i>
                         Contraseña Usuario:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="cuenta_pass">
-                </div>
-                <div class="col-sm">
-                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Marca:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="marca">
                 </div>
             </div>
 
@@ -199,6 +199,11 @@
 
             <div class="row">
                 <div class="col-sm">
+                    <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
+                        Marca:</h6>
+                    <input type="text" class=" form-control form-control-sm" formControlName="marca">
+                </div>
+                <div class="col-sm">
                     <h6 style="margin-bottom: 0;"> <i class='fas fa-asterisk' style='font-size:10px;color:red;'></i>
                          Fecha de Fabricación:</h6>
                     <mat-form-field >
@@ -211,7 +216,12 @@
                     <h6>Email GNP:</h6>
                     <input type="text" class=" form-control form-control-sm" formControlName="correo">
                 </div>
-                <div class="col-sm" style='font-size:10px'>
+                <div class="col-sm">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-3" style='font-size:10px'>
                     <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
                         Tipo de Computadora:</h6>
                     <mat-form-field class="col-sm">
@@ -222,7 +232,7 @@
                         </mat-select>
                      </mat-form-field>
                 </div>
-                <div class="col-sm" >
+                <div class="col-sm-3" >
                     <h6 [hidden]="ifLaptop">Tamaño de la Pantalla:</h6>
                     <input  [hidden]="ifLaptop" type="text" class=" form-control form-control-sm" formControlName="tamaño_pantalla">
                 </div>

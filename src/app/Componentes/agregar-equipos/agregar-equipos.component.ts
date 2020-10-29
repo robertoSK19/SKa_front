@@ -130,6 +130,7 @@ export class AgregarEquiposComponent implements OnInit {
     this.usuarioLogeado();
     // this.operacionesEquipos();
     this.datosEquipoForm = this.formBuilder.group({
+      id_equipo: ['', Validators.required],
       nombre_equipo: ['', Validators.required],
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
@@ -227,7 +228,7 @@ export class AgregarEquiposComponent implements OnInit {
     const date = new Date();
     this.listaHistorico = [];
     this.Eliminador = null;
-
+    const idEquipo = this.datosEquipoForm.controls.id_equipo.value;
     const nombre = this.datosEquipoForm.controls.nombre_equipo.value;
     const marcaE = this.datosEquipoForm.controls.marca.value;
     const modeloE = this.datosEquipoForm.controls.modelo.value;
@@ -276,7 +277,7 @@ export class AgregarEquiposComponent implements OnInit {
     if (nombre !== '' && modeloE !== '' && modeloCMD !== '' && numSerie !== '' && numSerieCMD !== '' && procesadorE !== ''
       && (ramE !== '' && ramE !== 0 ) && disco !== '' && cuenta !== '' && cuenta !== '' && tipoEquipo !== ''
       && fecha !== '' && SO !== null && vSO !== '' && mac !== '' && tipoDD !== '' && macWifi !== '' &&
-      this.ifFechaCorrecta === true) {
+      this.ifFechaCorrecta === true && idEquipo !== '') {
         if (this.aux === undefined) {
           this.aux = null;
         } else {
@@ -294,7 +295,8 @@ export class AgregarEquiposComponent implements OnInit {
           console.log(this.ifNumero, this.ifLongitud);
           console.log('Datos correctos');
           this.equipo = {
-          id_equipo: this.equipo.id_equipo,
+          // id_equipo: this.equipo.id_equipo,
+          id_equipo: idEquipo,
           nombre_equipo: nombre,
           marca: marcaE,
           modelo: modeloE,
