@@ -11,7 +11,9 @@ import { DEquipos } from 'src/app/Models/equipos/dequipos.interface';
 import { DatePipe } from '@angular/common';
 import { Software } from 'src/app/Models/Software/software.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
-import { tiposDisco, tiposEquipo, tiposPbit } from 'src/app/Constantes/constante';
+import { Edicion, equipo, tiposDisco, tiposEquipo, tiposPbit } from 'src/app/Constantes/constante';
+import { MatDialog } from '@angular/material';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 const estatusAsignado = 1;
 const estatusNoAsignado = 2;
@@ -155,6 +157,7 @@ export class EditarEquiposComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     public datepipe: DatePipe,
+    public dialog: MatDialog
   ) { }
   ngOnInit() {
     this.tiposDiscos = tiposDisco;
@@ -530,6 +533,9 @@ export class EditarEquiposComponent implements OnInit {
 
   }
   cancelar() {
+    if (datosEquipo.operacion === 'mostrar') {
+      this.router.navigate(['IndexEquipo']);
+    } else if (datosEquipo.operacion === 'editar') {
     this.dataSvc.getDEquipo(this.datosDEquipo.id_dequipo).subscribe(
       response => {
         this.datosEquipoForm.controls.estatus.setValue(response.body.estatusRecurso.id_estatus);
@@ -563,22 +569,26 @@ export class EditarEquiposComponent implements OnInit {
         this.datosEquipoForm.controls.generacion_procesador.setValue(this.equipo.generacion_procesador);
         this.datosEquipoForm.controls.fecha_garantia.setValue(this.equipo.fecha_garantia_termino);
         this.datosEquipoForm.controls.direccion_mac_w.setValue(this.equipo.direccion_mac_wifi);
-        this.mensajeCancelar();
-        this.router.navigate(['IndexEquipo']);
+        //this.mensajeCancelar();
+        //this.router.navigate(['IndexEquipo']);
+        this.salirResgistro();
       },
       error => {
         console.log(error);
       }
     );
+    }
   }
   opcionesVistaVer(opcion: string) {
     if (opcion === 'editar') {
       this.ifMostrar = true;
       this.ifEditar = false;
+      datosEquipo.operacion = 'editar';
       this.habilitaForm();
       //this.getEstatus('editar');
       this.getSoftware();
     } else if (opcion === 'aceptar') {
+      
       this.router.navigate(['IndexEquipo']);
     }
   }
@@ -727,6 +737,11 @@ selecionSoftware() {
 }
 selectSoftware2(datosSoftware: any) {
   console.log(datosSoftware);
+}
+salirResgistro() {
+  const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+    data: {nombre: equipo, opcion: Edicion}
+  });
 }
   mensaje200Actulizacion() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

@@ -1,13 +1,16 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { cssNumber } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
+import { usuarioC, Registro } from 'src/app/Constantes/constante';
 import { Usuario } from 'src/app/Models/usuario/usuario.interface';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { DatosUsuario, idUsuario } from '../index-usuarios/index-usuarios.component';
 import { RolesUser, usuarioRol } from '../login/login.component';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 let datosUsuario: DatosUsuario = {
   idUser: '',
@@ -45,6 +48,7 @@ export class AgregarUsuariosComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     public datepipe: DatePipe,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -154,8 +158,15 @@ export class AgregarUsuariosComponent implements OnInit {
     }
   }
   cancelar() {
-    this.mensajeCancelar();
-    setTimeout( () => {this.router.navigate(['IndexUsuario']); }, 2000 );
+    //this.mensajeCancelar();
+    //setTimeout( () => {this.router.navigate(['IndexUsuario']); }, 2000 );
+    this.salirResgistro();
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: usuarioC, opcion: Registro
+      }
+    });
   }
   mensaje200() {
     this.toastr.success('Se registro el nuevo usuario', 'Registro Correcto');

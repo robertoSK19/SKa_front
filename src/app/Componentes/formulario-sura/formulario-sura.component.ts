@@ -18,7 +18,9 @@ import { DataService } from '../list/data.service';
 import { Equipos } from 'src/app/Models/equipos/equipos.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
 import { Software } from 'src/app/Models/Software/software.interface';
-import { tipoLicencia } from 'src/app/Constantes/constante';
+import { Registro, responsiva, tipoLicencia } from 'src/app/Constantes/constante';
+import { MatDialog } from '@angular/material';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 const idEestatusAsignada = '1';
 const idEstatusNoAsignada = '2';
 let datosResponsiva: DatosEquipoResponsiva = {
@@ -153,7 +155,8 @@ export class FormularioSuraComponent implements OnInit {
     private router: Router,
     private ServiceConsulta: DataService,
     public datepipe: DatePipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -654,9 +657,9 @@ export class FormularioSuraComponent implements OnInit {
   cancelar() {
     accesorSura = [];
     checkAccesoriosSura = false;
-    this.mensajeCancelar();
-    setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
-
+    //this.mensajeCancelar();
+    //setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
+    this.salirResgistro();
   }
 
   seleccinarAccesorios() {
@@ -966,6 +969,12 @@ export class FormularioSuraComponent implements OnInit {
   }
   generarResponsivaAccesorio(valor?: any) {
 
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: responsiva, opcion: Registro
+      }
+    });
   }
   mensaje200() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

@@ -7,6 +7,9 @@ import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { DataService } from '../list/data.service';
 import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
+import { accesorio, Registro} from 'src/app/Constantes/constante';
+import { MatDialog } from '@angular/material';
 
 const estatusId = 2;
 let datosUser: RolesUser = {
@@ -55,7 +58,8 @@ export class AgregarAccesoriosComponent implements OnInit {
     protected servicioConUser: ServiciosService,
     private formBuilder: FormBuilder,
     private servicioAccesorio: DataService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -187,7 +191,6 @@ export class AgregarAccesoriosComponent implements OnInit {
 
 
   cancelar() {
-    this.router.navigate(['IndexAccesorio']);
     this.datosAccesorioForm.controls.nombre_accesorio.reset();
     this.datosAccesorioForm.controls.marca.reset();
     this.datosAccesorioForm.controls.modelo.reset();
@@ -196,6 +199,12 @@ export class AgregarAccesoriosComponent implements OnInit {
     this.datosAccesorioForm.controls.serie.reset();
     this.datosAccesorioForm.controls.costo.reset();
     this.datosAccesorioForm.controls.descripcion.reset();
+    this.salirResgistro();
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: accesorio, opcion: Registro}
+    });
   }
   mensaje200Nuevo() {
     this.toastr.success('Se registro el nuevo accesorio', 'Registro Correcto');

@@ -1,21 +1,21 @@
-<h1 mat-dialog-title style="color:black; font-size: 40px; text-align: center;">Cancelar Regitros</h1>
-<mat-dialog-content style=" height: 250px; width: 600px;">
-  <p>Esta por salir del regitro, ¿Desea salir del formulario?</p>
-  <p>Nota: se perdera la informacion registrada</p>
-
+<h1 mat-dialog-title style="color:black; text-align: center;">{{titulo}} {{data.opcion}} {{espacio}} {{data.nombre}}</h1>
+<mat-dialog-content style=" height: 130px; width: 500px;">
+  <p>{{TxtLbl1}}{{TxtLbl2}}</p>
+  <br>
+  <p>{{TxtLbl3}}</p>
+  <hr style="border-color: black;">
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="row">
-    <div class="col-sm-2">
-    </div>
-    <div class="col-sm-4">
-      <button type="button" class="btn btn-success btn-block" [mat-dialog-close]="comentario.value" style="width: 47px;"
+    <div class="col-sm-5">
+      <button type="button" class="btn btn-success btn-block" style="width: 47px;"
         (click)="cancelarAccion()">No</button>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-5">
       <button type="button" class="btn btn-success btn-block" style="width: 47px;"
-        [mat-dialog-close]="['si',comentario.value]" (click)="confirmarAccion()">Sí</button>
+        (click)="confirmarAccion(data.nombre, data.opcion)">Sí</button>
     </div>
   </div>
+  <button  mat-button cdkFocusInitial style="display: none">Ok</button>
 </mat-dialog-actions>
 

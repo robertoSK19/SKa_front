@@ -1,12 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { softwareC, Registro } from 'src/app/Constantes/constante';
 import { Software } from 'src/app/Models/Software/software.interface';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { DataService } from '../list/data.service';
 import { RolesUser, usuarioRol } from '../login/login.component';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 let datosUser: RolesUser = {
   rol: '',
@@ -54,6 +57,7 @@ export class AgregarSoftwareComponent implements OnInit {
     private servicioSoftware: DataService,
     private toastr: ToastrService,
     public datepipe: DatePipe,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -167,9 +171,16 @@ export class AgregarSoftwareComponent implements OnInit {
   }
 
   cancelar() {
-    this.mensajeCancelar();
-    setTimeout(() => { this.router.navigate(['IndexSoftware']); }, 1000);
+    this.salirResgistro();
+    //this.mensajeCancelar();
+    //setTimeout(() => { this.router.navigate(['IndexSoftware']); }, 1000);
 
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: softwareC, opcion: Registro
+      }
+    });
   }
   mensaje200Nuevo() {
     this.toastr.success('Se registro el nuevo software', 'Registro Correcto');

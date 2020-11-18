@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Software } from 'src/app/Models/Software/software.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
-import { tiposDisco, tiposEquipo, tipoLaptop, tipoEscritorio, tipoServidor, tiposPbit } from 'src/app/Constantes/constante';
+import { tiposDisco, tiposEquipo, tipoLaptop, tipoEscritorio, tipoServidor, tiposPbit, equipo, Registro } from 'src/app/Constantes/constante';
 import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 import { MatDialog } from '@angular/material';
 
@@ -583,7 +583,8 @@ export class AgregarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.tipo_SO.reset();
     this.datosEquipoForm.controls.mac.reset();
     this.datosEquipoForm.controls.correo.reset();
-    this.router.navigate(['IndexEquipo']);
+    //this.router.navigate(['IndexEquipo']);
+    this.salirResgistro();
   }
   formatofecha(fecha: string): string {
     let dia: string;
@@ -614,9 +615,10 @@ export class AgregarEquiposComponent implements OnInit {
       }
     );
   }
-  salirResgistro(){
-    console.log("salir registro");
-    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {});
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: equipo, opcion: Registro}
+    });
   }
   mensaje200Nuevo() {
     this.toastr.success('Se registro el nuevo equipo', 'Registro Correcto');

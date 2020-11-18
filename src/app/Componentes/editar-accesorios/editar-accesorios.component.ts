@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { DataService } from '../list/data.service';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material';
+import { accesorio, Edicion, Registro } from 'src/app/Constantes/constante';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 const estatusId = 2;
 const estatusAsignado = 1;
@@ -70,7 +73,8 @@ export class EditarAccesoriosComponent implements OnInit {
     protected servicioConUser: ServiciosService,
     private consultaAccesorios: DataService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -321,7 +325,8 @@ export class EditarAccesoriosComponent implements OnInit {
           this.datosAccesoriosForm.controls.costo.setValue(this.accesorio.costo);
           this.datosAccesoriosForm.controls.estatus.setValue(response.body.id_estatus.id_estatus);
           this.datosAccesoriosForm.controls.descripcion.setValue(this.accesorio.descripcion);
-          this.router.navigate(['IndexAccesorio']);
+          //this.router.navigate(['IndexAccesorio']);
+          this.salirResgistro();
         } else if (response.status === 204) {
           console.log('Accesorio no encontrado');
         }
@@ -391,6 +396,11 @@ export class EditarAccesoriosComponent implements OnInit {
   }
   cambioEstatus(nuevoEstatus: string) {
     console.log(nuevoEstatus);
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: accesorio, opcion: Edicion}
+    });
   }
   mensaje200Actulizacion() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

@@ -1,12 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Edicion, usuarioC } from 'src/app/Constantes/constante';
 import { Usuario } from 'src/app/Models/usuario/usuario.interface';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { DatosUsuario, idUsuario } from '../index-usuarios/index-usuarios.component';
 import { RolesUser, usuarioRol } from '../login/login.component';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 let datosUsuario: DatosUsuario;
 let datosUser: RolesUser = {
@@ -35,6 +38,7 @@ export class EditarUsuariosComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     public datepipe: DatePipe,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -164,8 +168,9 @@ export class EditarUsuariosComponent implements OnInit {
   }
   cancelar() {
     this.llenaFormulario();
-    this.mensajeCancelarEdicion();
-    setTimeout( () => {this.router.navigate(['IndexUsuario']); }, 3000 );
+    //this.mensajeCancelarEdicion();
+    //setTimeout( () => {this.router.navigate(['IndexUsuario']); }, 3000 );
+    this.salirResgistro();
   }
   llenaFormulario() {
     this.datosUsuarioForm.controls.nombre.setValue(this.usuario.nombres);
@@ -174,6 +179,11 @@ export class EditarUsuariosComponent implements OnInit {
     this.datosUsuarioForm.controls.correo.setValue(this.usuario.correo);
     this.datosUsuarioForm.controls.contraseña.setValue(this.usuario.contraseña);
     this.datosUsuarioForm.controls.rol.setValue(this.usuario.rol.rol);
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: usuarioC, opcion: Edicion}
+    });
   }
   mensaje200() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

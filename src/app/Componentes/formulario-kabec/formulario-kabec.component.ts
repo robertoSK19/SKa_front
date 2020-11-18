@@ -13,11 +13,13 @@ import { DEquipos } from '../../Models/equipos/dequipos.interface';
 import { CrearPDFComponent } from '../formatos_pdf/pdf kabec/crear-pdf.component';
 import { ToastrService } from 'ngx-toastr';
 import { Aaccesorio } from 'src/app/Models/accesorios/aaccesorio.interface';
-import { tipoLicencia } from '../../Constantes/constante';
+import { Registro, responsiva, tipoLicencia } from '../../Constantes/constante';
 import { Software } from '../../Models/Software/software.interface';
 import { Equipos } from 'src/app/Models/equipos/equipos.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
 import { accesorSura } from '../formulario-sura/formulario-sura.component';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
+import { MatDialog } from '@angular/material';
 const idEestatusAsignada = '1';
 const idEstatusNoAsignada = '2';
 let datosResponsiva: DatosEquipoResponsiva = {
@@ -158,7 +160,8 @@ export class FormularioKabecComponent implements OnInit {
     private router: Router,
     private ServiceConsulta: DataService,
     public datepipe: DatePipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -550,8 +553,9 @@ export class FormularioKabecComponent implements OnInit {
   cancelar() {
     accesor = [];
     checkAccesorios = false;
-    this.mensajeCancelar();
-    setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
+    //this.mensajeCancelar();
+    this.salirResgistro();
+    //setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
 
   }
 
@@ -868,7 +872,12 @@ export class FormularioKabecComponent implements OnInit {
     this.softExtra = this.softwares.filter(so => so.tipo_software.toLowerCase() !== 'ofimatica'
           && so.tipo_software.toLowerCase() !== 'sistema operativo');
   }
-
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: responsiva, opcion: Registro
+      }
+    });
+  }
 
   mensaje200() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');

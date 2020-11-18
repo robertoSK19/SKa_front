@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Registro, responsiva } from 'src/app/Constantes/constante';
 import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
 import { Asignacion_accesorios } from 'src/app/Models/asignacion/asignacion_accesorios.interface';
@@ -10,6 +12,7 @@ import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { accesoriosID } from '../agregar-responsivas/agregar-responsivas.component';
 import { letra, PdfKabecAccesoriosComponent } from '../formatos_pdf/pdf-kabec-accesorios/pdf-kabec-accesorios.component';
 import { DataService } from '../list/data.service';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 const idEestatusAsignada = 1;
 const idEstatusNoAsignada = 2;
@@ -62,7 +65,8 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
     private router: Router,
     private ServiceConsulta: DataService,
     public datepipe: DatePipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -158,9 +162,16 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
 
 
   cancelar() {
-    this.mensajeCancelar();
-    setTimeout(() => { this.router.navigate(['AgregarResponsiva']); }, 1000);
+    //this.mensajeCancelar();
+    //setTimeout(() => { this.router.navigate(['AgregarResponsiva']); }, 1000);
+    this.salirResgistro();
 
+  }
+  salirResgistro() {
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {
+      data: {nombre: responsiva, opcion: Registro
+      }
+    });
   }
   mensaje200() {
     this.toastr.success('Se actualizaron los datos', 'Registro Actualizado');
