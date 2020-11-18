@@ -7,4 +7,5 @@ export interface Asignacion {
     id_dequipo: number;
     id_estatus: number;
     usuario: string;
+    comentario?: string;
 }

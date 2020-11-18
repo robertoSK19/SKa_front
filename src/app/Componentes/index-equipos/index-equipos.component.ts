@@ -75,8 +75,8 @@ export class IndexEquiposComponent implements OnInit {
   }
 
 
-  openDialog (valorId: string) {
-    this.dialog.open(DialogElementsExampleDialog);    
+  openDialog(valorId: string) {
+    this.dialog.open(DialogElementsExampleDialog);
     idValor = valorId;
   }
 

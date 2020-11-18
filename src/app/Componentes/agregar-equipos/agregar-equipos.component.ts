@@ -13,6 +13,8 @@ import { Accesorios } from 'src/app/Models/accesorios/accesorios.interface';
 import { Software } from 'src/app/Models/Software/software.interface';
 import { EquipoSoftware } from 'src/app/Models/equipos/equipoSotware.interface';
 import { tiposDisco, tiposEquipo, tipoLaptop, tipoEscritorio, tipoServidor, tiposPbit } from 'src/app/Constantes/constante';
+import { ModalCancelarRegitrosComponent } from '../modal-cancelar-regitros/modal-cancelar-regitros.component';
+import { MatDialog } from '@angular/material';
 
 
 const idEstatusAsignado = 1;
@@ -121,7 +123,8 @@ export class AgregarEquiposComponent implements OnInit {
     private dataSvcAcce: DataService,
     private formBuilder: FormBuilder,
     public datepipe: DatePipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
   ngOnInit() {
     this.tiposDiscos = tiposDisco;
@@ -610,6 +613,10 @@ export class AgregarEquiposComponent implements OnInit {
         this.mensaje500();
       }
     );
+  }
+  salirResgistro(){
+    console.log("salir registro");
+    const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {});
   }
   mensaje200Nuevo() {
     this.toastr.success('Se registro el nuevo equipo', 'Registro Correcto');

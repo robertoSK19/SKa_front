@@ -1,0 +1,26 @@
+<h1 mat-dialog-title style="color:black; font-size: 40px; text-align: center;">Cancelar Responsiva</h1>
+<mat-dialog-content style=" height: 250px; width: 600px;">
+  <p>Motivo de la cancelacion (opcional)</p>
+  <textarea matInput rows="4" placeholder="Descripción del motivo" class=" form-control form-control-sm"
+    style="resize: none;" [formControl]="comentario"></textarea>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="row">
+    <div class="col-sm">
+      ¿Desea cancelar la responsiva?
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-4">
+      <button type="button" class="btn btn-success btn-block" [mat-dialog-close]="comentario.value" style="width: 47px;"
+        (click)="cancelarAccion()">No</button>
+    </div>
+    <div class="col-sm-4">
+      <button type="button" class="btn btn-success btn-block" style="width: 47px;"
+        [mat-dialog-close]="['si',comentario.value]" (click)="confirmarAccion()">Sí</button>
+    </div>
+  </div>
+</mat-dialog-actions>

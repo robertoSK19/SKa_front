@@ -54,6 +54,8 @@ import { PdfKabecAccesoriosComponent } from './Componentes/formatos_pdf/pdf-kabe
 import { FacturasComponent } from './Componentes/facturas/facturas.component';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { ModalCancelarComponent } from './Componentes/modal-cancelar/modal-cancelar.component';
+import { ModalCancelarRegitrosComponent } from './Componentes/modal-cancelar-regitros/modal-cancelar-regitros.component';
 
 
 // Set the fonts to use
@@ -87,8 +89,10 @@ PdfMakeWrapper.setFonts(pdfFonts);
     FormularioKabecAccesoriosComponent,
     PdfKabecAccesoriosComponent,
     FacturasComponent,
+    ModalCancelarComponent,
+    ModalCancelarRegitrosComponent,
   ],
-  entryComponents: [DialogElementsExampleDialog],
+  entryComponents: [DialogElementsExampleDialog, ModalCancelarComponent,ModalCancelarRegitrosComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

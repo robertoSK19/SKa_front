@@ -7,10 +7,13 @@ import { Asignacion } from 'src/app/Models/asignacion/asignacion.interface';
 import { DEquipos } from 'src/app/Models/equipos/dequipos.interface';
 import { ServiciosService } from 'src/app/Servicios/servicios.service';
 import { DataService } from '../list/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalCancelarComponent } from '../modal-cancelar/modal-cancelar.component';
 
 const idEstatusCancelar = 6;
 const idEstatusAsignada = 1;
 const idEstatusNoAginada = 2;
+const si = 'si';
 @Component({
   selector: 'app-index-responsivas',
   templateUrl: './index-responsivas.component.html',
@@ -37,6 +40,9 @@ export class IndexResponsivasComponent implements OnInit {
   responsivasBackupAcc: any[];
   valor: any;
   valorAcc: any;
+  ifSelectResponEquipo = true;
+  ifSelectResponAccesorio = true;
+
   tipoResponsiva: any[] = [
     { nombre: 'Accesorios' },
     { nombre: 'Equipos' }
@@ -46,7 +52,8 @@ export class IndexResponsivasComponent implements OnInit {
     private router: Router,
     protected servicioConUser: ServiciosService,
     protected servicioResponsivas: DataService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -142,7 +149,9 @@ export class IndexResponsivasComponent implements OnInit {
       responseAcce => {
         this.datosAccesorioUpdate = responseAcce.body;
       }
-    )
+    );
+    this.ifSelectResponEquipo = true;
+    this.ifSelectResponAccesorio = false;
   }
 
   seleccionarResponsiva(idResponsiva: string, idDEquipo: string) {
@@ -159,58 +168,71 @@ export class IndexResponsivasComponent implements OnInit {
         this.datosAsignacion = responseAsig.body;
       }
     );
+    this.ifSelectResponEquipo = false;
+    this.ifSelectResponAccesorio = true;
   }
   cancelarResponsiva() {
     console.log(this.idResponsiva, this.idDEquipo);
     if (this.idDEquipo === '' && this.idResponsiva === '') {
       this.mensajeDatosIncompletos();
     } else if (this.idDEquipo !== '' && this.idResponsiva !== '') {
-      this.servicioResponsivas.putResponsivas2(Number(this.idDEquipo), idEstatusCancelar, this.datosAsignacion).subscribe(
-        res => {
-          if (res.status === 200) {
-            console.log('se actualizo responsiva');
-            this.servicioResponsivas.updateDEquipo(idEstatusNoAginada, this.datosDEquipo).subscribe(
-              responseEquipo => {
-                if (responseEquipo.status === 200) {
-                  console.log('se actuliza equipo y se cancela responsiva');
-                  this.mensaje200();
-                  this.getAllResponsivas();
-                } else {
-                  console.log('error en el estatus del equipo');
-                  this.servicioResponsivas.putResponsivas2(Number(this.idDEquipo), idEstatusAsignada, this.datosAsignacion).subscribe();
-                  this.mensaja204DEquipos();
-                }
-              },
-              errorEquipo => {
-                console.log('error estatus dequipo');
-                this.mensaje500();
-                this.servicioResponsivas.putResponsivas2(Number(this.idDEquipo), idEstatusAsignada, this.datosAsignacion).subscribe();
-              }
-            );
-            if (this.datosAccesorio.length !== 0) {
-              const accesorioFiltro = this.datosAccesorio.filter(x => x.id_equipo === Number(this.idDEquipo));
-              console.log(accesorioFiltro);
-              accesorioFiltro.map((x => {
-                x.id_equipo = 0;
-                console.log(x);
-                this.servicioResponsivas.updateAccesorio(x, idEstatusNoAginada).subscribe(
-                  response => {
-                    console.log(response);
+      const dialogRef = this.dialog.open(ModalCancelarComponent, {});
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        if (result[0] === si) {
+          console.log('cancelar index');
+          this.datosAsignacion.comentario = result[1];
+          this.servicioResponsivas.putResponsivas2(Number(this.idDEquipo), idEstatusCancelar, this.datosAsignacion).subscribe(
+            res => {
+              if (res.status === 200) {
+                console.log('se actualizo responsiva');
+                this.servicioResponsivas.updateDEquipo(idEstatusNoAginada, this.datosDEquipo).subscribe(
+                  responseEquipo => {
+                    if (responseEquipo.status === 200) {
+                      console.log('se actuliza equipo y se cancela responsiva');
+                      this.mensaje200();
+                      this.getAllResponsivas();
+                    } else {
+                      console.log('error en el estatus del equipo');
+                      this.servicioResponsivas.putResponsivas2(Number(this.idDEquipo), idEstatusAsignada, this.datosAsignacion).subscribe();
+                      this.mensaja204DEquipos();
+                    }
+                  },
+                  errorEquipo => {
+                    console.log('error estatus dequipo');
+                    this.mensaje500();
+                    this.servicioResponsivas.putResponsivas2(Number(this.idDEquipo), idEstatusAsignada, this.datosAsignacion).subscribe();
                   }
                 );
-              }))
+                if (this.datosAccesorio.length !== 0) {
+                  const accesorioFiltro = this.datosAccesorio.filter(x => x.id_equipo === Number(this.idDEquipo));
+                  console.log(accesorioFiltro);
+                  accesorioFiltro.map((x => {
+                    x.id_equipo = 0;
+                    console.log(x);
+                    this.servicioResponsivas.updateAccesorio(x, idEstatusNoAginada).subscribe(
+                      response => {
+                        console.log(response);
+                      }
+                    );
+                  }))
+                }
+              } else if (res.status === 204) {
+                console.log('error en la actualizacion');
+                this.mensaja204();
+              }
+            },
+            error => {
+              if (error.status === 500) {
+                this.mensaje500();
+              }
             }
-          } else if (res.status === 204) {
-            console.log('error en la actualizacion');
-            this.mensaja204();
-          }
-        },
-        error => {
-          if (error.status === 500) {
-            this.mensaje500();
-          }
+          );
+        } else {
+          this.mensajeNoConfirmacionCancelar();
         }
-      );
+      });
+      this.ifSelectResponEquipo = true;
     }
     /* //console.log(this.servicioResponsivas.putResponsiva(Number(this.idDEquipo), idEstatusCancelar, Number(this.idResponsiva)).subscribe());
     this.servicioResponsivas.putResponsiva(Number(this.idDEquipo), idEstatusCancelar, Number(this.idResponsiva)).subscribe(
@@ -243,6 +265,7 @@ export class IndexResponsivasComponent implements OnInit {
         )
       }))
     }
+    this.ifSelectResponAccesorio = true;
   }
 
   filtroSelect(value: any) {
@@ -257,12 +280,16 @@ export class IndexResponsivasComponent implements OnInit {
     let c = document.getElementById("filtroEquipo")
     let d = document.getElementById("filtroAccesorio")
     let e = document.getElementById("filtro")
+    let f = document.getElementById("cancelarEquipo")
+    let g = document.getElementById("cancelarAccesorio")
     if (value === "Accesorios") {
       a.className = "table visible";
       b.className = "table invisible";
       c.className = "col-sm-3 invisible"
       d.className = "col-sm-3 invisible"
       e.className = "col-sm-3 invisible"
+      f.className = 'btn btn-success btn-block invisible';
+      g.className = 'btn btn-success btn-block visible';
       this.getAllResponsivasAccesorios();
     } else if (value === "Equipos") {
       b.className = "table visible";
@@ -270,8 +297,12 @@ export class IndexResponsivasComponent implements OnInit {
       c.className = "col-sm-3 visible"
       d.className = "col-sm-3 invisible"
       e.className = "col-sm-3 visible"
+      f.className = 'btn btn-success btn-block visible';
+      g.className = 'btn btn-success btn-block invisible';
       this.getAllResponsivas();
     }
+    this.ifSelectResponAccesorio = true;
+    this.ifSelectResponEquipo = true;
   }
 
   filtroAcc(parametro: any) {
@@ -326,6 +357,9 @@ export class IndexResponsivasComponent implements OnInit {
       }
     }
   }
+  openDialog(valorId?: string) {
+    this.dialog.open(ModalCancelarComponent);
+  }
   mensaja204() {
     this.toastr.error('No se pudo cancelar la Responsiva', 'Error en la actualizacion');
   }
@@ -340,5 +374,8 @@ export class IndexResponsivasComponent implements OnInit {
   }
   mensajeDatosIncompletos() {
     this.toastr.error('Debe de seleccionar una responsiva', 'Error en la cancelación');
+  }
+  mensajeNoConfirmacionCancelar() {
+    this.toastr.error('No se cancelo la responsiva', 'Accion Cancelada');
   }
 }

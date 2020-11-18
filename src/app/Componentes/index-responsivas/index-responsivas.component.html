@@ -68,14 +68,14 @@
     <table class="table invisible" id="equipo">
         <thead class="thead-dark">
             <tr>
-                <th class="sticky-top" scope="col">ID</th>
-                <th class="sticky-top" scope="col">Persona Responsable</th>
-                <th class="sticky-top" scope="col">Equipo</th>
-                <th class="sticky-top" scope="col">Sistema Operativo</th>
-                <th class="sticky-top" scope="col">Marca</th>
-                <th class="sticky-top" scope="col">Numero de Serie</th>
-                <th class="sticky-top" scope="col">Estatus</th><!-- duda en que si deba de ir esta -->
-                <th class="sticky-top" scope="col">Seleccionar</th>
+                <th  scope="col">ID</th>
+                <th  scope="col">Persona Responsable</th>
+                <th  scope="col">Equipo</th>
+                <th  scope="col">Sistema Operativo</th>
+                <th  scope="col">Marca</th>
+                <th  scope="col">Numero de Serie</th>
+                <th  scope="col">Estatus</th><!-- duda en que si deba de ir esta -->
+                <th  scope="col">Seleccionar</th>
             </tr>
         </thead>
         <tbody>
@@ -107,7 +107,7 @@
                 <th class="sticky-top" scope="col">Capacidad</th>
                 <th class="sticky-top" scope="col">Marca</th>
                 <th class="sticky-top" scope="col">Numero de Serie</th>
-                <th class="sticky-top" scope="col">Estatus</th><!-- duda en que si deba de ir esta -->
+                <th class="sticky-top" scope="col">Estatus</th>
                 <th class="sticky-top" scope="col">Seleccionar</th>
             </tr>
         </thead>
@@ -135,7 +135,14 @@
     <div class="col-sm ">
     </div>
     <div class="col-sm-3 ">
-        <button type="button" class="btn btn-success btn-block" (click)="cancelarResponsivaAcce()">Cancelar Responsiva</button>
+        <button type="button" [disabled]="ifSelectResponEquipo" class="btn btn-success btn-block invisible" id="cancelarEquipo" (click)="cancelarResponsiva()">Cancelar Responsiva</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm ">
+    </div>
+    <div class="col-sm-3 ">
+        <button type="button" [disabled]="ifSelectResponAccesorio" class="btn btn-success btn-block invisible" id="cancelarAccesorio" (click)="cancelarResponsivaAcce()">Cancelar Responsiva</button>
     </div>
 </div>
 <br>

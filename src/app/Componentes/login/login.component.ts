@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit {
           this.mensaje504();
         }
         if (error.status === 0) {
-          console.log('codigo 0', error.body);
+          console.log('codigo 0', error);
           usuarioRol = {rol: 'N/A', nombre: 'N/A', id: 0};
           this.ifRol = false;
           this.loginForm.controls.correoUser.reset('');
