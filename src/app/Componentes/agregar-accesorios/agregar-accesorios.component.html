@@ -3,22 +3,14 @@
     <div class="col-sm-2 ">
         <a class='fas fa-arrow-alt-circle-left' (click)="cancelar()"
             style='font-size:30px;color:purple'></a>
-
         &nbsp;
-
         <a class='fas fa-home' [routerLink]="[ '/Principal' ]" style='font-size:30px;color:purple'></a>
     </div>
-
     <div class="col-sm-8 ">
-
         <h2 class="modal-title text-center">AGREGAR ACCESORIO </h2>
     </div>
 </div>
-
-<!-- <br> -->
-
 <div class="card">
-
     <div class="col-sm-3">
         <h6> <em class='fas fa-asterisk' style='font-size:10px;color:red'></em>
             Tipo de Recurso:</h6>
@@ -37,15 +29,10 @@
                 <mat-radio-button value="HDD">HDD</mat-radio-button>
             </mat-radio-group>
         </div>
-
-        
     </div>
-
-
     <div class="invisible card-body" id="otros">
         <blockquote class="blockquote mb-0">
             <form [formGroup]="datosAccesorioForm">
-
                 <div class="invisible" id="ram" style="margin-bottom: 20px;">
                     <td>
                         <div>
@@ -63,22 +50,17 @@
                         </div>
                     </td>
                 </div>
-
                 <div class="row">
                     <div class="invisible col-sm" id="nombre">
-
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                             Nombe del Accesorio:</h6>
                         <input type="text" class=" form-control form-control-sm" formControlName="nombre_accesorio">
                     </div>
-
                     <div class=" invisible col-sm" id="capacidad">
-
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                             Capacidad:</h6>
                         <input type="text" class=" form-control form-control-sm" formControlName="capacidad">
                     </div>
-
                     <div class="col-sm">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                             Marca:</h6>
@@ -90,17 +72,12 @@
                         <input type="text" class=" form-control form-control-sm" formControlName="modelo">
                     </div>
                     <div class="col-sm">
-                        <!-- <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
-                        Producto:</h6>
-                    <input type="text" class=" form-control form-control-sm" formControlName="producto"> -->
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
                             Costo:</h6>
                         <input type="text" class=" form-control form-control-sm" formControlName="costo">
                     </div>
                 </div>
-
                 <br>
-
                 <div class="row">
                     <div class="col-sm">
                         <h6> <i class='fas fa-asterisk' style='font-size:10px;color:red'></i>
@@ -119,29 +96,22 @@
                             style="width: 100%; height: 40%; resize: none;" formControlName="descripcion">
                     </textarea>
                     </div>
-
                 </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-sm">
-                        <h6></h6>
-                    </div>
-                </div>
-
                 <br>
                 <div class="row">
                     <div class="col-sm">
                         <h6></h6>
                     </div>
                 </div>
-
                 <br>
-
+                <div class="row">
+                    <div class="col-sm">
+                        <h6></h6>
+                    </div>
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-sm-8">
-
                     </div>
                     <div class="col-lm-2 ">
                         <button type="button" class="btn btn-success btn-block" (click)='cancelar()'>Cancelar</button>

@@ -29,7 +29,6 @@ let respuestaUser: any[];
 export class LoginComponent implements OnInit {
 
    loginForm: FormGroup;
-   public NavBar = NavbarComponent;
 /*
   correoUser = new FormControl('', [
     Validators.required,
@@ -87,13 +86,13 @@ export class LoginComponent implements OnInit {
     .subscribe(
        response => {
         if (response.status === 200) {
-          console.log('codigo 200', response.body);
+          // console.log('codigo 200', response.body);
           respuestaUser = response.body;
-          console.log(respuestaUser);
+          // console.log(respuestaUser);
           usuarioRol = {rol : respuestaUser["rol"], nombre: respuestaUser["nombre"], id: respuestaUser["id"]};
           const cookie64 = window.btoa(unescape(encodeURIComponent( JSON.stringify(usuarioRol) )));
           this.servicioConUser.setToken(cookie64);
-          console.log(cookie64);
+          // console.log(cookie64);
           // console.log(this.servicioConUser.getToken());
           // token = this.servicioConUser.getToken();
           this.router.navigate(['Principal']);

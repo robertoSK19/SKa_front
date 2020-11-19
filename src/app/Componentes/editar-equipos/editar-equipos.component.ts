@@ -536,15 +536,15 @@ export class EditarEquiposComponent implements OnInit {
     if (datosEquipo.operacion === 'mostrar') {
       this.router.navigate(['IndexEquipo']);
     } else if (datosEquipo.operacion === 'editar') {
-    this.dataSvc.getDEquipo(this.datosDEquipo.id_dequipo).subscribe(
+    /* this.dataSvc.getDEquipo(this.datosDEquipo.id_dequipo).subscribe(
       response => {
         this.datosEquipoForm.controls.estatus.setValue(response.body.estatusRecurso.id_estatus);
       },
       error => {
         console.log('error datos del DEquipo');
       }
-    );
-    this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
+    ); */
+    /* this.dataSvc.getEquipo(datosEquipo.idEquipo).subscribe(
       response => {
         this.equipo = response.body;
         console.log(this.equipo);
@@ -576,7 +576,8 @@ export class EditarEquiposComponent implements OnInit {
       error => {
         console.log(error);
       }
-    );
+    ); */
+    this.salirResgistro();
     }
   }
   opcionesVistaVer(opcion: string) {

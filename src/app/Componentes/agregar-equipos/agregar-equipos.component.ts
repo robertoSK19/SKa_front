@@ -566,7 +566,7 @@ export class AgregarEquiposComponent implements OnInit {
 
   cancelar() {
     console.log('cancelar');
-    this.datosEquipoForm.controls.nombre_equipo.reset();
+/*     this.datosEquipoForm.controls.nombre_equipo.reset();
     this.datosEquipoForm.controls.marca.reset();
     this.datosEquipoForm.controls.modelo.reset();
     this.datosEquipoForm.controls.modelo_cmd.reset();
@@ -582,7 +582,7 @@ export class AgregarEquiposComponent implements OnInit {
     this.datosEquipoForm.controls.nombre_SO.reset();
     this.datosEquipoForm.controls.tipo_SO.reset();
     this.datosEquipoForm.controls.mac.reset();
-    this.datosEquipoForm.controls.correo.reset();
+    this.datosEquipoForm.controls.correo.reset(); */
     //this.router.navigate(['IndexEquipo']);
     this.salirResgistro();
   }

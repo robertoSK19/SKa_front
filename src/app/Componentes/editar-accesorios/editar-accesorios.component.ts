@@ -308,7 +308,7 @@ export class EditarAccesoriosComponent implements OnInit {
   }
 
   cancelar() {
-    this.consultaAccesorios.getAccesorio(datosAccesorios.idAccesorio).subscribe(
+/*     this.consultaAccesorios.getAccesorio(datosAccesorios.idAccesorio).subscribe(
       response => {
         if (response.status === 200) {
           console.log(response.body);
@@ -337,7 +337,8 @@ export class EditarAccesoriosComponent implements OnInit {
           console.log('Error del Servidor');
         }
       }
-    );
+    ); */
+    this.salirResgistro();
   }
   opcionesVistaVer(opcion: string) {
     if (opcion === 'editar') {

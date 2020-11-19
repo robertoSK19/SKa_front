@@ -165,6 +165,7 @@ export class FormularioKabecComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.usuarioLogeado();
     this.tiposLicencias = tipoLicencia;
     this.getSoftwares();
     this.datosRespForm = this.formBuilder.group({
@@ -208,10 +209,11 @@ export class FormularioKabecComponent implements OnInit {
     datosResponsiva = EquipoResp;
     datosResponsivaAccesorio = AccesorioResp;
     const token = this.servicioConUser.getToken();
-    if (token.length !== 0 && datosResponsiva.idEquipo !== '') {
+    if (token.length !== 0) {
       console.log('acceso correcto');
-
-      // this.cargaIdEquipo(datosResponsiva.idEquipo);
+      if (datosResponsiva.idEquipo === '' && datosResponsivaAccesorio.idAcceosrio.length === 0) {
+        this.router.navigate(['AgregarResponsiva']);
+      }
     } else {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
@@ -551,12 +553,9 @@ export class FormularioKabecComponent implements OnInit {
   }
 
   cancelar() {
-    accesor = [];
-    checkAccesorios = false;
-    //this.mensajeCancelar();
+    //accesor = [];
+    //checkAccesorios = false;
     this.salirResgistro();
-    //setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
-
   }
 
   seleccinarAccesorios() {
@@ -599,6 +598,7 @@ export class FormularioKabecComponent implements OnInit {
     if (datosResponsivaAccesorio.idAcceosrio.length !== 0) {
       this.ifAccesorio = false;
       this.cargaAccesorio();
+      this.router.navigate(['Principal']);
     }
     if (datosResponsiva.idEquipo !== '') {
       this.ifAccesorio = true;

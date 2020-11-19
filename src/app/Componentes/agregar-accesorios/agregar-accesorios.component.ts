@@ -17,9 +17,9 @@ let datosUser: RolesUser = {
   nombre: '',
   id: 0,
 };
-let discoDuro = "";
-let accesorioTipo = "";
-let nombreForm = "";
+let discoDuro = '';
+let accesorioTipo = '';
+let nombreForm = '';
 
 @Component({
   selector: 'app-agregar-accesorios',
@@ -42,9 +42,9 @@ export class AgregarAccesoriosComponent implements OnInit {
     costo: 0,
     descripcion: '',
     capacidad: '',
-    tipo_disco_duro:'',
-    ram_bus:'',
-    ram_ranura:'',
+    tipo_disco_duro: '',
+    ram_bus: '',
+    ram_ranura: '',
   };
 
   tipoAccesorioE: any[] = [
@@ -98,7 +98,6 @@ export class AgregarAccesoriosComponent implements OnInit {
     let d = document.getElementById('nombre');
     let e = document.getElementById('capacidad')
     accesorioTipo = tipo;
-
     if (tipo === this.tipoAccesorioE[0].nombre) {
       a.className = 'invisible';
       b.className = 'visible';
@@ -120,16 +119,16 @@ export class AgregarAccesoriosComponent implements OnInit {
     }
   }
 
-  tipoDiscoDuro (tipo: string){
+  tipoDiscoDuro(tipo: string) {
     discoDuro = tipo;
   }
 
   guardarDatos() {
-    if (this.datosAccesorioForm.controls.nombre_accesorio.value === ""){
+    if (this.datosAccesorioForm.controls.nombre_accesorio.value === '') {
       nombreForm = accesorioTipo;
-    } else{
+    } else {
       nombreForm = this.datosAccesorioForm.controls.nombre_accesorio.value;
-    }   
+    }
     const marcaForm = this.datosAccesorioForm.controls.marca.value;
     const modeloForm = this.datosAccesorioForm.controls.modelo.value;
     const hechoEnForm = this.datosAccesorioForm.controls.hecho_en.value;
@@ -139,7 +138,6 @@ export class AgregarAccesoriosComponent implements OnInit {
     const capacidadForm = this.datosAccesorioForm.controls.capacidad.value;
     const ranuraForm = this.datosAccesorioForm.controls.ram_ranura.value;
     const busForm = this.datosAccesorioForm.controls.ram_bus.value;
-    
     if (marcaForm !== '' && modeloForm !== '' && hechoEnForm !== '' &&
       costoForm !== '') {
       console.log('Datos completos');
@@ -155,7 +153,7 @@ export class AgregarAccesoriosComponent implements OnInit {
         descripcion: descripcionForm,
         capacidad: capacidadForm,
         tipo_disco_duro: discoDuro,
-        ram_ranura:ranuraForm,
+        ram_ranura: ranuraForm,
         ram_bus: busForm,
         id_estatus: null
       };
@@ -191,14 +189,6 @@ export class AgregarAccesoriosComponent implements OnInit {
 
 
   cancelar() {
-    this.datosAccesorioForm.controls.nombre_accesorio.reset();
-    this.datosAccesorioForm.controls.marca.reset();
-    this.datosAccesorioForm.controls.modelo.reset();
-    //this.datosAccesorioForm.controls.producto.reset();
-    this.datosAccesorioForm.controls.hecho_en.reset();
-    this.datosAccesorioForm.controls.serie.reset();
-    this.datosAccesorioForm.controls.costo.reset();
-    this.datosAccesorioForm.controls.descripcion.reset();
     this.salirResgistro();
   }
   salirResgistro() {

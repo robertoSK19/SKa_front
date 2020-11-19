@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PdfMakeWrapper, Txt, Img, Cell, Table } from 'pdfmake-wrapper';
-import { accesor, checkAccesorios } from  '../../formulario-kabec/formulario-kabec.component';
+import { accesor, checkAccesorios } from '../../formulario-kabec/formulario-kabec.component';
 import { accesorSura, checkAccesoriosSura } from '../../formulario-sura/formulario-sura.component';
 
 @Component({

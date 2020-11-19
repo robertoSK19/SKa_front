@@ -160,6 +160,7 @@ export class FormularioSuraComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.usuarioLogeado();
     this.tiposLicencias = tipoLicencia;
     this.datosRespForm = this.formBuilder.group({
       id_equipo: ['', Validators.required],
@@ -196,9 +197,11 @@ export class FormularioSuraComponent implements OnInit {
     datosResponsiva = EquipoResp;
     datosResponsivaAccesorio = AccesorioResp;
     const token = this.servicioConUser.getToken();
-    if ( token.length !== 0 && datosResponsiva.idEquipo !== '') {
+    if ( token.length !== 0) {
       console.log('acceso correcto');
-      // this.cargaIdEquipo(datosResponsiva.idEquipo);
+      if (datosResponsiva.idEquipo === '') {
+        this.router.navigate(['AgregarResponsiva']);
+      }
     } else {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
@@ -655,10 +658,8 @@ export class FormularioSuraComponent implements OnInit {
   }
 
   cancelar() {
-    accesorSura = [];
-    checkAccesoriosSura = false;
-    //this.mensajeCancelar();
-    //setTimeout( () => {this.router.navigate(['AgregarResponsiva']); }, 1000 );
+    //accesorSura = [];
+    //checkAccesoriosSura = false;
     this.salirResgistro();
   }
 

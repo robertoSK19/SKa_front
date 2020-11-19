@@ -31,9 +31,6 @@ export class ModalCancelarRegitrosComponent implements OnInit {
   }
 
   confirmarAccion(nombre: string, opcion: string) {
-    if (opcion === edicion) {
-    } else {
-    }
     switch (nombre) {
       case equipo:
         this.router.navigate(['IndexEquipo']);
@@ -59,6 +56,6 @@ export class ModalCancelarRegitrosComponent implements OnInit {
     this.dialogRef.close();
   }
   mensajecancelar() {
-    this.toastr.warning('Se cancelo el registro', 'Registro cancelado');
+    this.toastr.success('Se cancelo el registro', 'Registro cancelado');
   }
 }

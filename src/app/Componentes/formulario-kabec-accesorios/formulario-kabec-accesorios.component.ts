@@ -70,6 +70,7 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.usuarioLogeado();
     this.idAccesorios = accesoriosID;
     this.datosRespForm = this.formBuilder.group({
       responsable: ['', Validators.required],
@@ -85,8 +86,11 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
 
   usuarioLogeado() {
     const token = this.servicioConUser.getToken();
-    if (token.length !== 0 && accesoriosID.length !== 0) {
+    if (token.length !== 0 ) {
       console.log('acceso correcto');
+      if (accesoriosID.length === 0) {
+        this.router.navigate(['AgregarResponsiva']);
+      }
     } else {
       console.log('error en el acceso');
       this.router.navigate(['Login']);
@@ -162,10 +166,7 @@ export class FormularioKabecAccesoriosComponent implements OnInit {
 
 
   cancelar() {
-    //this.mensajeCancelar();
-    //setTimeout(() => { this.router.navigate(['AgregarResponsiva']); }, 1000);
     this.salirResgistro();
-
   }
   salirResgistro() {
     const dialogRef = this.dialog.open(ModalCancelarRegitrosComponent, {

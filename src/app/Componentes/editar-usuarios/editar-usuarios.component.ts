@@ -167,7 +167,7 @@ export class EditarUsuariosComponent implements OnInit {
     }
   }
   cancelar() {
-    this.llenaFormulario();
+    //this.llenaFormulario();
     //this.mensajeCancelarEdicion();
     //setTimeout( () => {this.router.navigate(['IndexUsuario']); }, 3000 );
     this.salirResgistro();
